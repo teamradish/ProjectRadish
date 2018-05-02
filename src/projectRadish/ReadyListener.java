@@ -18,7 +18,6 @@ public class ReadyListener implements EventListener
         JDA jda = new JDABuilder(AccountType.BOT)
             .setToken(Constants.getBotToken())
             .addEventListener(new ReadyListener())
-            .setGame(Game.streaming("with TPE", "https://twitch.tv/twitchplays_everything"))
             .buildBlocking();
         System.out.println("done");
     }
