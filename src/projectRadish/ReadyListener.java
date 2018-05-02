@@ -19,12 +19,12 @@ public class ReadyListener implements EventListener
             .setToken(Constants.getBotToken())
             .addEventListener(new ReadyListener())
             .buildBlocking();
-        System.out.println("done");
     }
 
 	@Override
 	public void onEvent(Event event) {
-		//Work in progress
+		if (event instanceof ReadyEvent)
+            System.out.println("API is ready!");
 		
 	}
 
