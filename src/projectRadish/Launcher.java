@@ -8,7 +8,7 @@ import net.dv8tion.jda.core.exceptions.*;
 public class Launcher {
 	public static void main(String[] args) throws LoginException, RateLimitedException, InterruptedException {
 		JDA api = new JDABuilder(AccountType.BOT)
-				.setToken("NDMxNjcwNDI3NDg0Njg0MzEx.DctCUg.ziZXxz5YefmK_qGFyssiU8_qLP4")
+				.setToken(Constants.getBotToken())
 				.addEventListener(new PingPongBot())
 				.buildBlocking();
 	}
