@@ -5,7 +5,7 @@ package projectRadish;
 import javax.security.auth.login.LoginException;
 
 import net.dv8tion.jda.core.*;
-import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.core.events.*;
 import net.dv8tion.jda.core.exceptions.*;
 import net.dv8tion.jda.core.hooks.*;
 public class ReadyListener implements EventListener
@@ -23,7 +23,7 @@ public class ReadyListener implements EventListener
 
 	@Override
 	public void onEvent(Event event) {
-		// TODO Auto-generated method stub
+		//Work in progress
 		
 	}
 
