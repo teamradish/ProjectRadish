@@ -5,6 +5,7 @@ import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
+import java.util.HashMap;
 import java.util.Random;
 
 public class MessageListener extends ListenerAdapter {
@@ -74,6 +75,7 @@ public class MessageListener extends ListenerAdapter {
             String name;
             if (message.isWebhookMessage())
             {
+                System.out.println("Webhook detected");
                 name = author.getName();                //If this is a Webhook message, then there is no Member associated
             }                                           // with the User, thus we default to the author for name.
             else
@@ -123,6 +125,19 @@ public class MessageListener extends ListenerAdapter {
             String reply = msg.replaceFirst("!say ", "");
             channel.sendMessage(reply).queue();
         }
+        else if (msg.startsWith("!doc")) {
+            channel.sendMessage(Constants.getCurrentDoc()).queue();
+        }
+        else if (msg.startsWith("!doc ")) {
+            String game = msg.replaceFirst("!doc ", "");
+            String reply;
+            if (Constants.getDocs().containsKey(game)) {
+                reply = Constants.getDocs().get(game);
+            } else {
+                reply = "No doc by that name registered.";
+            }
+            channel.sendMessage(reply).queue();
+        }
         else if (msg.equals("!roll"))
         {
             Random rand = new Random();
@@ -132,6 +147,15 @@ public class MessageListener extends ListenerAdapter {
         else if (msg.equals("!me"))
         {
             channel.sendMessage(author.getAsMention() + " in Channel: " + channel.getName()).queue();
+        }
+        else if (msg.equals("!alldocs"))
+        {
+            String reply = "";
+            for (String name: Constants.getDocs().keySet()) {
+                reply = reply + ", " + name;
+            }
+            reply = reply.replaceFirst(", ", ""); // Remove unneeded comma
+            channel.sendMessage(reply).queue();
         }
     }
 }
