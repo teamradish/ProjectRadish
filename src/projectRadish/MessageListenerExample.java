@@ -169,6 +169,10 @@ public class MessageListenerExample extends ListenerAdapter
                 }
             });
         }
+        else if (msg.equals("!me"))
+        {
+            channel.sendMessage(author.getName() + " in " + channel.getName()).queue();
+        }
         else if (msg.equals("!lucas"))
         {
             channel.sendMessage("What a jerkface").queue();
