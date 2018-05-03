@@ -17,6 +17,8 @@ public class DidYouMean {
                 abbr = abbr + c;
             } else if (Character.isDigit(c)) {
                 abbr = abbr + c;
+            } else if (c == ':') {
+                abbr = abbr + c;
             }
 
             afterSpace = Character.isWhitespace(c);
