@@ -140,13 +140,31 @@ public class MessageListener extends ListenerAdapter {
         {
             channel.sendMessage(author.getAsMention() + " in Channel: " + channel.getName()).queue();
         }
+
         else if (msg.startsWith("!status ")) {
+            if (event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
+                String status = msg.replaceFirst("!status ", "").toLowerCase();
+                try {
+                    event.getJDA().getPresence().setStatus(OnlineStatus.fromKey(status));
+                } catch (IllegalArgumentException e) {
+                    channel.sendMessage("Invalid Status. Must be Online, Idle, DND, Invisible, or Offline.").queue();
+                }
+            } else {
+                channel.sendMessage("You're not allowed to use this command").queue();
+            }
+        }
+
+        else if (msg.startsWith("!game ")) {
         	if (event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
-        		event.getJDA().getPresence().setGame(Game.of(GameType.DEFAULT, msg.substring(7, msg.length())));
-        		
-        	}
-        	else
-        		channel.sendMessage("You're not allowed to use this command").queue();
+        	    String game = msg.replaceFirst("!game ", "");
+        	    if (!game.toLowerCase().equals("none")) {
+                    event.getJDA().getPresence().setGame(Game.of(GameType.DEFAULT, game));
+                } else {
+                    event.getJDA().getPresence().setGame(null);
+                }
+        	} else {
+                channel.sendMessage("You're not allowed to use this command").queue();
+            }
         }
     }
 }
