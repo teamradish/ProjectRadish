@@ -3,10 +3,14 @@ package projectRadish;
 import net.dv8tion.jda.client.entities.Group;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Game.GameType;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.requests.Route.Self;
+import java.util.List;
+import java.util.ArrayList;
 
 import java.util.Random;
 
@@ -137,13 +141,17 @@ public class MessageListener extends ListenerAdapter {
             channel.sendMessage(author.getAsMention() + " in Channel: " + channel.getName()).queue();
         }
         else if (msg.startsWith("!status ")) {
-        	//channel.sendMessage(author.getId()).queue(); for extracting ID
-        	if ((author.getId().equals("173001519715581952") || author.getId().equals("100903082652602368"))) {
-        		event.getJDA().getPresence().setGame(Game.playing(msg.substring(7, msg.length())));
+        	if (event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
+        		event.getJDA().getPresence().setGame(Game.of(GameType.DEFAULT, msg.substring(7, msg.length())));
+        		
         	}
         	else
-        		channel.sendMessage("You're not authorized to use this command").queue();
-        	
+        		channel.sendMessage("You're not allowed to use this command").queue();
         }
     }
 }
+        		
+
+
+
+        	
