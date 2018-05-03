@@ -169,6 +169,10 @@ public class MessageListenerExample extends ListenerAdapter
                 }
             });
         }
+        else if (msg.equals("!lucas"))
+        {
+            channel.sendMessage("What a jerkface").queue();
+        }
         else if (msg.startsWith("!kick"))   //Note, I used "startsWith, not equals.
         {
             //This is an admin command. That means that it requires specific permissions to use it, in this case
