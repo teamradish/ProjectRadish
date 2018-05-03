@@ -5,7 +5,6 @@ import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-import java.util.HashMap;
 import java.util.Random;
 
 public class MessageListener extends ListenerAdapter {
@@ -75,7 +74,7 @@ public class MessageListener extends ListenerAdapter {
             String name;
             if (message.isWebhookMessage())
             {
-                System.out.println("Webhook detected");
+                System.out.println("Webhook detected! A rare specimen indeed.");
                 name = author.getName();                //If this is a Webhook message, then there is no Member associated
             }                                           // with the User, thus we default to the author for name.
             else
@@ -114,19 +113,47 @@ public class MessageListener extends ListenerAdapter {
             String reply = msg.replaceFirst("!say ", "");
             channel.sendMessage(reply).queue();
         }
-        else if (msg.startsWith("!doc")) {
+        else if (msg.startsWith("!abbreviate ")) {
+            String reply = msg.replaceFirst("!abbreviate ", "");
+            channel.sendMessage(DidYouMean.abbreviate(reply)).queue();
+        }
+        else if (msg.equals("!doc")) {
             channel.sendMessage(Constants.getCurrentDoc()).queue();
         }
+
+
         else if (msg.startsWith("!doc ")) {
-            String game = msg.replaceFirst("!doc ", "");
-            String reply;
-            if (Constants.getDocs().containsKey(game)) {
-                reply = Constants.getDocs().get(game);
-            } else {
-                reply = "No doc by that name registered.";
+            String input = msg.replaceFirst("!doc ", "");
+            input = input.toLowerCase();
+            String game = null;
+
+            for (String doc : Constants.getDocs().keySet()) { // If full name matches
+                if (input.equals(doc.toLowerCase())) {
+                    game = doc;
+                }
             }
+
+            if (game == null) { // no luck with full name
+                for (String doc : Constants.getDocs().keySet()) { // check if abbreviation matches
+                    String abbr = DidYouMean.abbreviate(doc).toLowerCase();
+                    if (input.equals(abbr)) {
+                        game = doc;
+                    }
+                }
+            }
+
+            String prefix = "";
+            if (game == null) {    // still no match found
+                game = DidYouMean.getBest(input);
+                prefix = "No match found. My best guess is...\n";
+            }
+            String abbr = DidYouMean.abbreviate(game);
+            String link = Constants.getDocs().get(game);
+            String reply = prefix + String.format("%s [%s]:\n%s", game, abbr, link);
             channel.sendMessage(reply).queue();
         }
+
+
         else if (msg.equals("!roll"))
         {
             Random rand = new Random();
@@ -135,12 +162,7 @@ public class MessageListener extends ListenerAdapter {
         }
         else if (msg.equals("!alldocs"))
         {
-            String reply = "";
-            for (String name: Constants.getDocs().keySet()) {
-                reply = reply + ", " + name;
-            }
-            reply = reply.replaceFirst(", ", ""); // Remove unneeded comma
-            channel.sendMessage(reply).queue();
+            channel.sendMessage("http://twitchplays.wikia.com/wiki/Game_Documents_(Mobile)").queue();
         }
     }
 }

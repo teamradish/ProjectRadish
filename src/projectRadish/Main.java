@@ -1,7 +1,6 @@
 package projectRadish;
 
 import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 
 import javax.security.auth.login.LoginException;
@@ -14,6 +13,7 @@ public class Main
     public static void main(String[] args) {
         //We construct a builder for a BOT account. If we wanted to use a CLIENT account
         // we would use AccountType.CLIENT
+
         try {
             new JDABuilder(AccountType.BOT)
                     .setToken(Constants.getBotToken())           //The token of the account that is logging in.
