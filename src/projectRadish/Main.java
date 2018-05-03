@@ -1,6 +1,7 @@
 package projectRadish;
 
 import net.dv8tion.jda.core.AccountType;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Game.GameType;
@@ -15,11 +16,8 @@ public class Main
     public static void main(String[] args) {
         //We construct a builder for a BOT account. If we wanted to use a CLIENT account
         // we would use AccountType.CLIENT
-<<<<<<< HEAD
 
-=======
         JDA jda;
->>>>>>> game-and-status
         try {
             jda = new JDABuilder(AccountType.BOT)
                     .setToken(Constants.getBotToken())           //The token of the account that is logging in.
