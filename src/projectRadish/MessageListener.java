@@ -1,67 +1,16 @@
 package projectRadish;
 
-/*
- *     Copyright 2015-2018 Austin Keener & Michael Ritter & Florian Spieß
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import net.dv8tion.jda.client.entities.Group;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.PermissionException;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-import javax.security.auth.login.LoginException;
 import java.util.List;
 import java.util.Random;
 
-public class MessageListenerExample extends ListenerAdapter
-{
-    /**
-     * This is the method where the program starts.
-     */
-    public static void main(String[] args)
-    {
-        //We construct a builder for a BOT account. If we wanted to use a CLIENT account
-        // we would use AccountType.CLIENT
-        try
-        {
-            JDA jda = new JDABuilder(AccountType.BOT)
-                    .setToken("NDMxNjcwNDI3NDg0Njg0MzEx.DctCUg.ziZXxz5YefmK_qGFyssiU8_qLP4")           //The token of the account that is logging in.
-                    .addEventListener(new MessageListenerExample())  //An instance of a class that will handle events.
-                    .buildBlocking();  //There are 2 ways to login, blocking vs async. Blocking guarantees that JDA will be completely loaded.
-        }
-        catch (LoginException e)
-        {
-            //If anything goes wrong in terms of authentication, this is the exception that will represent it
-            e.printStackTrace();
-        }
-        catch (InterruptedException e)
-        {
-            //Due to the fact that buildBlocking is a blocking method, one which waits until JDA is fully loaded,
-            // the waiting can be interrupted. This is the exception that would fire in that situation.
-            //As a note: in this extremely simplified example this will never occur. In fact, this will never occur unless
-            // you use buildBlocking in a thread that has the possibility of being interrupted (async thread usage and interrupts)
-            e.printStackTrace();
-        }
-    }
-
+public class MessageListener extends ListenerAdapter {
     /**
      * NOTE THE @Override!
      * This method is actually overriding a method in the ListenerAdapter class! We place an @Override annotation
@@ -79,11 +28,31 @@ public class MessageListenerExample extends ListenerAdapter
      *          sent in a channel.
      */
     @Override
-    public void onMessageReceived(MessageReceivedEvent event)
-    {
-        //These are provided with every event in JDA
-        JDA jda = event.getJDA();                       //JDA, the core of the api.
-        long responseNumber = event.getResponseNumber();//The amount of discord events that JDA has received since the last reconnect.
+    public void onMessageReceived(MessageReceivedEvent event) {
+        if (!shouldIgnore(event)) {
+            handleMessage(event);
+        }
+    }
+
+    /**
+     * Ignore the message if...
+     * @param event MessageReceivedEvent
+     * @return Whether to ignore the message (bool)
+     */
+    private boolean shouldIgnore(MessageReceivedEvent event) {
+        boolean ignore = false;
+        User author = event.getAuthor();
+
+        // We sent the message (don't talk to yourself)
+        if (author.getId().equals(Constants.getBotId())) { ignore = true; }
+
+        // Message was sent by a bot
+        if (author.isBot()) { ignore = true; }
+
+        return ignore;
+    }
+
+    public void handleMessage(MessageReceivedEvent event) {
 
         //Event specific information
         User author = event.getAuthor();                //The user that sent the message
@@ -137,20 +106,17 @@ public class MessageListenerExample extends ListenerAdapter
         }
 
 
-        //Now that you have a grasp on the things that you might see in an event, specifically MessageReceivedEvent,
-        // we will look at sending / responding to messages!
-        //This will be an extremely simplified example of command processing.
-
         //Remember, in all of these .equals checks it is actually comparing
         // message.getContentDisplay().equals, which is comparing a string to a string.
         // If you did message.equals() it will fail because you would be comparing a Message to a String!
-        if (msg.equals("!ping"))
+        if (msg.equals("!test"))
         {
-            //This will send a message, "pong!", by constructing a RestAction and "queueing" the action with the Requester.
-            // By calling queue(), we send the Request to the Requester which will send it to discord. Using queue() or any
-            // of its different forms will handle ratelimiting for you automatically!
-
-            channel.sendMessage("pong!").queue();
+            channel.sendMessage("!test2").queue();
+        }
+        else if (msg.equals("!test2"))
+        {
+            channel.sendMessage("My ID: " + author.getId()).queue();
+            System.out.println(author.getIdLong());
         }
         else if (msg.equals("!roll"))
         {
@@ -161,13 +127,7 @@ public class MessageListenerExample extends ListenerAdapter
 
             Random rand = new Random();
             int roll = rand.nextInt(6) + 1; //This results in 1 - 6 (instead of 0 - 5)
-            channel.sendMessage("Your roll: " + roll).queue(sentMessage ->  //This is called a lambda statement. If you don't know
-            {                                                               // what they are or how they work, try google!
-                if (roll < 3)
-                {
-                    channel.sendMessage("The roll for messageId: " + sentMessage.getId() + " wasn't very good... Must be bad luck!\n").queue();
-                }
-            });
+            channel.sendMessage("Your roll: " + roll).queue();
         }
         else if (msg.equals("!me"))
         {
@@ -256,40 +216,6 @@ public class MessageListenerExample extends ListenerAdapter
             else
             {
                 channel.sendMessage("This is a Guild-Only command!").queue();
-            }
-        }
-        else if (msg.equals("!block"))
-        {
-            //This is an example of how to use the complete() method on RestAction. The complete method acts similarly to how
-            // JDABuilder's buildBlocking works, it waits until the request has been sent before continuing execution.
-            //Most developers probably wont need this and can just use queue. If you use complete, JDA will still handle ratelimit
-            // control, however if shouldQueue is false it won't queue the Request to be sent after the ratelimit retry after time is past. It
-            // will instead fire a RateLimitException!
-            //One of the major advantages of complete() is that it returns the object that queue's success consumer would have,
-            // but it does it in the same execution context as when the request was made. This may be important for most developers,
-            // but, honestly, queue is most likely what developers will want to use as it is faster.
-
-            try
-            {
-                //Note the fact that complete returns the Message object!
-                //The complete() overload queues the Message for execution and will return when the message was sent
-                //It does handle rate limits automatically
-                Message sentMessage = channel.sendMessage("I blocked and will return the message!").complete();
-                //This should only be used if you are expecting to handle rate limits yourself
-                //The completion will not succeed if a rate limit is breached and throw a RateLimitException
-                Message sentRatelimitMessage = channel.sendMessage("I expect rate limitation and know how to handle it!").complete(false);
-
-                System.out.println("Sent a message using blocking! Luckly I didn't get Ratelimited... MessageId: " + sentMessage.getId());
-            }
-            catch (RateLimitedException e)
-            {
-                System.out.println("Whoops! Got ratelimited when attempting to use a .complete() on a RestAction! RetryAfter: " + e.getRetryAfter());
-            }
-            //Note that RateLimitException is the only checked-exception thrown by .complete()
-            catch (RuntimeException e)
-            {
-                System.out.println("Unfortunately something went wrong when we tried to send the Message and .complete() threw an Exception.");
-                e.printStackTrace();
             }
         }
     }
