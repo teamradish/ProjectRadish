@@ -107,18 +107,7 @@ public class MessageListener extends ListenerAdapter {
         // If you did message.equals() it will fail because you would be comparing a Message to a String!
         if (msg.equals("!info"))
         {
-            SelfUser me = event.getJDA().getSelfUser();
-            String reply = String.format("%s\nServers:",me.getAsMention());
-
-            for (Guild guild: me.getMutualGuilds()) {
-                reply = reply + "\n" + guild.getName();
-            }
-
-            reply = reply + "\nEmotes:";
-            for (Emote emote: event.getGuild().getEmotes()) {
-                reply = reply + "\n" + emote.getName() + " " + emote.getAsMention();
-            }
-
+            String reply = "Commands: !alldocs, !doc, !say, !roll";
             channel.sendMessage(reply).queue();
         }
         else if (msg.startsWith("!say ")) {
@@ -143,10 +132,6 @@ public class MessageListener extends ListenerAdapter {
             Random rand = new Random();
             int roll = rand.nextInt(6) + 1; //This results in 1 - 6 (instead of 0 - 5)
             channel.sendMessage("Your roll: " + roll).queue();
-        }
-        else if (msg.equals("!me"))
-        {
-            channel.sendMessage(author.getAsMention() + " in Channel: " + channel.getName()).queue();
         }
         else if (msg.equals("!alldocs"))
         {
