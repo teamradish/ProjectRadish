@@ -2,9 +2,35 @@ package projectRadish;
 
 
 import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
+
 import net.dv8tion.jda.core.OnlineStatus;
 
 public final class Constants {
+	
+	private static Set<String> RadishAdmin = createRadishAdmin();
+	private static Set<String> createRadishAdmin() {
+		Set<String> idList = new HashSet<>();
+		idList.add("173001519715581952");
+		idList.add("259865752553783297");
+		idList.add("100903082652602368");
+		return idList;
+	}
+	public static Set<String> getRadishAdmin(){
+		return RadishAdmin;
+	}
+	
+	private static Set<String> TPEAdmin = createTPEAdmin();
+	private static Set<String> createTPEAdmin(){
+		Set<String> idList = new HashSet<>();
+		idList.add("183006569410068480");
+		return idList;
+	}
+	public static Set<String> getTPEAdmin(){
+		return TPEAdmin;
+	}
+	
 
 	private static final String BotToken = "NDMxNjcwNDI3NDg0Njg0MzEx.DctCUg.ziZXxz5YefmK_qGFyssiU8_qLP4";
 	public static String getBotToken() { return BotToken; }

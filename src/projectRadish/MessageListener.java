@@ -186,7 +186,7 @@ public class MessageListener extends ListenerAdapter {
         }
 
         else if (msg.startsWith("!game ")) {
-        	if (event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
+        	if (Constants.getRadishAdmin().contains(event.getAuthor().getId())) {
         	    String game = msg.replaceFirst("!game ", "");
         	    if (!game.toLowerCase().equals("none")) {
                     event.getJDA().getPresence().setGame(Game.of(GameType.DEFAULT, game));
@@ -197,10 +197,24 @@ public class MessageListener extends ListenerAdapter {
                 channel.sendMessage("You're not allowed to use this command").queue();
             }
         }
+        
+        
+        else if (msg.startsWith("!streaming ")) {
+        	
+        	
+        	if ((Constants.getTPEAdmin().contains(event.getAuthor().getId())) || Constants.getRadishAdmin().contains(event.getAuthor().getId())) {
+        		String game = msg.replaceFirst("!streaming ", "");
+        		if (!game.toLowerCase().equals("none")) {
+        			event.getJDA().getPresence().setGame(Game.of(GameType.STREAMING, game, "https://twitch.tv/twitchplays_everything"));
+        			
+        		} else {
+        			event.getJDA().getPresence().setGame(null);
+        		}
+        	}
+        	else {
+        		channel.sendMessage("You're not allowed to use this command").queue();
+        	}
+        }
     }
 }
-        		
-
-
-
-        	
+        
