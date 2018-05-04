@@ -215,6 +215,28 @@ public class MessageListener extends ListenerAdapter {
         		channel.sendMessage("You're not allowed to use this command").queue();
         	}
         }
+        else if (msg.startsWith("!listening to ")) {
+        	if ((Constants.getRadishAdmin().contains(event.getAuthor().getId()))) {
+        		String game = msg.replaceFirst("!listening to ", "");
+        		if (!game.toLowerCase().equals("none")) {
+        			event.getJDA().getPresence().setGame(Game.of(GameType.LISTENING, game));
+        		}
+        		else {
+        			event.getJDA().getPresence().setGame(null);
+        		}
+        	}
+        }
+        else if (msg.startsWith("!watching ")) {
+        	if ((Constants.getRadishAdmin().contains(event.getAuthor().getId()))) {
+        		String game = msg.replaceFirst("!watching ", "");
+        		if (!game.toLowerCase().equals("none")) {
+        			event.getJDA().getPresence().setGame(Game.of(GameType.WATCHING, game));
+        		}
+        		else {
+        			event.getJDA().getPresence().setGame(null);
+        		}
+        	}
+        }
     }
 }
         
