@@ -111,12 +111,7 @@ public class MessageListener extends ListenerAdapter {
         //Remember, in all of these .equals checks it is actually comparing
         // message.getContentDisplay().equals, which is comparing a string to a string.
         // If you did message.equals() it will fail because you would be comparing a Message to a String!
-        if (msg.equals("!info"))
-        {
-            String reply = "Commands: !alldocs, !doc, !say, !roll";
-            channel.sendMessage(reply).queue();
-        }
-        else if (msg.startsWith("!say ")) {
+        if (msg.startsWith("!say ")) {
             String reply = msg.replaceFirst("!say ", "");
             channel.sendMessage(reply).queue();
         }
