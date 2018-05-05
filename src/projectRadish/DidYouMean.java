@@ -20,7 +20,6 @@ public class DidYouMean {
             } else if (c == ':') {
                 abbr = abbr + c;
             }
-
             afterSpace = Character.isWhitespace(c);
         }
         return abbr;
@@ -30,7 +29,7 @@ public class DidYouMean {
     static String getBest(String input) {
         input = input.toLowerCase();
         String bestMatch = "";
-        Integer leastDist = 1000;
+        Integer leastDist = Integer.MAX_VALUE;
         // Full Names
         for (String target: Constants.getDocs().keySet()) {
             Integer dist = DLAlgorithm.execute(input, target.toLowerCase());
