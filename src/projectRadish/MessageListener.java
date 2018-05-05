@@ -128,7 +128,6 @@ public class MessageListener extends ListenerAdapter {
             channel.sendMessage(Constants.getCurrentDoc()).queue();
         }
 
-
         else if (msg.startsWith("!doc ")) {
             String input = msg.replaceFirst("!doc ", "");
             input = input.toLowerCase();
@@ -159,7 +158,48 @@ public class MessageListener extends ListenerAdapter {
             String reply = prefix + String.format("%s [%s]:\n%s", game, abbr, link);
             channel.sendMessage(reply).queue();
         }
+        else if (msg.startsWith("!guess ")) {
+            String input = msg.replaceFirst("!guess ", "");
+            input = input.toLowerCase();
+            String game = null;
 
+            for (String doc : Constants.getDocs().keySet()) { // If full name matches
+                if (input.equals(doc.toLowerCase())) {
+                    game = doc;
+                }
+            }
+
+            if (game == null) { // no luck with full name
+                for (String doc : Constants.getDocs().keySet()) { // check if abbreviation matches
+                    String abbr = DidYouMean.abbreviate(doc).toLowerCase();
+                    if (input.equals(abbr)) {
+                        game = doc;
+                    }
+                }
+            }
+
+            String prefix = "";
+            if (game == null) {    // still no match found
+                game = DidYouMean.getBest(input);
+                prefix = "No match found. My best guess is...\n";
+            }
+            String abbr = DidYouMean.abbreviate(game);
+            String reply = prefix + String.format("%s [%s]", game, abbr);
+            channel.sendMessage(reply).queue();
+        }
+
+        else if (msg.startsWith("!owo ")) {
+            String reply = msg.replaceFirst("!owo ", "");
+            reply = reply.replaceAll("l", "w");
+            reply = reply.replaceAll("r", "w");
+            reply = reply.replaceAll(" :\\)", " OwO");
+            reply = reply.replaceAll(" :'\\(", " QnQ");
+            reply = reply.replaceAll(" ;\\)", " ;3");
+            reply = reply.replaceAll(" -_-", " UwU");
+            reply = reply.replaceAll(" \\^_\\^", " ^w^");
+            reply = reply.replaceAll(" >:\\)", " >:3");
+            channel.sendMessage(reply).queue();
+        }
 
         else if (msg.equals("!roll"))
         {

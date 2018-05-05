@@ -10,7 +10,7 @@ public final class Constants {
 	public static String getBotToken() { return BotToken; }
 
 
-	private static String currentDoc = "https://docs.google.com/document/d/15HRFa2iRkVGeD6IokyPT08Qn14SfhiaHXkR6GejbMSA/edit";
+	private static String currentDoc = "Metroid Prime [MP]:\nhttps://docs.google.com/document/d/1xXTHVRa66YQIxCOseaiD1ga_5IlTL-_CD8b9GW2bKzs/edit";
 	public static String getCurrentDoc() { return currentDoc; }
 
 
@@ -22,7 +22,7 @@ public final class Constants {
 		docs.put("The Thousand Year Door", "https://docs.google.com/document/d/1x_wNw2v242yKm25pXuKKsDTKL8Qtf-pUm6DccLfYQuE/view");
 		docs.put("A Link to the Past", "https://docs.google.com/document/d/18dnKqdNY12LitbJ7qPgCZLo39dH-9gJrDsDBb8s2-Ag/view");
 		docs.put("Donkey Kong Country Incomplete", "https://docs.google.com/document/d/1-daCxM-mIrPXuW4Y_miHXnnafHpzNTl5IogwL_2FsEo/view");
-		docs.put("Earthbound", "https://docs.google.com/document/d/18oC6WYg3H4SkaYpjWAMksqUTWo8aKo67MTzBSkRLvrQ/view");
+		docs.put("EarthBound", "https://docs.google.com/document/d/18oC6WYg3H4SkaYpjWAMksqUTWo8aKo67MTzBSkRLvrQ/view");
 		docs.put("Wind Waker", "https://docs.google.com/document/d/1DuLW4JsIwHvLlLTAOrsg-_z4c1oDy5l0LuAG5On5e18/view");
 		docs.put("Super Mario Sunshine", "https://docs.google.com/document/d/1ObwfTn5R85pROaCiTLIhtS0vr1sBKg2TDb46Io6-lY8/view");
 		docs.put("Super Mario Sunshine: Blue Coins", "https://docs.google.com/document/d/1ttyViODNXvLaPxOdmPzV5xkcfbe7liAqGGDoXTi4WrM/view");
@@ -44,6 +44,7 @@ public final class Constants {
 		docs.put("Donkey Kong Country", "https://docs.google.com/document/d/1Na-GznWfqfygOUWE-j89ewkSvE6pQBJkEGBda5UaqpA/view");
 		docs.put("FireRed/LeafGreen", "https://docs.google.com/document/d/1m4y-SnXsFtovKQSDkNogzxbM_bbbGsrG-47Ge5QwVK8/view");
 		docs.put("Yoshi's Island", "https://docs.google.com/document/d/15HRFa2iRkVGeD6IokyPT08Qn14SfhiaHXkR6GejbMSA/view");
+		docs.put("Metroid Prime", "https://docs.google.com/document/d/1xXTHVRa66YQIxCOseaiD1ga_5IlTL-_CD8b9GW2bKzs/view");
 		return docs;
 	}
 	public static HashMap<String, String> getDocs() { return docs; }
