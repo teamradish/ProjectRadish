@@ -196,7 +196,7 @@ public class MessageListener extends ListenerAdapter {
         }
 
         else if (msg.startsWith("!game ")) {
-        	if (event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
+        	if (Constants.getRadishAdmin().contains(event.getAuthor().getId())) {
         	    String game = msg.replaceFirst("!game ", "");
         	    if (!game.toLowerCase().equals("none")) {
                     event.getJDA().getPresence().setGame(Game.of(GameType.DEFAULT, game));
@@ -206,6 +206,46 @@ public class MessageListener extends ListenerAdapter {
         	} else {
                 channel.sendMessage("You're not allowed to use this command").queue();
             }
+        }
+        
+        
+        else if (msg.startsWith("!streaming ")) {
+        	
+        	
+        	if ((Constants.getTPEAdmin().contains(event.getAuthor().getId())) || Constants.getRadishAdmin().contains(event.getAuthor().getId())) {
+        		String game = msg.replaceFirst("!streaming ", "");
+        		if (!game.toLowerCase().equals("none")) {
+        			event.getJDA().getPresence().setGame(Game.of(GameType.STREAMING, game, "https://twitch.tv/twitchplays_everything"));
+        			
+        		} else {
+        			event.getJDA().getPresence().setGame(null);
+        		}
+        	}
+        	else {
+        		channel.sendMessage("You're not allowed to use this command").queue();
+        	}
+        }
+        else if (msg.startsWith("!listening to ")) {
+        	if ((Constants.getRadishAdmin().contains(event.getAuthor().getId()))) {
+        		String game = msg.replaceFirst("!listening to ", "");
+        		if (!game.toLowerCase().equals("none")) {
+        			event.getJDA().getPresence().setGame(Game.of(GameType.LISTENING, game));
+        		}
+        		else {
+        			event.getJDA().getPresence().setGame(null);
+        		}
+        	}
+        }
+        else if (msg.startsWith("!watching ")) {
+        	if ((Constants.getRadishAdmin().contains(event.getAuthor().getId()))) {
+        		String game = msg.replaceFirst("!watching ", "");
+        		if (!game.toLowerCase().equals("none")) {
+        			event.getJDA().getPresence().setGame(Game.of(GameType.WATCHING, game));
+        		}
+        		else {
+        			event.getJDA().getPresence().setGame(null);
+        		}
+        	}
         }
     }
 
@@ -263,8 +303,4 @@ public class MessageListener extends ListenerAdapter {
         return game; // null if no match was found
     }
 }
-        		
-
-
-
-        	
+        
