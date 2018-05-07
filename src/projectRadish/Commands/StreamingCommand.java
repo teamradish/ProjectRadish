@@ -13,7 +13,7 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import projectRadish.BaseCommand;
 import projectRadish.MessageInfoWrapper;
 
-public class StreamingCommand extends BaseCommand
+public final class StreamingCommand extends BaseCommand
 {
     @Override
     public void ExecuteCommand(MessageInfoWrapper msgInfo) {

@@ -13,7 +13,7 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import projectRadish.BaseCommand;
 import projectRadish.MessageInfoWrapper;
 
-public class DocCommand extends BaseCommand
+public final class DocCommand extends BaseCommand
 {
     @Override
     public void ExecuteCommand(MessageInfoWrapper msgInfo)

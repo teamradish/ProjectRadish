@@ -3,7 +3,7 @@ package projectRadish;
 import projectRadish.BaseCommand;
 import projectRadish.MessageInfoWrapper;
 
-public class GuessCommand extends BaseCommand
+public final class GuessCommand extends BaseCommand
 {
     @Override
     public void ExecuteCommand(MessageInfoWrapper msgInfo)

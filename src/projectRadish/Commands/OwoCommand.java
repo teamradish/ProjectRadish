@@ -3,7 +3,7 @@ package projectRadish;
 import projectRadish.BaseCommand;
 import projectRadish.MessageInfoWrapper;
 
-public class OwoCommand extends BaseCommand
+public final class OwoCommand extends BaseCommand
 {
     @Override
     public void ExecuteCommand(MessageInfoWrapper msgInfo)
