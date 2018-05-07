@@ -14,13 +14,14 @@ public class Main
      * This is the method where the program starts.
      */
     public static void main(String[] args) {
+        Configuration.loadConfiguration();
         //We construct a builder for a BOT account. If we wanted to use a CLIENT account
         // we would use AccountType.CLIENT
 
         JDA jda;
         try {
             jda = new JDABuilder(AccountType.BOT)
-                    .setToken(Constants.getBotToken())           //The token of the account that is logging in.
+                    .setToken(Configuration.getBotToken())           //The token of the account that is logging in.
                     .addEventListener(new MessageListener())  //An instance of a class that will handle events.
                     .buildBlocking();  //There are 2 ways to login, blocking vs async. Blocking guarantees that JDA will be completely loaded.
             initialise(jda);
@@ -37,11 +38,11 @@ public class Main
     }
 
     public static void initialise(JDA jda) {
-        if (Constants.getDefaultGame() != null) {
-            jda.getPresence().setGame(Game.of(GameType.DEFAULT,Constants.getDefaultGame()));
+        if (Constants.DEFAULT_GAME != null) {
+            jda.getPresence().setGame(Game.of(GameType.DEFAULT, Constants.DEFAULT_GAME));
         }
-        if (Constants.getDefaultStatus() != null) {
-            jda.getPresence().setStatus(Constants.getDefaultStatus());
+        if (Constants.DEFAULT_STATUS != null) {
+            jda.getPresence().setStatus(Constants.DEFAULT_STATUS);
         }
     }
 }

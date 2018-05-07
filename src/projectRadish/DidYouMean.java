@@ -31,7 +31,7 @@ public class DidYouMean {
         String bestMatch = "";
         Integer leastDist = Integer.MAX_VALUE;
         // Full Names
-        for (String target: Constants.getDocs().keySet()) {
+        for (String target: Configuration.getDocs().keySet()) {
             Integer dist = DLAlgorithm.execute(input, target.toLowerCase());
             if (dist < leastDist) {
                 leastDist = dist;
@@ -39,7 +39,7 @@ public class DidYouMean {
             }
         }
         // Abbreviations
-        for (String target: Constants.getDocs().keySet()) {
+        for (String target: Configuration.getDocs().keySet()) {
             Integer dist = DLAlgorithm.execute(input, abbreviate(target).toLowerCase());
             if (dist < leastDist) {
                 leastDist = dist;

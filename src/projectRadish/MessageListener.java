@@ -116,8 +116,8 @@ public class MessageListener extends ListenerAdapter {
             channel.sendMessage(DidYouMean.abbreviate(reply)).queue();
         }
         else if (msg.equals("!doc")) {
-            String game = Constants.getCurrentDoc()[0];
-            String link = Constants.getCurrentDoc()[1];
+            String game = Configuration.getCurrentGame();
+            String link = Configuration.getCurrentDoc();
 
             MessageEmbed e = formatOutput("Current Game Document:", game, link);
             channel.sendMessage(e).queue();
@@ -134,7 +134,7 @@ public class MessageListener extends ListenerAdapter {
                 isGuess = true;
             }
 
-            String link = Constants.getDocs().get(game);
+            String link = Configuration.getDocs().get(game);
             String header;
             if (isGuess) { header = "Best Guess for "+input+":"; } else { header = null; }
 
@@ -196,7 +196,7 @@ public class MessageListener extends ListenerAdapter {
         }
 
         else if (msg.startsWith("!game ")) {
-        	if (Constants.getRadishAdmin().contains(event.getAuthor().getId())) {
+        	if (Configuration.getRadishAdmin().contains(event.getAuthor().getId())) {
         	    String game = msg.replaceFirst("!game ", "");
         	    if (!game.toLowerCase().equals("none")) {
                     event.getJDA().getPresence().setGame(Game.of(GameType.DEFAULT, game));
@@ -212,7 +212,7 @@ public class MessageListener extends ListenerAdapter {
         else if (msg.startsWith("!streaming ")) {
         	
         	
-        	if ((Constants.getTPEAdmin().contains(event.getAuthor().getId())) || Constants.getRadishAdmin().contains(event.getAuthor().getId())) {
+        	if ((Configuration.getTPEAdmin().contains(event.getAuthor().getId())) || Configuration.getRadishAdmin().contains(event.getAuthor().getId())) {
         		String game = msg.replaceFirst("!streaming ", "");
         		if (!game.toLowerCase().equals("none")) {
         			event.getJDA().getPresence().setGame(Game.of(GameType.STREAMING, game, "https://twitch.tv/twitchplays_everything"));
@@ -226,7 +226,7 @@ public class MessageListener extends ListenerAdapter {
         	}
         }
         else if (msg.startsWith("!listening to ")) {
-        	if ((Constants.getRadishAdmin().contains(event.getAuthor().getId()))) {
+        	if ((Configuration.getRadishAdmin().contains(event.getAuthor().getId()))) {
         		String game = msg.replaceFirst("!listening to ", "");
         		if (!game.toLowerCase().equals("none")) {
         			event.getJDA().getPresence().setGame(Game.of(GameType.LISTENING, game));
@@ -237,7 +237,7 @@ public class MessageListener extends ListenerAdapter {
         	}
         }
         else if (msg.startsWith("!watching ")) {
-        	if ((Constants.getRadishAdmin().contains(event.getAuthor().getId()))) {
+        	if ((Configuration.getRadishAdmin().contains(event.getAuthor().getId()))) {
         		String game = msg.replaceFirst("!watching ", "");
         		if (!game.toLowerCase().equals("none")) {
         			event.getJDA().getPresence().setGame(Game.of(GameType.WATCHING, game));
@@ -287,14 +287,14 @@ public class MessageListener extends ListenerAdapter {
     private static String findGame(String input){
         input = input.toLowerCase();
         String game = null;
-        for (String doc : Constants.getDocs().keySet()) { // If full name matches
+        for (String doc : Configuration.getDocs().keySet()) { // If full name matches
             if (input.equals(doc.toLowerCase())) {
                 game = doc;
             }
         }
 
         if (game == null) { // if no luck with full names
-            for (String doc : Constants.getDocs().keySet()) { // check if any abbreviations match
+            for (String doc : Configuration.getDocs().keySet()) { // check if any abbreviations match
                 String abbr = DidYouMean.abbreviate(doc).toLowerCase();
                 if (input.equals(abbr)) {
                     game = doc;
