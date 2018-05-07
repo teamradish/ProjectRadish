@@ -1,3 +1,5 @@
 bin/
 .idea/**/workspace.xml
 .idea/**/dictionaries
+/.idea/uiDesigner.xml
+/.idea/codeStyles/codeStyleConfig.xml
