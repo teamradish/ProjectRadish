@@ -274,6 +274,7 @@ public class MessageListener extends ListenerAdapter {
         if (header != null) { eb.setAuthor(header, null); }
         eb.setThumbnail(thumbnailPrefix+docId);
         eb.setDescription("The TPE community document for\n"+game+"!");
+        eb.setColor(6570404);
         return eb.build();
     }
 
