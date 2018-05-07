@@ -183,7 +183,7 @@ public class MessageListener extends ListenerAdapter {
         }
 
         else if (msg.startsWith("!status ")) {
-            if (event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
+            if ((Configuration.getRadishAdmin().contains(event.getAuthor().getId()))) {
                 String status = msg.replaceFirst("!status ", "").toLowerCase();
                 try {
                     event.getJDA().getPresence().setStatus(OnlineStatus.fromKey(status));
