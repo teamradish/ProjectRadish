@@ -20,7 +20,7 @@ public final class Utilities
      * @param max The maximum value in the range (inclusive).
      * @return A random number in the range of min and max.
      */
-    public static int RandRange(int min, int max)
+    public static int randRange(int min, int max)
     {
         int realMin = min;
         int realMax = max;

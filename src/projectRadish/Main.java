@@ -11,6 +11,11 @@ import javax.security.auth.login.LoginException;
 public class Main
 {
     /**
+     * JDA reference.
+     */
+    private static JDA jda = null;
+
+    /**
      * This is the method where the program starts.
      */
     public static void main(String[] args) {
@@ -18,7 +23,6 @@ public class Main
         //We construct a builder for a BOT account. If we wanted to use a CLIENT account
         // we would use AccountType.CLIENT
 
-        JDA jda;
         try {
             jda = new JDABuilder(AccountType.BOT)
                     .setToken(Configuration.getBotToken())           //The token of the account that is logging in.

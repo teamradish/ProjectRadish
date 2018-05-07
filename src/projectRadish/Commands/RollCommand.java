@@ -1,12 +1,8 @@
 package projectRadish;
 
-import projectRadish.BaseCommand;
-import projectRadish.MessageInfoWrapper;
-import projectRadish.Utilities;
-
 import java.util.Vector;
 
-public class RollCommand extends BaseCommand
+public final class RollCommand extends BaseCommand
 {
     @Override
     public void ExecuteCommand(MessageInfoWrapper msgInfo)
@@ -31,7 +27,7 @@ public class RollCommand extends BaseCommand
             }
         }
 
-        int roll = Utilities.RandRange(min, max);
+        int roll = Utilities.randRange(min, max);
         msgInfo.getChannel().sendMessage("Your roll: " + roll).queue();
     }
 }

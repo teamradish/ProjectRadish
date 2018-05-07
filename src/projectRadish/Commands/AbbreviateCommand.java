@@ -3,7 +3,7 @@ package projectRadish;
 import projectRadish.BaseCommand;
 import projectRadish.MessageInfoWrapper;
 
-public class AbbreviateCommand extends BaseCommand
+public final class AbbreviateCommand extends BaseCommand
 {
     @Override
     public void ExecuteCommand(MessageInfoWrapper msgInfo)

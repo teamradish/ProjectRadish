@@ -10,7 +10,7 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import projectRadish.BaseCommand;
 import projectRadish.MessageInfoWrapper;
 
-public class StatusCommand extends BaseCommand
+public final class StatusCommand extends BaseCommand
 {
     @Override
     public void ExecuteCommand(MessageInfoWrapper msgInfo) {

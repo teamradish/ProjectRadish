@@ -1,11 +1,9 @@
 package projectRadish;
 
 import net.dv8tion.jda.client.entities.Group;
-import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import net.dv8tion.jda.core.EmbedBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -143,7 +141,7 @@ public class MessageListener extends ListenerAdapter {
         }
 
         //Find and execute the command for message
-        CarryOutCommandForMsg(event, msg);
+        carryOutCommandForMsg(event, msg);
 
         /* Kimimaru: Commented all of this out for the new more flexible/modular and easier to read code
          * Preserving it in case something doesn't work as intended - remove later
@@ -294,7 +292,7 @@ public class MessageListener extends ListenerAdapter {
         */
     }
 
-    private void CarryOutCommandForMsg(MessageReceivedEvent event, String msg)
+    private void carryOutCommandForMsg(MessageReceivedEvent event, String msg)
     {
         //If the message starts with the command character, look for a command to perform
         if (msg.startsWith(Constants.COMMAND_CHAR) == true)
@@ -313,9 +311,12 @@ public class MessageListener extends ListenerAdapter {
                     command = command.substring(1);
 
                     //Check for the command in our hash map and execute it if so
-                    if (Commands.containsKey(command) == true)
+                    //getOrDefault saves a hash lookup
+                    BaseCommand curCommand = Commands.getOrDefault(command, null);
+
+                    if (curCommand != null)
                     {
-                        Commands.get(command).ExecuteCommand(new MessageInfoWrapper(event));
+                        curCommand.ExecuteCommand(new MessageInfoWrapper(event));
                     }
                 }
             }

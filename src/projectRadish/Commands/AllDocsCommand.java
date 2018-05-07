@@ -3,7 +3,7 @@ package projectRadish;
 import projectRadish.BaseCommand;
 import projectRadish.MessageInfoWrapper;
 
-public class AllDocsCommand extends BaseCommand
+public final class AllDocsCommand extends BaseCommand
 {
     @Override
     public void ExecuteCommand(MessageInfoWrapper msgInfo)
