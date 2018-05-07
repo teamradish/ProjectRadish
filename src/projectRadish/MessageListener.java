@@ -1,18 +1,56 @@
 package projectRadish;
 
 import net.dv8tion.jda.client.entities.Group;
-import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.OnlineStatus;
-import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.entities.Game.GameType;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.EmbedBuilder;
 
-import java.util.Random;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MessageListener extends ListenerAdapter {
+
+    //Hardcoded for now, but we might want to load them in from config somewhere later
+    private HashMap<String, BaseCommand> Commands = new HashMap<String, BaseCommand>();
+
+    /**
+     * Constructor.
+     */
+    public MessageListener()
+    {
+        //Initialize commands
+        SetUpCommandList();
+
+        InitCommandList();
+    }
+
+    private void SetUpCommandList()
+    {
+        Commands.put("say", new SayCommand());
+        Commands.put("abbreviate", new AbbreviateCommand());
+        Commands.put("doc", new DocCommand());
+        Commands.put("guess", new GuessCommand());
+        Commands.put("owo", new OwoCommand());
+        Commands.put("roll", new RollCommand());
+        Commands.put("alldocs", new AllDocsCommand());
+        Commands.put("status", new StatusCommand());
+        Commands.put("game", new GameCommand());
+        Commands.put("streaming", new StreamingCommand());
+        Commands.put("listen", new ListenCommand());
+        Commands.put("watch", new WatchingCommand());
+        Commands.put("emotehell", new EmoteHellCommand());
+    }
+
+    private void InitCommandList()
+    {
+        for (Map.Entry<String, BaseCommand> entry : Commands.entrySet())
+        {
+            entry.getValue().Initialize();
+        }
+    }
+
     /**
      * NOTE THE @Override!
      * This method is actually overriding a method in the ListenerAdapter class! We place an @Override annotation
@@ -103,6 +141,12 @@ public class MessageListener extends ListenerAdapter {
 
             System.out.printf("[GRP: %s]<%s>: %s\n", groupName, author.getName(), msg);
         }
+
+        //Find and execute the command for message
+        CarryOutCommandForMsg(event, msg);
+
+        /* Kimimaru: Commented all of this out for the new more flexible/modular and easier to read code
+         * Preserving it in case something doesn't work as intended - remove later
 
         //Remember, in all of these .equals checks it is actually comparing
         // message.getContentDisplay().equals, which is comparing a string to a string.
@@ -247,6 +291,35 @@ public class MessageListener extends ListenerAdapter {
         		}
         	}
         }
+        */
+    }
+
+    private void CarryOutCommandForMsg(MessageReceivedEvent event, String msg)
+    {
+        //If the message starts with the command character, look for a command to perform
+        if (msg.startsWith(Constants.COMMAND_CHAR) == true)
+        {
+            //Find the command - get the lowercase version so the command is not case-sensitive
+            String[] msgArgs = msg.toLowerCase().split(" ");
+            if (msgArgs.length > 0)
+            {
+                //Take the first one split
+                String command = msgArgs[0];
+
+                //If the length of the command found is greater than 1 (meaning it's more than just the command character),
+                //look for it and execute the command associated
+                if (command.length() > 1)
+                {
+                    command = command.substring(1);
+
+                    //Check for the command in our hash map and execute it if so
+                    if (Commands.containsKey(command) == true)
+                    {
+                        Commands.get(command).ExecuteCommand(new MessageInfoWrapper(event));
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -258,7 +331,7 @@ public class MessageListener extends ListenerAdapter {
      * @param link Link to the game's document (eg. "https://docs.google.com/document/d/...")
      * @return The response, formatted as an Embed, to be sent back to the channel.
      */
-    private static MessageEmbed formatOutput(String header, String game, String link){
+    /*private static MessageEmbed formatOutput(String header, String game, String link){
         String abbr = DidYouMean.abbreviate(game);
         String thumbnailPrefix = "https://drive.google.com/thumbnail?authuser=0&sz=w320&id=";
         String docId = link.replaceFirst("https://docs.google.com/document/d/", ""); // Remove prefix
@@ -276,7 +349,7 @@ public class MessageListener extends ListenerAdapter {
         eb.setDescription("The TPE community document for\n"+game+"!");
         eb.setColor(6570404);
         return eb.build();
-    }
+    }*/
 
     /**
      * Takes an input string and compares it against all known docs' game names and abbreviations
@@ -284,7 +357,7 @@ public class MessageListener extends ListenerAdapter {
      * @param input The string we're attempting to find a matching game for.
      * @return If found, the Key for that game in the Constants.doc map. null if not found.
      */
-    private static String findGame(String input){
+    /*private static String findGame(String input){
         input = input.toLowerCase();
         String game = null;
         for (String doc : Configuration.getDocs().keySet()) { // If full name matches
@@ -302,6 +375,6 @@ public class MessageListener extends ListenerAdapter {
             }
         }
         return game; // null if no match was found
-    }
+    }*/
 }
         
