@@ -4,6 +4,7 @@ import net.dv8tion.jda.client.entities.Group;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import projectRadish.Commands.ReloadCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +40,7 @@ public class MessageListener extends ListenerAdapter {
         Commands.put("listen", new ListenCommand());
         Commands.put("watch", new WatchingCommand());
         Commands.put("emotehell", new EmoteHellCommand());
+        Commands.put("reload", new ReloadCommand());
     }
 
     private void InitCommandList()
