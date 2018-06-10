@@ -4,6 +4,9 @@
     <root id="archive" name="ProjectRadish2.jar">
       <element id="module-output" name="ProjectRadish2" />
       <element id="extracted-dir" path="$PROJECT_DIR$/JDA-3.6.0_354-withDependencies.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jackson-annotations-2.9.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jackson-core-2.9.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jackson-databind-2.9.2.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
