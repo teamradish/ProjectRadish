@@ -1,16 +1,15 @@
 package projectRadish.Commands;
 
 
-import projectRadish.MessageInfoWrapper;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public final class SayCommand extends BaseCommand
 {
     @Override
-    public void ExecuteCommand(MessageInfoWrapper msgInfo)
+    public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
-        if (msgInfo.getCmdArgs().size() <= 0) return;
-
-        //Repeat the message
-        msgInfo.getChannel().sendMessage(msgInfo.getMsgContent()).queue();
+        if (content.length() > 0) {
+            event.getChannel().sendMessage(content).queue();
+        }
     }
 }

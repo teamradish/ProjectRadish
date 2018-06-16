@@ -1,7 +1,7 @@
 package projectRadish.Commands;
 
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.Configuration;
-import projectRadish.MessageInfoWrapper;
 
 /**
  * Reloads the config.
@@ -9,16 +9,16 @@ import projectRadish.MessageInfoWrapper;
 public class ReloadCommand extends BaseCommand
 {
     @Override
-    public void ExecuteCommand(MessageInfoWrapper msgInfo)
+    public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
-        if (Configuration.getRadishAdmin().contains(msgInfo.getAuthor().getId()))
+        if (Configuration.getRadishAdmin().contains(event.getAuthor().getId()))
         {
             Configuration.loadConfiguration();
-            msgInfo.getChannel().sendMessage("Config reloaded!").queue();
+            event.getChannel().sendMessage("Config reloaded!").queue();
         }
         else
         {
-            msgInfo.getChannel().sendMessage("You're not allowed to use this command!").queue();
+            event.getChannel().sendMessage("You're not allowed to use this command!").queue();
         }
     }
 }

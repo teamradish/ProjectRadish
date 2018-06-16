@@ -1,28 +1,26 @@
 package projectRadish.Commands;
 
-import projectRadish.MessageInfoWrapper;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.Utilities;
-
-import java.util.Vector;
 
 public final class RollCommand extends BaseCommand
 {
     @Override
-    public void ExecuteCommand(MessageInfoWrapper msgInfo)
+    public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
-        Vector<String> args = msgInfo.getCmdArgs();
+        String args[] = content.split(" ");
 
         //Default values
         int min = 1;
         int max = 6;
 
         //Allow user to specify the range
-        if (args.size() == 2)
+        if (args.length == 2)
         {
             try
             {
-                min = Integer.parseInt(args.elementAt(0));
-                max = Integer.parseInt(args.elementAt(1));
+                min = Integer.parseInt(args[0]);
+                max = Integer.parseInt(args[1]);
             }
             catch (Exception e)
             {
@@ -31,6 +29,6 @@ public final class RollCommand extends BaseCommand
         }
 
         int roll = Utilities.randRange(min, max);
-        msgInfo.getChannel().sendMessage("Your roll: " + roll).queue();
+        event.getChannel().sendMessage("Your roll: " + roll).queue();
     }
 }

@@ -1,6 +1,6 @@
 package projectRadish.Commands;
 
-import projectRadish.MessageInfoWrapper;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 
 /**
@@ -22,8 +22,9 @@ public abstract class BaseCommand
     }
 
     /**
-     * Executes the command.
-     * @param msgInfo The message information.
+     * Executes the command
+     * @param contents the message, without the prefix and the command (can be the empty string)
+     * @param event the JDA event causing the command to execute
      */
-    public abstract void ExecuteCommand(MessageInfoWrapper msgInfo);
+    public abstract void ExecuteCommand(String contents, MessageReceivedEvent event);
 }

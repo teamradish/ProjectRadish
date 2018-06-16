@@ -1,13 +1,13 @@
 package projectRadish.Commands;
 
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.DidYouMean;
-import projectRadish.MessageInfoWrapper;
 
 public final class AbbreviateCommand extends BaseCommand
 {
     @Override
-    public void ExecuteCommand(MessageInfoWrapper msgInfo)
+    public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
-        msgInfo.getChannel().sendMessage(DidYouMean.abbreviate(msgInfo.getMsgContent())).queue();
+        event.getChannel().sendMessage(DidYouMean.abbreviate(content)).queue();
     }
 }

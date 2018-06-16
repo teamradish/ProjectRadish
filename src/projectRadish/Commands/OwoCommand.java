@@ -1,13 +1,13 @@
 package projectRadish.Commands;
 
-import projectRadish.MessageInfoWrapper;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public final class OwoCommand extends BaseCommand
 {
     @Override
-    public void ExecuteCommand(MessageInfoWrapper msgInfo)
+    public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
-        String reply = msgInfo.getMsgContent();
+        String reply = content;
 
         reply = reply.replaceAll("l", "w");
         reply = reply.replaceAll("r", "w");
@@ -20,6 +20,6 @@ public final class OwoCommand extends BaseCommand
         reply = reply.replaceAll(" \\^_\\^", " ^w^");
         reply = reply.replaceAll(" >:\\)", " >:3");
 
-        msgInfo.getChannel().sendMessage(reply).queue();
+        event.getChannel().sendMessage(reply).queue();
     }
 }

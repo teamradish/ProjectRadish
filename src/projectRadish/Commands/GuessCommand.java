@@ -1,19 +1,19 @@
 package projectRadish.Commands;
 
 
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.DidYouMean;
-import projectRadish.MessageInfoWrapper;
 import projectRadish.Utilities;
 
 public final class GuessCommand extends BaseCommand
 {
     @Override
-    public void ExecuteCommand(MessageInfoWrapper msgInfo)
+    public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         //Don't bother if there's no input
-        if (msgInfo.getCmdArgs().size() == 0) return;
+        if (content.length() == 0) return;
 
-        String input = msgInfo.getMsgContent().toLowerCase();
+        String input = content;
 
         String game = Utilities.findGame(input);
 
@@ -24,6 +24,6 @@ public final class GuessCommand extends BaseCommand
         }
         String abbr = DidYouMean.abbreviate(game);
         String reply = prefix + String.format("%s [%s]", game, abbr);
-        msgInfo.getChannel().sendMessage(reply).queue();
+        event.getChannel().sendMessage(reply).queue();
     }
 }

@@ -1,7 +1,7 @@
 package projectRadish.Commands;
 
 import net.dv8tion.jda.core.entities.*;
-import projectRadish.MessageInfoWrapper;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.Utilities;
 
 import java.util.List;
@@ -11,7 +11,7 @@ public final class EmoteHellCommand extends BaseCommand
     private int lastInvocation = 0;
 
     @Override
-    public void ExecuteCommand(MessageInfoWrapper msgInfo)
+    public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         int x = 10;
         int y = 6;
@@ -19,7 +19,7 @@ public final class EmoteHellCommand extends BaseCommand
 
         try
         {
-            List<Emote> emotes = msgInfo.getMsgEvent().getGuild().getEmotes();
+            List<Emote> emotes = event.getGuild().getEmotes();
             System.out.println(emotes.size());
 
             StringBuilder replyBuilder = new StringBuilder(1);
@@ -40,6 +40,6 @@ public final class EmoteHellCommand extends BaseCommand
             reply = "Sorry, I cannot do that for you now.";
         }
 
-        msgInfo.getChannel().sendMessage(reply).queue();
+        event.getChannel().sendMessage(reply).queue();
     }
 }
