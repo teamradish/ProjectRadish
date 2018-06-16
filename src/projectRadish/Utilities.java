@@ -62,7 +62,7 @@ public final class Utilities
         docId = docId.substring(0, docId.indexOf('/')); // Remove suffix (/view, /edit, etc.)
 
         if (header != null) {   // if we actually have a header
-            if (header.length() > 100) { header = header.substring(0, 99) + "..."; } // limit it to 100 chars
+            if (header.length() > 100) { header = header.substring(0, 96) + "..."; } // limit it to 100 chars
         }
 
         // Create the EmbedBuilder instance

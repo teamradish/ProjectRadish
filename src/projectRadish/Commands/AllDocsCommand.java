@@ -1,6 +1,5 @@
-package projectRadish;
+package projectRadish.Commands;
 
-import projectRadish.BaseCommand;
 import projectRadish.MessageInfoWrapper;
 
 public final class AllDocsCommand extends BaseCommand

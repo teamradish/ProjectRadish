@@ -1,6 +1,6 @@
-package projectRadish;
+package projectRadish.Commands;
 
-import projectRadish.BaseCommand;
+import projectRadish.DidYouMean;
 import projectRadish.MessageInfoWrapper;
 
 public final class AbbreviateCommand extends BaseCommand

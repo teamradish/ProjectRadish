@@ -1,7 +1,5 @@
 package projectRadish.Commands;
 
-import net.dv8tion.jda.core.entities.Game;
-import projectRadish.BaseCommand;
 import projectRadish.Configuration;
 import projectRadish.MessageInfoWrapper;
 

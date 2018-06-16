@@ -1,16 +1,10 @@
-package projectRadish;
+package projectRadish.Commands;
 
-import net.dv8tion.jda.client.entities.Group;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.OnlineStatus;
-import net.dv8tion.jda.core.Permission;
+
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.entities.Game.GameType;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import net.dv8tion.jda.core.EmbedBuilder;
 
-import projectRadish.BaseCommand;
+import projectRadish.Configuration;
 import projectRadish.MessageInfoWrapper;
 
 public final class GameCommand extends BaseCommand
@@ -19,10 +13,10 @@ public final class GameCommand extends BaseCommand
     public void ExecuteCommand(MessageInfoWrapper msgInfo) {
         if (Configuration.getRadishAdmin().contains(msgInfo.getAuthor().getId())) {
             String game = msgInfo.getMsgContent();
-            if (!game.toLowerCase().equals("none")) {
-                msgInfo.getMsgEvent().getJDA().getPresence().setGame(Game.of(GameType.DEFAULT, game));
-            } else {
+            if (game.toLowerCase().equals("none") || game.toLowerCase().equals("nothing")) {
                 msgInfo.getMsgEvent().getJDA().getPresence().setGame(null);
+            } else {
+                msgInfo.getMsgEvent().getJDA().getPresence().setGame(Game.of(GameType.DEFAULT, game));
             }
         } else {
             msgInfo.getChannel().sendMessage("You're not allowed to use this command").queue();

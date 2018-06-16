@@ -1,6 +1,5 @@
-package projectRadish;
+package projectRadish.Commands;
 
-import projectRadish.BaseCommand;
 import projectRadish.MessageInfoWrapper;
 
 public final class OwoCommand extends BaseCommand
@@ -12,6 +11,8 @@ public final class OwoCommand extends BaseCommand
 
         reply = reply.replaceAll("l", "w");
         reply = reply.replaceAll("r", "w");
+        reply = reply.replaceAll("L", "W");
+        reply = reply.replaceAll("R", "W");
         reply = reply.replaceAll(" :\\)", " OwO");
         reply = reply.replaceAll(" :'\\(", " QnQ");
         reply = reply.replaceAll(" ;\\)", " ;3");

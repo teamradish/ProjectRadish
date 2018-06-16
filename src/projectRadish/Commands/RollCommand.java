@@ -1,4 +1,7 @@
-package projectRadish;
+package projectRadish.Commands;
+
+import projectRadish.MessageInfoWrapper;
+import projectRadish.Utilities;
 
 import java.util.Vector;
 

@@ -6,27 +6,28 @@ import java.util.Map;
 
 public class DidYouMean {
 
-    static String abbreviate(String input) {
-        String abbr = "";
+    public static String abbreviate(String input) {
+        StringBuilder abbr = new StringBuilder();
+
         char[] chars = input.toCharArray();
         boolean afterSpace = true;
         for (char c: chars) {
             if (afterSpace && !Character.isWhitespace(c)) {
-                abbr = abbr + c;
+                abbr.append(c);
             } else if (Character.isUpperCase(c)) {
-                abbr = abbr + c;
+                abbr.append(c);
             } else if (Character.isDigit(c)) {
-                abbr = abbr + c;
+                abbr.append(c);
             } else if (c == ':') {
-                abbr = abbr + c;
+                abbr.append(c);
             }
             afterSpace = Character.isWhitespace(c);
         }
-        return abbr;
+        return abbr.toString();
     }
 
 
-    static String getBest(String input) {
+    public static String getBest(String input) {
         input = input.toLowerCase();
         String bestMatch = "";
         Integer leastDist = Integer.MAX_VALUE;

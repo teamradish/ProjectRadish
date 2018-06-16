@@ -1,7 +1,9 @@
-package projectRadish;
+package projectRadish.Commands;
 
-import projectRadish.BaseCommand;
+
+import projectRadish.DidYouMean;
 import projectRadish.MessageInfoWrapper;
+import projectRadish.Utilities;
 
 public final class GuessCommand extends BaseCommand
 {

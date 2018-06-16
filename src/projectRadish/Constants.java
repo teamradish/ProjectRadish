@@ -10,7 +10,7 @@ public final class Constants {
     /**
      * The command character used.
      */
-    public static final String COMMAND_CHAR = "?";
+    public static final String COMMAND_PREFIX = "?";
 
 	// Private Constructor to prevent instantiation
 	private Constants() {}

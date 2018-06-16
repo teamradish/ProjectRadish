@@ -76,20 +76,8 @@ public final class Configuration
         catch (Exception e)
         {
             System.out.println(e.getMessage());
-
-            //Handle not being able to read or parse JSON
-            config = new Config();
-            config.RadishAdmin.add("<RadishAdmin #1 ID>");
-            config.RadishAdmin.add("<RadishAdmin #2 ID>");
-            config.TPEAdmin.add("<TPEAdmin #1 ID>");
-            config.TPEAdmin.add("<TPEAdmin #2 ID>");
-            config.Docs.put("<DOC NAME #1>", "<DOC URL #1>");
-            config.Docs.put("<DOC NAME #2>", "<DOC URL #2>");
-
-            //If it doesn't exist, create and save the new file
-            //Kimimaru: Do we really want to do this? It might be a problem if it couldn't
-            //read the JSON for some reason but the file still has all the info
-            saveConfiguration();
+            System.out.println("Failed to load [config.json]. The file may be missing or corrupted.");
+            System.exit(2);
         }
     }
 
@@ -106,7 +94,7 @@ public final class Configuration
         catch (Exception e)
         {
             e.printStackTrace();
-            System.out.println("Couldn't save config.json.");
+            System.out.println("Couldn't save [config.json]");
         }
     }
 }
