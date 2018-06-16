@@ -39,7 +39,7 @@ public class MessageListener extends ListenerAdapter {
         Commands.put("streaming", new StreamingCommand());
         Commands.put("listen", new ListenCommand());
         Commands.put("watch", new WatchingCommand());
-        //Commands.put("emotehell", new EmoteHellCommand());
+        Commands.put("emotehell", new EmoteHellCommand());
         Commands.put("reload", new ReloadCommand());
     }
 
