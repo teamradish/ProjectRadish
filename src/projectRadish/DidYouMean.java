@@ -2,6 +2,7 @@ package projectRadish;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 
 public class DidYouMean {
@@ -27,12 +28,12 @@ public class DidYouMean {
     }
 
 
-    public static String getBest(String input) {
+    public static String getBest(String input, Set<String> targets) {
         input = input.toLowerCase();
         String bestMatch = "";
         Integer leastDist = Integer.MAX_VALUE;
         // Full Names
-        for (String target: Configuration.getDocs().keySet()) {
+        for (String target: targets) {
             Integer dist = DLAlgorithm.execute(input, target.toLowerCase());
             if (dist < leastDist) {
                 leastDist = dist;
@@ -40,7 +41,7 @@ public class DidYouMean {
             }
         }
         // Abbreviations
-        for (String target: Configuration.getDocs().keySet()) {
+        for (String target: targets) {
             Integer dist = DLAlgorithm.execute(input, abbreviate(target).toLowerCase());
             if (dist < leastDist) {
                 leastDist = dist;

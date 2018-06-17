@@ -16,7 +16,7 @@ public final class DocCommand extends BaseCommand
         if (content.length() == 0)
         {
             String game = Configuration.getCurrentGame();
-            String link = Configuration.getCurrentDoc();
+            String link = Configuration.getDocs().get(DidYouMean.getBest(game, Configuration.getDocs().keySet())) + "/edit";
 
             MessageEmbed e = Utilities.formatOutput("Current Game Document:", game, link);
             event.getChannel().sendMessage(e).queue();
@@ -28,11 +28,11 @@ public final class DocCommand extends BaseCommand
 
             boolean isGuess = false;
             if (game == null) {    // if no match found
-                game = DidYouMean.getBest(input);
+                game = DidYouMean.getBest(input, Configuration.getDocs().keySet());
                 isGuess = true;
             }
 
-            String link = Configuration.getDocs().get(game);
+            String link = Configuration.getDocs().get(game) + "/preview";
             String header;
             if (isGuess) { header = "Best Guess for "+input+":"; } else { header = null; }
 

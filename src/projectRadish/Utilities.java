@@ -3,6 +3,7 @@ package projectRadish;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -100,6 +101,8 @@ public final class Utilities
         }
         return game; // null if no match was found
     }
+
+    public static HashMap<String, String> recycleBin = new HashMap<>();
 
     private Utilities() {}
 }

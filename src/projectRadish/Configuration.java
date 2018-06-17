@@ -7,6 +7,7 @@ import jdk.nashorn.internal.parser.JSONParser;
 import jdk.nashorn.internal.runtime.Context;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
 import java.io.IOException;
 import java.io.*;
@@ -41,14 +42,6 @@ public final class Configuration
         return config.BotToken;
     }
 
-    public static String getCurrentDoc() {
-        return config.CurrentDoc;
-    }
-
-    public static void setCurrentDoc(String currentDoc) {
-        config.CurrentDoc = currentDoc;
-    }
-
     public static String getCurrentGame() {
         return config.CurrentGame;
     }
@@ -60,6 +53,8 @@ public final class Configuration
     public static HashMap<String, String> getDocs() {
         return config.Docs;
     }
+
+    public static void setDocs(HashMap<String,String> docs) { config.Docs = docs; }
 
     public static void loadConfiguration()
     {

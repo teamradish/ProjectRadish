@@ -33,6 +33,10 @@ public class MessageListener extends ListenerAdapter {
         Commands.put("owo", new OwoCommand());
         Commands.put("roll", new RollCommand());
         Commands.put("alldocs", new AllDocsCommand());
+        Commands.put("newdoc", new NewDocCommand());
+        Commands.put("currentdoc", new CurrentDocCommand());
+        Commands.put("removedoc", new RemoveDocCommand());
+        Commands.put("restoredoc", new RestoreDocCommand());
         Commands.put("status", new StatusCommand());
         Commands.put("playing", new GameCommand());
         Commands.put("streaming", new StreamingCommand());

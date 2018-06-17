@@ -13,7 +13,6 @@ public final class Config
     public Set<String> RadishAdmin  = new HashSet<>();
     public Set<String> TPEAdmin  = new HashSet<>();
     public String CurrentGame;
-    public String CurrentDoc;
     public HashMap<String, String> Docs = new HashMap<>();
 
     public Config()

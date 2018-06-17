@@ -2,6 +2,7 @@ package projectRadish.Commands;
 
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import projectRadish.Configuration;
 import projectRadish.DidYouMean;
 import projectRadish.Utilities;
 
@@ -19,7 +20,7 @@ public final class GuessCommand extends BaseCommand
 
         String prefix = "Matched: ";
         if (game == null) {    // still no match found
-            game = DidYouMean.getBest(input);
+            game = DidYouMean.getBest(input, Configuration.getDocs().keySet());
             prefix = "Best guess: ";
         }
         String abbr = DidYouMean.abbreviate(game);
