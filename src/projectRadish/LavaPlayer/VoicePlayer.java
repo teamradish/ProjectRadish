@@ -1,4 +1,4 @@
-package LavaPlayer;
+package projectRadish.LavaPlayer;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
@@ -7,32 +7,19 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.managers.AudioManager;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Demo extends ListenerAdapter {
-  public static void main(String[] args) throws Exception {
-    JDA jda = new JDABuilder(AccountType.BOT)
-        .setToken("NDQxODY2MjEyMjQzMTQ0NzA0.Dc2fiw.iuq1Xdfgj5Cgzu7teqDMkDzzDt0")
-        .buildBlocking();
-
-    jda.addEventListener(new Demo());
-  }
-
+public class VoicePlayer {
   private final AudioPlayerManager playerManager;
   private final Map<Long, GuildMusicManager> musicManagers;
 
-  private Demo() {
+  public VoicePlayer() {
     this.musicManagers = new HashMap<>();
 
     this.playerManager = new DefaultAudioPlayerManager();
@@ -54,29 +41,13 @@ public class Demo extends ListenerAdapter {
     return musicManager;
   }
 
-  @Override
-  public void onMessageReceived(MessageReceivedEvent event) {
-    String[] command = event.getMessage().getContentRaw().split(" ", 2);
-    Guild guild = event.getGuild();
-
-    if (guild != null) {
-      if ("~play".equals(command[0]) && command.length == 2) {
-        loadAndPlay(event.getTextChannel(), command[1]);
-      } else if ("~skip".equals(command[0])) {
-        skipTrack(event.getTextChannel());
-      }
-    }
-
-    super.onMessageReceived(event);
-  }
-
-  private void loadAndPlay(final TextChannel channel, final String trackUrl) {
+  public void loadAndPlay(final TextChannel channel, final String trackUrl) {
     GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
 
     playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
       @Override
       public void trackLoaded(AudioTrack track) {
-        channel.sendMessage("Adding to queue " + track.getInfo().title).queue();
+        channel.sendMessage("Adding to queue: `" + track.getInfo().title + "`").queue();
 
         play(channel.getGuild(), musicManager, track);
       }
@@ -96,7 +67,7 @@ public class Demo extends ListenerAdapter {
 
       @Override
       public void noMatches() {
-        channel.sendMessage("Nothing found by " + trackUrl).queue();
+        channel.sendMessage("Couldn't find a song at `" + trackUrl + "`").queue();
       }
 
       @Override
@@ -107,23 +78,35 @@ public class Demo extends ListenerAdapter {
   }
 
   private void play(Guild guild, GuildMusicManager musicManager, AudioTrack track) {
-    connectToFirstVoiceChannel(guild.getAudioManager());
+    connectToVoiceChannel(guild.getAudioManager());
 
     musicManager.scheduler.queue(track);
   }
 
-  private void skipTrack(TextChannel channel) {
+  public void skipTrack(TextChannel channel) {
     GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
     musicManager.scheduler.nextTrack();
-
-    channel.sendMessage("Skipped to next track.").queue();
   }
 
-  private static void connectToFirstVoiceChannel(AudioManager audioManager) {
+    public void clearQueue(TextChannel channel) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+        musicManager.scheduler.clear();
+    }
+
+  private static void connectToVoiceChannel(AudioManager audioManager) {
     if (!audioManager.isConnected() && !audioManager.isAttemptingToConnect()) {
       for (VoiceChannel voiceChannel : audioManager.getGuild().getVoiceChannels()) {
-        audioManager.openAudioConnection(voiceChannel);
-        break;
+          if (voiceChannel.getName().toLowerCase().contains("music")) {
+              audioManager.openAudioConnection(voiceChannel);
+              return; // Exit function so we don't play in multiple channels
+          }
+      }
+
+      // If we make it this far, we didn't find any "music" channels
+      for (VoiceChannel voiceChannel : audioManager.getGuild().getVoiceChannels()) {
+          // So just play in first audio channel we find
+          audioManager.openAudioConnection(voiceChannel);
+          return;
       }
     }
   }

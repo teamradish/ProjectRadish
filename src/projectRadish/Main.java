@@ -38,8 +38,6 @@ public class Main
             //As a note: in this extremely simplified example this will never occur. In fact, this will never occur unless
             // you use buildBlocking in a thread that has the possibility of being interrupted (async thread usage and interrupts)
             e.printStackTrace();
-
-            System.out.println("test");
         }
     }
 

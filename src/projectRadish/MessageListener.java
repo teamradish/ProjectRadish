@@ -4,6 +4,7 @@ import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import projectRadish.Commands.*;
+import projectRadish.LavaPlayer.VoicePlayer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,8 @@ public class MessageListener extends ListenerAdapter {
     //Hardcoded for now, but we might want to load them in from config somewhere later
     private HashMap<String, BaseCommand> Commands = new HashMap<>();
 
+    public static VoicePlayer vp = new VoicePlayer();
+
     /**
      * Constructor.
      */
@@ -20,12 +23,12 @@ public class MessageListener extends ListenerAdapter {
     {
         //Initialize commands
         SetUpCommandList();
-
         InitCommandList();
     }
 
     private void SetUpCommandList()
     {
+        // Standard Commands
         Commands.put("say", new SayCommand());
         Commands.put("abbreviate", new AbbreviateCommand());
         Commands.put("doc", new DocCommand());
@@ -44,6 +47,11 @@ public class MessageListener extends ListenerAdapter {
         Commands.put("watching", new WatchingCommand());
         Commands.put("emotehell", new EmoteHellCommand());
         Commands.put("reload", new ReloadCommand());
+
+        // Voice/LavaPlayer Commands
+        Commands.put("play", new VoicePlayCommand());
+        Commands.put("skip", new VoiceSkipCommand());
+        Commands.put("clear", new VoiceClearCommand());
     }
 
     private void InitCommandList()
@@ -119,6 +127,8 @@ public class MessageListener extends ListenerAdapter {
 
         //Find and execute the command for message
         carryOutCommandForMsg(event, msg);
+        if (msg.startsWith("~play ")) { vp.loadAndPlay(event.getTextChannel(), msg.substring(6)); }
+        if (msg.startsWith("~skip")) { vp.skipTrack(event.getTextChannel()); }
     }
 
     private void carryOutCommandForMsg(MessageReceivedEvent event, String msg)
