@@ -48,6 +48,7 @@ public class MessageListener extends ListenerAdapter {
         Commands.put("emotehell", new EmoteHellCommand());
         Commands.put("reload", new ReloadCommand());
         Commands.put("scramble", new ScrambleCommand());
+        Commands.put("calculate", new CalculateCommand());
 
         // Voice/LavaPlayer Commands
         Commands.put("play", new VoicePlayCommand());

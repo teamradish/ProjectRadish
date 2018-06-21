@@ -5,7 +5,7 @@ import projectRadish.Utilities;
 
 import java.util.Vector;
 
-public class ScrambleCommand extends BaseCommand
+public final class ScrambleCommand extends BaseCommand
 {
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
