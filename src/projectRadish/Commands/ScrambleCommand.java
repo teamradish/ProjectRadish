@@ -10,32 +10,35 @@ public class ScrambleCommand extends BaseCommand
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
-        char[] charArr = content.toCharArray();
-        int curStrLen = content.length();
+        StringBuilder strBuilder = new StringBuilder(content.length());
+
+        //Remove all spaces before scrambling
+        String noSpaces = content.replaceAll(" ", "");
+        char[] charArr = noSpaces.toCharArray();
+        int curStrLen = noSpaces.length();
 
         //Fisher-Yates shuffle the contents
-        for (int j = 0; j < curStrLen; j++)
+        for (int i = 0; i < curStrLen; i++)
         {
-            //Ignore spaces
-            if (charArr[j] == ' ') continue;
+            int rand = Utilities.randRange(i, curStrLen - 1);
+            char temp = charArr[rand];
 
-            //Keep going until you don't find a space; this won't loop indefinitely since we trim the string beforehand
-            int rand;
-            char temp;
-            do
-            {
-                rand = Utilities.randRange(j, curStrLen - 1);
+            charArr[rand] = charArr[i];
+            charArr[i] = temp;
+            strBuilder.append(temp);
+        }
 
-                temp = charArr[rand];
-            }
-            while (temp == ' ');
+        //Re-insert the spaces
+        for (int i = 0; i < content.length(); i++)
+        {
+            char c = content.charAt(i);
 
-            charArr[rand] = charArr[j];
-            charArr[j] = temp;
+            if (c == ' ')
+                strBuilder.insert(i, c);
         }
 
         //Get our result and send it
-        String result = new String(charArr);
+        String result = strBuilder.toString();
 
         event.getChannel().sendMessage(result).queue();
     }
