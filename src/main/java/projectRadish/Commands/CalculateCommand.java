@@ -1,6 +1,5 @@
 package projectRadish.Commands;
 
-import org.apache.el.lang.FunctionMapperImpl;
 import org.mariuszgromada.math.mxparser.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
