@@ -6,10 +6,10 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import projectRadish.Commands.*;
 import projectRadish.LavaPlayer.VoicePlayer;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.Map.Entry;
 
-public class MessageListener extends ListenerAdapter
+public class MessageListener extends ListenerAdapter implements ConfigListener
 {
     //Hardcoded for now, but we might want to load them in from config somewhere later
     private HashMap<String, BaseCommand> Commands = new HashMap<>();
@@ -21,18 +21,38 @@ public class MessageListener extends ListenerAdapter
      */
     public MessageListener()
     {
-        //Initialize commands
-        SetUpCommandList();
-        //InitCommandList();
+        //Load commands
+        LoadCommandList();
+
+        Configuration.removeConfigListener(this);
+        Configuration.addConfigListener(this);
     }
 
-    private void SetUpCommandList()
+    public void configLoaded()
     {
+        //Reload the command list
+        //Kimimaru: We probably don't want to do this every time the config is reloaded - just if the commands are modified
+        LoadCommandList();
+    }
+
+    public void configSaved()
+    {
+
+    }
+
+    private void LoadCommandList()
+    {
+        //Clear all commands
+        Commands.clear();
+
+        //Create the commands from the config
         HashMap<String, String> cmds = Configuration.getCommands();
 
-        //Create the command from the config
-        for (Map.Entry<String, String> cmdEntry : cmds.entrySet())
+        //Iterate with Iterator to allow modification while iterating
+        for (Iterator<Entry<String,String>> it = cmds.entrySet().iterator(); it.hasNext();)
         {
+            Entry<String, String> cmdEntry = it.next();
+
             String cmdName = cmdEntry.getKey();
             BaseCommand cmdObj = Utilities.CreateCommandFromString(cmdEntry.getValue());
 
@@ -47,40 +67,6 @@ public class MessageListener extends ListenerAdapter
                 Commands.put(cmdName, cmdObj);
                 cmdObj.Initialize();
             }
-        }
-
-        // Standard Commands
-        /*Commands.put("say", new SayCommand());
-        Commands.put("abbreviate", new AbbreviateCommand());
-        Commands.put("doc", new DocCommand());
-        Commands.put("guess", new GuessCommand());
-        Commands.put("owo", new OwoCommand());
-        Commands.put("roll", new RollCommand());
-        Commands.put("alldocs", new AllDocsCommand());
-        Commands.put("newdoc", new NewDocCommand());
-        Commands.put("currentdoc", new CurrentDocCommand());
-        Commands.put("removedoc", new RemoveDocCommand());
-        Commands.put("restoredoc", new RestoreDocCommand());
-        Commands.put("status", new StatusCommand());
-        Commands.put("playing", new GameCommand());
-        Commands.put("streaming", new StreamingCommand());
-        Commands.put("listening to", new ListenCommand());
-        Commands.put("watching", new WatchingCommand());
-        Commands.put("emotehell", new EmoteHellCommand());
-        Commands.put("reload", new ReloadCommand());
-        Commands.put("scramble", new ScrambleCommand());
-
-        // Voice/LavaPlayer Commands
-        Commands.put("play", new VoicePlayCommand());
-        Commands.put("skip", new VoiceSkipCommand());
-        Commands.put("clear", new VoiceClearCommand());*/
-    }
-
-    private void InitCommandList()
-    {
-        for (Map.Entry<String, BaseCommand> entry : Commands.entrySet())
-        {
-            entry.getValue().Initialize();
         }
     }
 
@@ -162,7 +148,9 @@ public class MessageListener extends ListenerAdapter
             msg = msg.substring(prefix.length()); // remove prefix
 
             String cmdMatch = null;
-            for (String cmdName: Commands.keySet()) {
+            //Iterate with Iterator to allow modification while iterating
+            for (Iterator<String> it = Commands.keySet().iterator(); it.hasNext();) {
+                String cmdName = it.next();
                 if (msg.startsWith(cmdName)) { // potential match
                     try {
                         if (msg.charAt(cmdName.length()) == ' ') {

@@ -2,24 +2,10 @@ package projectRadish;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jdk.nashorn.internal.objects.Global;
-import jdk.nashorn.internal.parser.JSONParser;
-import jdk.nashorn.internal.runtime.Context;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
-import projectRadish.Commands.BaseCommand;
 
-import java.io.IOException;
-import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public final class Configuration
 {
@@ -30,6 +16,11 @@ public final class Configuration
      * The reference to the config object used.
      */
     private static Config config = null;
+
+    /**
+     * The objects listening for when the config is loaded.
+     */
+    private static Vector<ConfigListener> ConfigListeners = new Vector<>();
 
     public static Set<String> getRadishAdmin() {
         return config.RadishAdmin;
@@ -59,6 +50,16 @@ public final class Configuration
 
     public static void setDocs(HashMap<String,String> docs) { config.Docs = docs; }
 
+    public static void addConfigListener(ConfigListener configListener)
+    {
+        ConfigListeners.add(configListener);
+    }
+
+    public static void removeConfigListener(ConfigListener configListener)
+    {
+        ConfigListeners.remove(configListener);
+    }
+
     public static void loadConfiguration()
     {
         ObjectMapper mapper = new ObjectMapper();
@@ -77,6 +78,12 @@ public final class Configuration
             System.out.println("Failed to load [config.json]. The file may be missing or corrupted.");
             System.exit(2);
         }
+
+        //Notify all listeners that the config was loaded
+        for (int i = 0; i < ConfigListeners.size(); i++)
+        {
+            ConfigListeners.elementAt(i).configLoaded();
+        }
     }
 
     public static void saveConfiguration()
@@ -93,6 +100,13 @@ public final class Configuration
         {
             e.printStackTrace();
             System.out.println("Couldn't save [config.json]");
+            return;
+        }
+
+        //Notify all listeners that the config was saved
+        for (int i = 0; i < ConfigListeners.size(); i++)
+        {
+            ConfigListeners.elementAt(i).configSaved();
         }
     }
 }
