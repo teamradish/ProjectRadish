@@ -5,6 +5,8 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 
 import java.util.HashMap;
 import java.util.Random;
+import java.lang.reflect.*;
+import projectRadish.Commands.BaseCommand;
 
 /**
  * Contains various utilities.
@@ -14,6 +16,32 @@ public final class Utilities
     //Initialize a single Random object with a time-dependent seed
     //Reuse this instance, as new instances will have the same seeds if created at approximately the same time (Ex. in a loop)
     private static Random Rand = new Random();
+
+    /**
+     * Tries to instantiate a command from a string.
+     * @param commandName The case-sensitive class name of the BaseCommand to instantiate.
+     * @return An instance of the BaseCommand specified by commandName. null if the class couldn't be found or commandName was invalid.
+     */
+    public static BaseCommand CreateCommandFromString(String commandName)
+    {
+        //Get the fully qualified name of the command
+        String fullCmdName = Constants.CommandPkgName + commandName;
+
+        try
+        {
+            Class cmdClass = Class.forName(fullCmdName);
+
+            BaseCommand newCmd = (BaseCommand)cmdClass.newInstance();
+            return newCmd;
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.out.println("Could not create instance of " + commandName);
+        }
+
+        return null;
+    }
 
     /**
      * Gets a random integer in a range.

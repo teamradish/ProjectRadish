@@ -9,8 +9,8 @@ import projectRadish.LavaPlayer.VoicePlayer;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MessageListener extends ListenerAdapter {
-
+public class MessageListener extends ListenerAdapter
+{
     //Hardcoded for now, but we might want to load them in from config somewhere later
     private HashMap<String, BaseCommand> Commands = new HashMap<>();
 
@@ -23,13 +23,34 @@ public class MessageListener extends ListenerAdapter {
     {
         //Initialize commands
         SetUpCommandList();
-        InitCommandList();
+        //InitCommandList();
     }
 
     private void SetUpCommandList()
     {
+        HashMap<String, String> cmds = Configuration.getCommands();
+
+        //Create the command from the config
+        for (Map.Entry<String, String> cmdEntry : cmds.entrySet())
+        {
+            String cmdName = cmdEntry.getKey();
+            BaseCommand cmdObj = Utilities.CreateCommandFromString(cmdEntry.getValue());
+
+            //Log if we couldn't instantiate a command
+            if (cmdObj == null)
+            {
+                System.out.println("COMMAND " + cmdName + " WAS NOT ADDED BECAUSE IT'S NULL!");
+            }
+            else
+            {
+                //Add the command and intialize it
+                Commands.put(cmdName, cmdObj);
+                cmdObj.Initialize();
+            }
+        }
+
         // Standard Commands
-        Commands.put("say", new SayCommand());
+        /*Commands.put("say", new SayCommand());
         Commands.put("abbreviate", new AbbreviateCommand());
         Commands.put("doc", new DocCommand());
         Commands.put("guess", new GuessCommand());
@@ -52,7 +73,7 @@ public class MessageListener extends ListenerAdapter {
         // Voice/LavaPlayer Commands
         Commands.put("play", new VoicePlayCommand());
         Commands.put("skip", new VoiceSkipCommand());
-        Commands.put("clear", new VoiceClearCommand());
+        Commands.put("clear", new VoiceClearCommand());*/
     }
 
     private void InitCommandList()

@@ -8,6 +8,7 @@ import jdk.nashorn.internal.runtime.Context;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
+import projectRadish.Commands.BaseCommand;
 
 import java.io.IOException;
 import java.io.*;
@@ -53,6 +54,8 @@ public final class Configuration
     public static HashMap<String, String> getDocs() {
         return config.Docs;
     }
+
+    public static HashMap<String, String> getCommands() { return config.Commands; }
 
     public static void setDocs(HashMap<String,String> docs) { config.Docs = docs; }
 
