@@ -33,5 +33,32 @@
     "Wind Waker" : "https://docs.google.com/document/d/1DuLW4JsIwHvLlLTAOrsg-_z4c1oDy5l0LuAG5On5e18",
     "Super Mario Galaxy" : "https://docs.google.com/document/d/1KrK7c6EehC__rE6keDb41Agv_njqy3QyvqkxQ2cE5Mo",
     "Super Mario RPG" : "https://docs.google.com/document/d/1GssMt4cdwXKTHwcpZ75Mz26B5e8xw4OrKjpAQMHTMFk"
+  },
+  "Commands" : {
+    "play" : "VoicePlayCommand",
+    "owo" : "OwoCommand",
+    "roll" : "RollCommand",
+    "currentdoc" : "CurrentDocCommand",
+    "skip" : "VoiceSkipCommand",
+    "watching" : "WatchingCommand",
+    "scramble" : "ScrambleCommand",
+    "emotehell" : "EmoteHellCommand",
+    "streaming" : "StreamingCommand",
+    "reload" : "ReloadCommand",
+    "removedoc" : "RemoveDocCommand",
+    "calculate" : "CalculateCommand",
+    "addcommand" : "NewCmdCommand",
+    "abbreviate" : "AbbreviateCommand",
+    "newdoc" : "NewDocCommand",
+    "restoredoc" : "RestoreDocCommand",
+    "clear" : "VoiceClearCommand",
+    "renamecommand" : "RenameCmdCommand",
+    "say" : "SayCommand",
+    "listening to" : "ListenCommand",
+    "alldocs" : "AllDocsCommand",
+    "guess" : "GuessCommand",
+    "doc" : "DocCommand",
+    "playing" : "GameCommand",
+    "status" : "StatusCommand"
   }
 }
