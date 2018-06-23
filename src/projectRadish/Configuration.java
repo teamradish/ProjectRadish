@@ -20,7 +20,9 @@ public final class Configuration
     /**
      * The objects listening for when the config is loaded.
      */
-    private static Vector<ConfigListener> ConfigListeners = new Vector<>();
+    private static Vector<ConfigListener> configListeners = new Vector<>();
+
+    private static ObjectMapper objMapper = new ObjectMapper();
 
     public static Set<String> getRadishAdmin() {
         return config.RadishAdmin;
@@ -52,25 +54,23 @@ public final class Configuration
 
     public static void addConfigListener(ConfigListener configListener)
     {
-        ConfigListeners.add(configListener);
+        configListeners.add(configListener);
     }
 
     public static void removeConfigListener(ConfigListener configListener)
     {
-        ConfigListeners.remove(configListener);
+        configListeners.remove(configListener);
     }
 
     public static void loadConfiguration()
     {
-        ObjectMapper mapper = new ObjectMapper();
-
         //Don't fail on unknown properties
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        objMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
         try
         {
             //Convert from JSON to our object
-            config = mapper.readValue(new String(Files.readAllBytes(Paths.get("config.json"))), Config.class);
+            config = objMapper.readValue(new String(Files.readAllBytes(Paths.get("config.json"))), Config.class);
         }
         catch (Exception e)
         {
@@ -80,9 +80,9 @@ public final class Configuration
         }
 
         //Notify all listeners that the config was loaded
-        for (int i = 0; i < ConfigListeners.size(); i++)
+        for (int i = 0; i < configListeners.size(); i++)
         {
-            ConfigListeners.elementAt(i).configLoaded();
+            configListeners.elementAt(i).configLoaded();
         }
     }
 
@@ -90,10 +90,8 @@ public final class Configuration
     {
         try
         {
-            ObjectMapper mapper = new ObjectMapper();
-
             //Write JSON as pretty so we can read it
-            String data = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(config);
+            String data = objMapper.writerWithDefaultPrettyPrinter().writeValueAsString(config);
             Files.write(Paths.get("config.json"), data.getBytes());
         }
         catch (Exception e)
@@ -104,9 +102,9 @@ public final class Configuration
         }
 
         //Notify all listeners that the config was saved
-        for (int i = 0; i < ConfigListeners.size(); i++)
+        for (int i = 0; i < configListeners.size(); i++)
         {
-            ConfigListeners.elementAt(i).configSaved();
+            configListeners.elementAt(i).configSaved();
         }
     }
 }

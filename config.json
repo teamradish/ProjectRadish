@@ -59,6 +59,7 @@
     "guess" : "GuessCommand",
     "doc" : "DocCommand",
     "playing" : "GameCommand",
+    "streaminfo" : "StreamInfoCommand",
     "status" : "StatusCommand"
   }
 }
