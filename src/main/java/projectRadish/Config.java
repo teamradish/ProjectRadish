@@ -14,6 +14,7 @@ public final class Config
     public Set<String> TPEAdmin  = new HashSet<>();
     public String CurrentGame;
     public HashMap<String, String> Docs = new HashMap<>();
+    public HashMap<String, String> Commands = new HashMap<String, String>();
 
     public Config()
     {
