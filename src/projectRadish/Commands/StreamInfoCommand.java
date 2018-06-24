@@ -1,6 +1,13 @@
 package projectRadish.Commands;
 
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+
+import java.awt.*;
 import java.net.*;
 import java.io.*;
 import java.time.*;
@@ -9,6 +16,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.dv8tion.jda.core.requests.restaction.MessageAction;
 import org.apache.http.client.methods.HttpGet;
 import projectRadish.Twitch.*;
 
@@ -17,6 +25,9 @@ public class StreamInfoCommand extends BaseCommand
     private static final String CLIENT_ID = "rrixp6h00ku9ic34l1mbvilkl7qi8c";
     private static final String TWITCH_STREAM =  "https://api.twitch.tv/helix/streams?user_login=twitchplays_everything";
     private static final String GAME_ENDPOINT = "https://api.twitch.tv/helix/games?id=";
+
+    private static final int thumbnailWidth = 256;
+    private static final int thumnailHeight = 256;
 
     private ObjectMapper objMapper = new ObjectMapper();
 
@@ -38,16 +49,20 @@ public class StreamInfoCommand extends BaseCommand
 
         String infoString = null;
 
+        StreamResponse response = null;
+        String uptime = "N/A";
+        String gameName = null;
+
         if (streamInfo == null || streamInfo.data == null || streamInfo.data.length == 0)
         {
-            infoString = "TPE is currently not live";
+            event.getChannel().sendMessage("TPE is currently not live").queue();
+            return;
         }
         else
         {
-            StreamResponse response = streamInfo.data[0];
+            response = streamInfo.data[0];
 
-            String uptime = "N/A";
-            String gameName = response.game_id;
+            gameName = response.game_id;
 
             try
             {
@@ -83,20 +98,38 @@ public class StreamInfoCommand extends BaseCommand
                 GameData gameData = GetGameData(response.game_id);
                 if (gameData != null && gameData.data != null && gameData.data.length > 0)
                     gameName = gameData.data[0].name;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
 
-            infoString = "**Status:** " + response.type + "\n"
-            + "**Title:** " + response.title + "\n"
-            + "**Game:** " + gameName + "\n"
-            + "**Uptime:** " + uptime + "\n"
-            + "**Viewers:** " + response.viewer_count;
-        }
+            //Get our embed
+            MessageEmbed embed = GetEmbed(response, uptime, gameName);
 
-        event.getChannel().sendMessage(infoString).queue();
+            MessageBuilder msgBuilder = new MessageBuilder();
+            msgBuilder.setEmbed(embed);
+
+            Message msg = msgBuilder.build();
+
+            event.getChannel().sendMessage(msg).queue();
+        }
+    }
+
+    private MessageEmbed GetEmbed(StreamResponse response, String uptime, String gameName)
+    {
+        //Replace these strings in the thumbnail URL to get an image with the size we want
+        String thumbnail = response.thumbnail_url.replace("{width}", Integer.toString(thumbnailWidth));
+        thumbnail = thumbnail.replace("{height}", Integer.toString(thumnailHeight));
+
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setTitle(response.title, "https://twitch.tv/twitchplays_everything");
+        embedBuilder.setThumbnail(thumbnail);
+        embedBuilder.addField("**GAME**", gameName, false);
+        embedBuilder.addField("**VIEWERS**", Integer.toString(response.viewer_count), true);
+        embedBuilder.addField("**UPTIME**", uptime, true);
+
+        //Twitch Purple
+        embedBuilder.setColor(new Color(100, 65, 164));
+        return embedBuilder.build();
     }
 
     public StreamData GetStreamInfo()
