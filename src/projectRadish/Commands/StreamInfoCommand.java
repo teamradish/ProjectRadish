@@ -25,9 +25,10 @@ public class StreamInfoCommand extends BaseCommand
     private static final String CLIENT_ID = "rrixp6h00ku9ic34l1mbvilkl7qi8c";
     private static final String TWITCH_STREAM =  "https://api.twitch.tv/helix/streams?user_login=twitchplays_everything";
     private static final String GAME_ENDPOINT = "https://api.twitch.tv/helix/games?id=";
+    private static final String USER_ENDPOINT = "https://api.twitch.tv/helix/users?id=";
 
-    private static final int thumbnailWidth = 256;
-    private static final int thumnailHeight = 256;
+    private static final int thumbnailWidth = 284;
+    private static final int thumnailHeight = 160;
 
     private ObjectMapper objMapper = new ObjectMapper();
 
@@ -47,12 +48,12 @@ public class StreamInfoCommand extends BaseCommand
     {
         StreamData streamInfo = GetStreamInfo();
 
-        String infoString = null;
-
         StreamResponse response = null;
         String uptime = "N/A";
         String gameName = null;
+        String profileImgURL = null;
 
+        //Not live, as the information returned empty data
         if (streamInfo == null || streamInfo.data == null || streamInfo.data.length == 0)
         {
             event.getChannel().sendMessage("TPE is currently not live").queue();
@@ -69,25 +70,22 @@ public class StreamInfoCommand extends BaseCommand
                 //Get the uptime from the difference of the current UTC time and the stream's time (which is in UTC)
                 LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
 
-                System.out.println(now.toString());
-
                 //Parse stream time from the string given
                 LocalDate streamDate = LocalDate.parse(response.started_at.substring(0, 10));
                 LocalTime streamTime = LocalTime.parse(response.started_at.substring(11, response.started_at.length() - 1));
                 LocalDateTime streamDateTime = LocalDateTime.of(streamDate, streamTime);
 
-                System.out.println(streamDateTime.toString());
-
+                //Get the duration between
                 Duration duration = Duration.between(now, streamDateTime);
 
-                System.out.println(duration.toString());
-
+                //Define these constants to convert the seconds to minutes, hours, and days
                 final long secondsPerMinute = 60;
                 final long secondsPerHour = 60 * 60;
                 final long secondsPerDay = secondsPerHour * 24;
 
                 long totalSeconds = Math.abs(duration.getSeconds());
 
+                //Convert
                 long days = totalSeconds / secondsPerDay;
                 long hours = totalSeconds / secondsPerHour;
                 int minutes = (int) ((totalSeconds % secondsPerHour) / secondsPerMinute);
@@ -95,15 +93,22 @@ public class StreamInfoCommand extends BaseCommand
 
                 uptime = days + " days, " + hours + " hrs, " + minutes + " min, " + seconds + "sec";
 
+                //Get game name
                 GameData gameData = GetGameData(response.game_id);
                 if (gameData != null && gameData.data != null && gameData.data.length > 0)
                     gameName = gameData.data[0].name;
+
+                //Get profile image URL
+                UserData userData = GetUserData(response.user_id);
+                if (userData != null && userData.data != null && userData.data.length > 0)
+                    profileImgURL = userData.data[0].profile_image_url;
+
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
 
             //Get our embed
-            MessageEmbed embed = GetEmbed(response, uptime, gameName);
+            MessageEmbed embed = GetEmbed(response, uptime, gameName, profileImgURL);
 
             MessageBuilder msgBuilder = new MessageBuilder();
             msgBuilder.setEmbed(embed);
@@ -114,15 +119,18 @@ public class StreamInfoCommand extends BaseCommand
         }
     }
 
-    private MessageEmbed GetEmbed(StreamResponse response, String uptime, String gameName)
+    private MessageEmbed GetEmbed(StreamResponse response, String uptime, String gameName, String profileImgURL)
     {
         //Replace these strings in the thumbnail URL to get an image with the size we want
         String thumbnail = response.thumbnail_url.replace("{width}", Integer.toString(thumbnailWidth));
         thumbnail = thumbnail.replace("{height}", Integer.toString(thumnailHeight));
 
+        //Build the embed
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle(response.title, "https://twitch.tv/twitchplays_everything");
-        embedBuilder.setThumbnail(thumbnail);
+        embedBuilder.setImage(thumbnail);
+        embedBuilder.setThumbnail(profileImgURL);
+        embedBuilder.setAuthor("TwitchPlaysEverything", "https://www.twitch.tv/twitchplays_everything/collections", profileImgURL);
         embedBuilder.addField("**GAME**", gameName, false);
         embedBuilder.addField("**VIEWERS**", Integer.toString(response.viewer_count), true);
         embedBuilder.addField("**UPTIME**", uptime, true);
@@ -164,7 +172,7 @@ public class StreamInfoCommand extends BaseCommand
     {
         try
         {
-            //URL to Twitch stream information
+            //URL to Twitch game information
             URL url = new URL(GAME_ENDPOINT + gameID);
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 
@@ -180,6 +188,34 @@ public class StreamInfoCommand extends BaseCommand
             GameData gameData = objMapper.readValue(inputLine, GameData.class);
 
             return gameData;
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public UserData GetUserData(String userID)
+    {
+        try
+        {
+            //URL to Twitch user information
+            URL url = new URL(USER_ENDPOINT + userID);
+            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+
+            //Add the client ID as the header
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Client-ID", CLIENT_ID);
+
+            //Read information
+            BufferedReader br = new BufferedReader( new InputStreamReader( conn.getInputStream() ));
+            String inputLine = br.readLine();
+            br.close();
+
+            UserData userData = objMapper.readValue(inputLine, UserData.class);
+
+            return userData;
         }
         catch (IOException e)
         {
