@@ -17,15 +17,12 @@ import java.util.Date;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dv8tion.jda.core.requests.restaction.MessageAction;
+import projectRadish.Constants;
 import projectRadish.Twitch.*;
+import projectRadish.Utilities;
 
 public class StreamInfoCommand extends BaseCommand
 {
-    private static final String CLIENT_ID = "rrixp6h00ku9ic34l1mbvilkl7qi8c";
-    private static final String TWITCH_STREAM =  "https://api.twitch.tv/helix/streams?user_login=twitchplays_everything";
-    private static final String GAME_ENDPOINT = "https://api.twitch.tv/helix/games?id=";
-    private static final String USER_ENDPOINT = "https://api.twitch.tv/helix/users?id=";
-
     private static final int thumbnailWidth = 284;
     private static final int thumnailHeight = 160;
 
@@ -70,9 +67,7 @@ public class StreamInfoCommand extends BaseCommand
                 LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
 
                 //Parse stream time from the string given
-                LocalDate streamDate = LocalDate.parse(response.started_at.substring(0, 10));
-                LocalTime streamTime = LocalTime.parse(response.started_at.substring(11, response.started_at.length() - 1));
-                LocalDateTime streamDateTime = LocalDateTime.of(streamDate, streamTime);
+                LocalDateTime streamDateTime = Utilities.ParseDateTimeFromString(response.started_at);
 
                 //Get the duration between
                 Duration duration = Duration.between(now, streamDateTime);
@@ -144,12 +139,12 @@ public class StreamInfoCommand extends BaseCommand
         try
         {
             //URL to Twitch stream information
-            URL url = new URL(TWITCH_STREAM);
+            URL url = new URL(Constants.STREAM_ENDPOINT + Constants.STREAM_NAME);
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 
             //Add the client ID as the header
             conn.setRequestMethod("GET");
-            conn.setRequestProperty("Client-ID", CLIENT_ID);
+            conn.setRequestProperty("Client-ID", Constants.CLIENT_ID);
 
             //Read information
             BufferedReader br = new BufferedReader( new InputStreamReader( conn.getInputStream() ));
@@ -172,12 +167,12 @@ public class StreamInfoCommand extends BaseCommand
         try
         {
             //URL to Twitch game information
-            URL url = new URL(GAME_ENDPOINT + gameID);
+            URL url = new URL(Constants.GAME_ENDPOINT + gameID);
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 
             //Add the client ID as the header
             conn.setRequestMethod("GET");
-            conn.setRequestProperty("Client-ID", CLIENT_ID);
+            conn.setRequestProperty("Client-ID", Constants.CLIENT_ID);
 
             //Read information
             BufferedReader br = new BufferedReader( new InputStreamReader( conn.getInputStream() ));
@@ -200,12 +195,12 @@ public class StreamInfoCommand extends BaseCommand
         try
         {
             //URL to Twitch user information
-            URL url = new URL(USER_ENDPOINT + userID);
+            URL url = new URL(Constants.USER_ENDPOINT + userID);
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 
             //Add the client ID as the header
             conn.setRequestMethod("GET");
-            conn.setRequestProperty("Client-ID", CLIENT_ID);
+            conn.setRequestProperty("Client-ID", Constants.CLIENT_ID);
 
             //Read information
             BufferedReader br = new BufferedReader( new InputStreamReader( conn.getInputStream() ));

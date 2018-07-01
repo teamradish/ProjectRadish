@@ -3,6 +3,10 @@ package projectRadish;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Random;
 import java.lang.reflect.*;
@@ -16,6 +20,31 @@ public final class Utilities
     //Initialize a single Random object with a time-dependent seed
     //Reuse this instance, as new instances will have the same seeds if created at approximately the same time (Ex. in a loop)
     private static Random Rand = new Random();
+
+    /**
+     * Converts a string into a LocalDateTime.
+     * @param timeString A string representing a date and time.
+     * @return A LocalDateTime using the information from the string. If it could not be parsed, then the current UTC time is returned.
+     */
+    public static LocalDateTime ParseDateTimeFromString(String timeString)
+    {
+        try
+        {
+            //Parse information by removing parts of Twitch's datetime timeString
+            LocalDate streamDate = LocalDate.parse(timeString.substring(0, 10));
+            LocalTime streamTime = LocalTime.parse(timeString.substring(11, timeString.length() - 1));
+            LocalDateTime streamDateTime = LocalDateTime.of(streamDate, streamTime);
+
+            return streamDateTime;
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+
+        //If we encountered an error, simply return now in UTC time
+        return LocalDateTime.now(ZoneId.of("UTC"));
+    }
 
     /**
      * Tries to instantiate a command from a string.
