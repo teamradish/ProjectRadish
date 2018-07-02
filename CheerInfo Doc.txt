@@ -1,0 +1,266 @@
+CheerInfo
+
+=== REQUEST ===
+POST https://gql.twitch.tv/gql
+Client-ID: ...
+
+[
+   {
+      "operationName":"BitsPinnedCheerV2_Leaderboards",
+      "variables":{
+         "channelID":"113817269"
+      },
+      "extensions":{
+         "persistedQuery":{
+            "version":1,
+            "sha256Hash":"1b83daceb82d09f8868cd5f937b3f531ddd8de2be60ec99574b93f627d407448"
+         }
+      }
+   }
+]
+
+Set "channelID" to the desired ID.
+
+
+=== RESPONSE ===
+[
+   {
+      "data":{
+         "user":{
+            "id":"113817269",
+            "cheer":{
+               "id":"113817269",
+               "leaderboard":{
+                  "id":"bits-usage-by-channel-v1-113817269-WEEK",
+                  "items":{
+                     "edges":[
+                        {
+                           "cursor":"1",
+                           "node":{
+                              "id":"bits-usage-by-channel-v1-113817269-WEEK_45947197",
+                              "entryKey":"45947197",
+                              "rank":1,
+                              "score":1500,
+                              "__typename":"BitsLeaderboardItem"
+                           },
+                           "__typename":"BitsLeaderboardItemEdge"
+                        },
+                        {
+                           "cursor":"2",
+                           "node":{
+                              "id":"bits-usage-by-channel-v1-113817269-WEEK_179550420",
+                              "entryKey":"179550420",
+                              "rank":2,
+                              "score":500,
+                              "__typename":"BitsLeaderboardItem"
+                           },
+                           "__typename":"BitsLeaderboardItemEdge"
+                        },
+                        {
+                           "cursor":"3",
+                           "node":{
+                              "id":"bits-usage-by-channel-v1-113817269-WEEK_174343711",
+                              "entryKey":"174343711",
+                              "rank":3,
+                              "score":100,
+                              "__typename":"BitsLeaderboardItem"
+                           },
+                           "__typename":"BitsLeaderboardItemEdge"
+                        },
+                        {
+                           "cursor":"4",
+                           "node":{
+                              "id":"bits-usage-by-channel-v1-113817269-WEEK_111365007",
+                              "entryKey":"111365007",
+                              "rank":4,
+                              "score":100,
+                              "__typename":"BitsLeaderboardItem"
+                           },
+                           "__typename":"BitsLeaderboardItemEdge"
+                        },
+                        {
+                           "cursor":"5",
+                           "node":{
+                              "id":"bits-usage-by-channel-v1-113817269-WEEK_120048466",
+                              "entryKey":"120048466",
+                              "rank":5,
+                              "score":8,
+                              "__typename":"BitsLeaderboardItem"
+                           },
+                           "__typename":"BitsLeaderboardItemEdge"
+                        },
+                        {
+                           "cursor":"6",
+                           "node":{
+                              "id":"bits-usage-by-channel-v1-113817269-WEEK_217322163",
+                              "entryKey":"217322163",
+                              "rank":6,
+                              "score":7,
+                              "__typename":"BitsLeaderboardItem"
+                           },
+                           "__typename":"BitsLeaderboardItemEdge"
+                        },
+                        {
+                           "cursor":"7",
+                           "node":{
+                              "id":"bits-usage-by-channel-v1-113817269-WEEK_160365556",
+                              "entryKey":"160365556",
+                              "rank":7,
+                              "score":2,
+                              "__typename":"BitsLeaderboardItem"
+                           },
+                           "__typename":"BitsLeaderboardItemEdge"
+                        },
+                        {
+                           "cursor":"8",
+                           "node":{
+                              "id":"bits-usage-by-channel-v1-113817269-WEEK_145008593",
+                              "entryKey":"145008593",
+                              "rank":8,
+                              "score":2,
+                              "__typename":"BitsLeaderboardItem"
+                           },
+                           "__typename":"BitsLeaderboardItemEdge"
+                        },
+                        {
+                           "cursor":"9",
+                           "node":{
+                              "id":"bits-usage-by-channel-v1-113817269-WEEK_127188823",
+                              "entryKey":"127188823",
+                              "rank":9,
+                              "score":1,
+                              "__typename":"BitsLeaderboardItem"
+                           },
+                           "__typename":"BitsLeaderboardItemEdge"
+                        }
+                     ],
+                     "__typename":"BitsLeaderboardItemConnection"
+                  },
+                  "__typename":"BitsLeaderboard",
+                  "secondsRemaining":10156,
+                  "__typename":"BitsLeaderboard"
+               },
+               "settings":{
+                  "leaderboard":{
+                     "isEnabled":true,
+                     "timePeriodType":"WEEK",
+                     "__typename":"BitsLeaderboardSettings"
+                  },
+                  "__typename":"CheerSettings"
+               },
+               "__typename":"CheerInfo"
+            },
+            "self":null,
+            "__typename":"User"
+         }
+      },
+      "extensions":{
+         "durationMilliseconds":74,
+         "operationName":"BitsPinnedCheerV2_Leaderboards"
+      }
+   }
+]
+
+Every "entryKey" has an user ID.
+"rank" = Position in leaderboard
+"score" = Bits donated
+
+=== REQUEST ===
+POST https://gql.twitch.tv/gql
+Client-ID: ...
+
+[
+   {
+      "operationName":"BitsPinnedCheerV2_LeaderboardEntry",
+      "variables":{
+         "userID":"45947197",
+         "profileImageWidth":50
+      },
+      "extensions":{
+         "persistedQuery":{
+            "version":1,
+            "sha256Hash":"de92fb2585ab19302c69d7ae77d8069e49f6b2fd40212025a7706f20db85d293"
+         }
+      }
+   },
+   {
+      "operationName":"BitsPinnedCheerV2_LeaderboardEntry",
+      "variables":{
+         "userID":"179550420",
+         "profileImageWidth":50
+      },
+      "extensions":{
+         "persistedQuery":{
+            "version":1,
+            "sha256Hash":"de92fb2585ab19302c69d7ae77d8069e49f6b2fd40212025a7706f20db85d293"
+         }
+      }
+   },
+   {
+      "operationName":"BitsPinnedCheerV2_LeaderboardEntry",
+      "variables":{
+         "userID":"174343711",
+         "profileImageWidth":50
+      },
+      "extensions":{
+         "persistedQuery":{
+            "version":1,
+            "sha256Hash":"de92fb2585ab19302c69d7ae77d8069e49f6b2fd40212025a7706f20db85d293"
+         }
+      }
+   }
+]
+
+Every user ID from previous response is used here, in "userID".
+
+=== RESPONSE ===
+[
+   {
+      "data":{
+         "user":{
+            "id":"45947197",
+            "displayName":"PricelessNightmare",
+            "login":"pricelessnightmare",
+            "profileImageURL":"https://static-cdn.jtvnw.net/jtv_user_pictures/pricelessnightmare-profile_image-02625ace7dc82104-50x50.jpeg",
+            "__typename":"User"
+         }
+      },
+      "extensions":{
+         "durationMilliseconds":22,
+         "operationName":"BitsPinnedCheerV2_LeaderboardEntry"
+      }
+   },
+   {
+      "data":{
+         "user":{
+            "id":"179550420",
+            "displayName":"ColdBeverage83",
+            "login":"coldbeverage83",
+            "profileImageURL":"https://static-cdn.jtvnw.net/user-default-pictures/b83b1794-7df9-4878-916c-88c2ad2e4f9f-profile_image-50x50.jpg",
+            "__typename":"User"
+         }
+      },
+      "extensions":{
+         "durationMilliseconds":22,
+         "operationName":"BitsPinnedCheerV2_LeaderboardEntry"
+      }
+   },
+   {
+      "data":{
+         "user":{
+            "id":"174343711",
+            "displayName":"jerich100",
+            "login":"jerich100",
+            "profileImageURL":"https://static-cdn.jtvnw.net/user-default-pictures/0ecbb6c3-fecb-4016-8115-aa467b7c36ed-profile_image-50x50.jpg",
+            "__typename":"User"
+         }
+      },
+      "extensions":{
+         "durationMilliseconds":22,
+         "operationName":"BitsPinnedCheerV2_LeaderboardEntry"
+      }
+   }
+]
+
+"displayName" = User nickname
+"profileImageURL" = Image URL

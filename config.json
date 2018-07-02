@@ -60,6 +60,7 @@
     "doc" : "DocCommand",
     "playing" : "GameCommand",
     "streaminfo" : "StreamInfoCommand",
-    "status" : "StatusCommand"
+    "status" : "StatusCommand",
+    "topbits" : "TopBitsCommand"
   }
 }
