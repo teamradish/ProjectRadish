@@ -27,6 +27,7 @@ public final class Constants {
     public static final String OAUTH_ENDPOINT = "https://id.twitch.tv/oauth2/token?client_id={clientid}&client_secret={clientsecret}&grant_type=client_credentials&scope={scopes}";
 
     public static final String STREAM_NAME = "twitchplays_everything";
+    public static final String STREAM_ID = "57950757";
 
 	// Private Constructor to prevent instantiation
 	private Constants() {}
