@@ -3,3 +3,6 @@ bin/
 .idea/**/dictionaries
 /.idea/uiDesigner.xml
 /.idea/codeStyles/codeStyleConfig.xml
+
+#Maven Builds
+/target
