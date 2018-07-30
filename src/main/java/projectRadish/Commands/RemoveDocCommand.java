@@ -15,7 +15,7 @@ public final class RemoveDocCommand extends BaseCommand
     {
         if (content.equals("")) {
             event.getChannel().sendMessage(String.format(
-                    "Usage: `%sremovedoc Game Name`", Constants.COMMAND_PREFIX)
+                    "Usage: `%sremovedoc Game Name`", Configuration.getCommandPrefix())
             ).queue();
             return;
         }

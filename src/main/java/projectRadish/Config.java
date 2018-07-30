@@ -15,6 +15,7 @@ public final class Config
     public String CurrentGame;
     public HashMap<String, String> Docs = new HashMap<>();
     public HashMap<String, String> Commands = new HashMap<String, String>();
+    public String CommandPrefix = "!";
 
     public Config()
     {

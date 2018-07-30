@@ -39,6 +39,7 @@
     "owo" : "OwoCommand",
     "roll" : "RollCommand",
     "currentdoc" : "CurrentDocCommand",
+    "setprefix" : "SetPrefixCommand",
     "skip" : "VoiceSkipCommand",
     "watching" : "WatchingCommand",
     "remove" : "RemoveCommand",
@@ -48,6 +49,7 @@
     "reload" : "ReloadCommand",
     "removedoc" : "RemoveDocCommand",
     "calculate" : "CalculateCommand",
+    "addcommand" : "NewCmdCommand",
     "abbreviate" : "AbbreviateCommand",
     "newdoc" : "NewDocCommand",
     "restoredoc" : "RestoreDocCommand",
@@ -60,7 +62,7 @@
     "doc" : "DocCommand",
     "playing" : "GameCommand",
     "streaminfo" : "StreamInfoCommand",
-    "status" : "StatusCommand",
-    "addcommand" : "NewCmdCommand"
-  }
+    "status" : "StatusCommand"
+  },
+  "CommandPrefix" : "!"
 }

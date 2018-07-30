@@ -42,8 +42,10 @@ public class Main
     }
 
     public static void initialise(JDA jda) {
-        if (Constants.DEFAULT_GAME != null) {
-            jda.getPresence().setGame(Game.of(GameType.DEFAULT, Constants.DEFAULT_GAME));
+        String defaultGame = Constants.getDefaultGame();
+
+        if (defaultGame != null) {
+            jda.getPresence().setGame(Game.of(GameType.DEFAULT, defaultGame));
         }
         if (Constants.DEFAULT_STATUS != null) {
             jda.getPresence().setStatus(Constants.DEFAULT_STATUS);

@@ -14,7 +14,7 @@ public final class CurrentDocCommand extends BaseCommand
     {
         if (content.equals("")) {
             event.getChannel().sendMessage(String.format(
-                    "Usage: `%scurrentdoc Game Name`", Constants.COMMAND_PREFIX)
+                    "Usage: `%scurrentdoc Game Name`", Configuration.getCommandPrefix())
             ).queue();
             return;
         }
