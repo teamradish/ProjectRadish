@@ -141,7 +141,7 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
 
     private void carryOutCommandForMsg(MessageReceivedEvent event, String msg)
     {
-        String prefix = Constants.COMMAND_PREFIX;
+        String prefix = Configuration.getCommandPrefix();//Constants.COMMAND_PREFIX;
         //If the message starts with the command character, look for a command to perform
         if (msg.startsWith(prefix))
         {

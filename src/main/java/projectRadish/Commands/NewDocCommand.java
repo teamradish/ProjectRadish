@@ -39,7 +39,7 @@ public final class NewDocCommand extends BaseCommand
             event.getChannel().sendMessage(e).queue();
         } else {
             event.getChannel().sendMessage(String.format(
-                    "Usage: `%snewdoc Game Name https://docs.google.com/document/d/...`", Constants.COMMAND_PREFIX)
+                    "Usage: `%snewdoc Game Name https://docs.google.com/document/d/...`", Configuration.getCommandPrefix())
             ).queue();
         }
     }

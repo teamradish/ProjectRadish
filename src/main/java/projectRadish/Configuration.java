@@ -52,6 +52,10 @@ public final class Configuration
 
     public static void setDocs(HashMap<String,String> docs) { config.Docs = docs; }
 
+    public static String getCommandPrefix() { return config.CommandPrefix; }
+
+    public static void setCommandPrefix(String prefix) { config.CommandPrefix = prefix; }
+
     public static void addConfigListener(ConfigListener configListener)
     {
         configListeners.add(configListener);

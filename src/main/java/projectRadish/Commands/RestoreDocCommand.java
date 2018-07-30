@@ -15,7 +15,7 @@ public final class RestoreDocCommand extends BaseCommand
     {
         if (content.equals("")) {
             event.getChannel().sendMessage(String.format(
-                    "Usage: `%srestoredoc Game Name`", Constants.COMMAND_PREFIX)
+                    "Usage: `%srestoredoc Game Name`", Configuration.getCommandPrefix())
             ).queue();
             return;
         }

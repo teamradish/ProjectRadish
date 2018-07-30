@@ -36,6 +36,13 @@ public final class NewCmdCommand extends BaseCommand
             return;
         }
 
+        //Kimimaru: Don't allow adding another NewCmdCommand, since you can't remove it
+        if (args[1].equals(NewCmdCommand.class.getSimpleName()))
+        {
+            event.getChannel().sendMessage("You can't add another NewCmdCommand since it can't be removed!").queue();
+            return;
+        }
+
         cmds.put(cmdToLower, args[1]);
         Configuration.saveConfiguration();
         Configuration.loadConfiguration();

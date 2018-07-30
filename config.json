@@ -39,8 +39,10 @@
     "owo" : "OwoCommand",
     "roll" : "RollCommand",
     "currentdoc" : "CurrentDocCommand",
+    "setprefix" : "SetPrefixCommand",
     "skip" : "VoiceSkipCommand",
     "watching" : "WatchingCommand",
+    "remove" : "RemoveCommand",
     "scramble" : "ScrambleCommand",
     "emotehell" : "EmoteHellCommand",
     "streaming" : "StreamingCommand",
@@ -58,8 +60,10 @@
     "alldocs" : "AllDocsCommand",
     "guess" : "GuessCommand",
     "doc" : "DocCommand",
+    "cursong" : "VoiceGetCommand",
     "playing" : "GameCommand",
     "streaminfo" : "StreamInfoCommand",
     "status" : "StatusCommand"
-  }
+  },
+  "CommandPrefix" : "!"
 }

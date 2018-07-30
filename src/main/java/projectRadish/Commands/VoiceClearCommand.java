@@ -11,7 +11,6 @@ public final class VoiceClearCommand extends BaseCommand
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
-        MessageListener.vp = new VoicePlayer();
         MessageListener.vp.skipTrack(event.getTextChannel());
         MessageListener.vp.clearQueue(event.getTextChannel());
         event.getChannel().sendMessage("Queue Cleared.").queue();

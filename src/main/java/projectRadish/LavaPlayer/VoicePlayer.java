@@ -7,6 +7,7 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
@@ -75,6 +76,13 @@ public class VoicePlayer {
         channel.sendMessage("Could not play: " + exception.getMessage()).queue();
       }
     });
+  }
+
+  public AudioTrack getTrack(TextChannel channel)
+  {
+      GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+
+      return musicManager.player.getPlayingTrack();
   }
 
   private void play(Guild guild, GuildMusicManager musicManager, AudioTrack track) {
