@@ -41,13 +41,13 @@
     "currentdoc" : "CurrentDocCommand",
     "skip" : "VoiceSkipCommand",
     "watching" : "WatchingCommand",
+    "remove" : "RemoveCommand",
     "scramble" : "ScrambleCommand",
     "emotehell" : "EmoteHellCommand",
     "streaming" : "StreamingCommand",
     "reload" : "ReloadCommand",
     "removedoc" : "RemoveDocCommand",
     "calculate" : "CalculateCommand",
-    "addcommand" : "NewCmdCommand",
     "abbreviate" : "AbbreviateCommand",
     "newdoc" : "NewDocCommand",
     "restoredoc" : "RestoreDocCommand",
@@ -60,6 +60,7 @@
     "doc" : "DocCommand",
     "playing" : "GameCommand",
     "streaminfo" : "StreamInfoCommand",
-    "status" : "StatusCommand"
+    "status" : "StatusCommand",
+    "addcommand" : "NewCmdCommand"
   }
 }
