@@ -60,6 +60,7 @@
     "alldocs" : "AllDocsCommand",
     "guess" : "GuessCommand",
     "doc" : "DocCommand",
+    "cursong" : "VoiceGetCommand",
     "playing" : "GameCommand",
     "streaminfo" : "StreamInfoCommand",
     "status" : "StatusCommand"
