@@ -3,10 +3,8 @@ package projectRadish;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Random;
 import java.lang.reflect.*;
@@ -26,7 +24,7 @@ public final class Utilities
      * @param timeString A string representing a date and time.
      * @return A LocalDateTime using the information from the string. If it could not be parsed, then the current UTC time is returned.
      */
-    public static LocalDateTime ParseDateTimeFromString(String timeString)
+    public static LocalDateTime parseDateTimeFromString(String timeString)
     {
         try
         {
@@ -47,11 +45,26 @@ public final class Utilities
     }
 
     /**
+     * Formats a time value in milliseconds into a time format ("HH:mm:ss").
+     * @param time The time value, in milliseconds.
+     * @return A String containing the formatted time.
+     */
+    public static String getTimeStringFromMs(final long time)
+    {
+        //Format to hours, minutes, and seconds
+        Instant instant = Instant.ofEpochMilli(time);
+        ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return formatter.format(zdt);
+    }
+
+    /**
      * Tries to instantiate a command from a string.
      * @param commandName The case-sensitive class name of the BaseCommand to instantiate.
      * @return An instance of the BaseCommand specified by commandName. null if the class couldn't be found or commandName was invalid.
      */
-    public static BaseCommand CreateCommandFromString(String commandName)
+    public static BaseCommand createCommandFromString(String commandName)
     {
         //Get the fully qualified name of the command
         String fullCmdName = Constants.CommandPkgName + commandName;

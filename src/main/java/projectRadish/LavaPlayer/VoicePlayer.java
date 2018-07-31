@@ -85,6 +85,20 @@ public class VoicePlayer {
       return musicManager.player.getPlayingTrack();
   }
 
+  public AudioTrack peekTrack(TextChannel channel)
+  {
+      GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+
+      return musicManager.scheduler.peekTrack();
+  }
+
+  public int getQueueSize(TextChannel channel)
+  {
+      GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+
+      return musicManager.scheduler.queueSize();
+  }
+
   private void play(Guild guild, GuildMusicManager musicManager, AudioTrack track) {
     connectToVoiceChannel(guild.getAudioManager());
 

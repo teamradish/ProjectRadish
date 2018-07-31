@@ -54,7 +54,7 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
             Entry<String, String> cmdEntry = it.next();
 
             String cmdName = cmdEntry.getKey();
-            BaseCommand cmdObj = Utilities.CreateCommandFromString(cmdEntry.getValue());
+            BaseCommand cmdObj = Utilities.createCommandFromString(cmdEntry.getValue());
 
             //Log if we couldn't instantiate a command
             if (cmdObj == null)
