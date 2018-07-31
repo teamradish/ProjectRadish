@@ -4,6 +4,9 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import net.dv8tion.jda.core.entities.Invite;
+import net.dv8tion.jda.core.managers.GuildManager;
+import projectRadish.MessageListener;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -46,6 +49,23 @@ public class TrackScheduler extends AudioEventAdapter {
     player.startTrack(queue.poll(), false);
   }
 
+  /**
+   * Returns the next AudioTrack in the queue without removing it.
+   * @return The AudioTrack at the start of the queue. null if none exists.
+   */
+  public AudioTrack peekTrack()
+  {
+      return queue.peek();
+  }
+
+  /**
+   * Returns the size of the track queue.
+   * @return An integer representing the size of the queue.
+   */
+  public int queueSize()
+  {
+      return queue.size();
+  }
 
   public void clear() {
     player.stopTrack();

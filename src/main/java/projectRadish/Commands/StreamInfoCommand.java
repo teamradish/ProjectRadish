@@ -1,7 +1,6 @@
 package projectRadish.Commands;
 
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -11,12 +10,9 @@ import java.awt.*;
 import java.net.*;
 import java.io.*;
 import java.time.*;
-import java.text.*;
-import java.util.Date;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.dv8tion.jda.core.requests.restaction.MessageAction;
 import projectRadish.Constants;
 import projectRadish.Twitch.*;
 import projectRadish.Utilities;
@@ -67,7 +63,7 @@ public class StreamInfoCommand extends BaseCommand
                 LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
 
                 //Parse stream time from the string given
-                LocalDateTime streamDateTime = Utilities.ParseDateTimeFromString(response.started_at);
+                LocalDateTime streamDateTime = Utilities.parseDateTimeFromString(response.started_at);
 
                 //Get the duration between
                 Duration duration = Duration.between(now, streamDateTime);

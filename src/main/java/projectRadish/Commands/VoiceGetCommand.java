@@ -4,6 +4,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.MessageListener;
+import projectRadish.Utilities;
 
 import java.sql.Time;
 import java.time.*;
@@ -28,12 +29,8 @@ public class VoiceGetCommand extends BaseCommand
         String title = trackInfo.title;
         long remainingDur = trackInfo.length - track.getPosition();
 
-        //Format to hours, minutes, and seconds
-        Instant instant = Instant.ofEpochMilli(remainingDur);
-        ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        String output = formatter.format(zdt);
+        //Format time
+        String output = Utilities.getTimeStringFromMs(remainingDur);
 
         event.getChannel().sendMessage("Name: `" + title + "`\nTime Left: `" + output + "`").queue();
     }
