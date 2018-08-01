@@ -1,15 +1,15 @@
-package projectRadish.Commands;
+package projectRadish.Commands.DocCommands;
 
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import projectRadish.Commands.AdminCommand;
 import projectRadish.Configuration;
-import projectRadish.Constants;
 import projectRadish.Utilities;
 
 import java.util.Arrays;
 import java.util.HashMap;
 
-public final class NewDocCommand extends BaseCommand
+public final class NewDocCommand extends AdminCommand
 {
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)

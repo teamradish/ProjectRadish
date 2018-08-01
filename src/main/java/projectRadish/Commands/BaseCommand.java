@@ -8,17 +8,23 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
  */
 public abstract class BaseCommand
 {
-    protected BaseCommand()
-    {
-
-    }
-
     /**
      * Use for any initialization.
      */
-    public void Initialize()
-    {
+    public void Initialize(){}
 
+    protected BaseCommand(){}
+
+    /**
+     * This is only here so that AdminCommand (and maybe other subclasses in future) can override it.
+     * It's very possibly bad style I just don't know how to avoid it.
+     *
+     * @param contents the message, without the prefix and the command (can be the empty string)
+     * @param event the JDA event causing the command to execute
+     */
+    public void ProcessCommand(String contents, MessageReceivedEvent event)
+    {
+        ExecuteCommand(contents, event);
     }
 
     /**
@@ -26,5 +32,5 @@ public abstract class BaseCommand
      * @param contents the message, without the prefix and the command (can be the empty string)
      * @param event the JDA event causing the command to execute
      */
-    public abstract void ExecuteCommand(String contents, MessageReceivedEvent event);
+    protected abstract void ExecuteCommand(String contents, MessageReceivedEvent event);
 }

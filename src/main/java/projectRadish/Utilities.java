@@ -7,7 +7,8 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Random;
-import java.lang.reflect.*;
+
+import net.dv8tion.jda.core.entities.User;
 import projectRadish.Commands.BaseCommand;
 
 /**
@@ -170,6 +171,10 @@ public final class Utilities
             }
         }
         return game; // null if no match was found
+    }
+
+    public static boolean isAdmin(User author) {
+        return Configuration.getRadishAdmin().contains(author.getId());
     }
 
     public static HashMap<String, String> recycleBin = new HashMap<>();

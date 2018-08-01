@@ -1,14 +1,14 @@
-package projectRadish.Commands;
+package projectRadish.Commands.DocCommands;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import projectRadish.Commands.AdminCommand;
 import projectRadish.Configuration;
-import projectRadish.Constants;
 import projectRadish.DidYouMean;
 import projectRadish.Utilities;
 
 import java.util.HashMap;
 
-public final class RestoreDocCommand extends BaseCommand
+public final class RestoreDocCommand extends AdminCommand
 {
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
@@ -31,7 +31,7 @@ public final class RestoreDocCommand extends BaseCommand
         Configuration.setDocs(docs);
         Configuration.saveConfiguration();
 
-        String e = "The document for " + game + " has been rescued!";
-        event.getChannel().sendMessage(e).queue();
+        String reply = "The document for " + game + " has been rescued!";
+        event.getChannel().sendMessage(reply).queue();
     }
 }

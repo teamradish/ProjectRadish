@@ -1,7 +1,8 @@
-package projectRadish.Commands;
+package projectRadish.Commands.DocCommands;
 
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import projectRadish.Commands.BaseCommand;
 import projectRadish.Configuration;
 import projectRadish.Constants;
 import projectRadish.DidYouMean;

@@ -11,12 +11,17 @@ import java.util.List;
 public final class EmoteHellCommand extends BaseCommand
 {
     private static DecimalFormat dp1 = new DecimalFormat(".#");
-    static private final long cooldown = 10*60*60*1000; // 10 hours, in milliseconds
+    static private final long cooldown = 1*60*60*1000; // 1 hour, in milliseconds
     private HashMap<String, Long> lastTimes = new HashMap<>();
 
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
+        if (event.isFromType(ChannelType.PRIVATE)) {
+            event.getChannel().sendMessage("This command cannot be used in a PM.").queue();
+            return;
+        }
+
         long now = System.currentTimeMillis();
         String user = event.getAuthor().getId();
 
@@ -76,7 +81,7 @@ public final class EmoteHellCommand extends BaseCommand
         {
             System.out.println(e.getMessage());
 
-            reply = "Sorry, I cannot do that for you now.";
+            reply = "Sorry, something went wrong.";
         }
 
         event.getChannel().sendMessage(reply).queue();

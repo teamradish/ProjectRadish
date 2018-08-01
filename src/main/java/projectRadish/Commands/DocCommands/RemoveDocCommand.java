@@ -1,14 +1,14 @@
-package projectRadish.Commands;
+package projectRadish.Commands.DocCommands;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import projectRadish.Commands.AdminCommand;
 import projectRadish.Configuration;
-import projectRadish.Constants;
 import projectRadish.DidYouMean;
 import projectRadish.Utilities;
 
 import java.util.HashMap;
 
-public final class RemoveDocCommand extends BaseCommand
+public final class RemoveDocCommand extends AdminCommand
 {
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)

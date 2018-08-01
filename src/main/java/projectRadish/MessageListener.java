@@ -131,12 +131,13 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
         else if (event.isFromType(ChannelType.PRIVATE)) //If this message was sent to a PrivateChannel
         {
             System.out.printf("[PRIV]<%s>: %s\n", author.getName(), msg);
+            if(event.getMessage().getContentDisplay().equals("prefix")){ // Taxi's failsafe for forgetting the prefix
+                event.getChannel().sendMessage("\""+Configuration.getCommandPrefix()+"\"").queue();
+            }
         }
 
         //Find and execute the command for message
         carryOutCommandForMsg(event, msg);
-        if (msg.startsWith("~play ")) { vp.loadAndPlay(event.getTextChannel(), msg.substring(6)); }
-        if (msg.startsWith("~skip")) { vp.skipTrack(event.getTextChannel()); }
     }
 
     private void carryOutCommandForMsg(MessageReceivedEvent event, String msg)
@@ -165,7 +166,7 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
             if (cmdMatch != null) {
                 msg = msg.substring(cmdMatch.length()); // Remove command name
                 msg = msg.trim(); // remove leading and trailing whitespace
-                Commands.get(cmdMatch).ExecuteCommand(msg, event);
+                Commands.get(cmdMatch).ProcessCommand(msg, event);
             }
         }
     }
