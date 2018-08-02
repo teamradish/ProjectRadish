@@ -5,6 +5,11 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 public final class OwoCommand extends BaseCommand
 {
     @Override
+    public String getDescription() {
+        return "Translates your input into unintewwigibwe gibbewish :3";
+    }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         String reply = content;

@@ -19,6 +19,11 @@ import projectRadish.Utilities;
 
 public class StreamInfoCommand extends BaseCommand
 {
+    @Override
+    public String getDescription() {
+        return "Displays current status of TPE's twitch stream.";
+    }
+
     private static final int thumbnailWidth = 284;
     private static final int thumnailHeight = 160;
 

@@ -11,6 +11,11 @@ import java.util.HashMap;
 public final class RemoveDocCommand extends AdminCommand
 {
     @Override
+    public String getDescription() {
+        return "Removes a doc from the bot's memory, using the name you input.";
+    }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         if (content.equals("")) {
@@ -23,7 +28,7 @@ public final class RemoveDocCommand extends AdminCommand
         String game = Utilities.findGame(content);
 
         if (game == null) {
-            game = DidYouMean.getBest(content, Configuration.getDocs().keySet());
+            game = DidYouMean.getBest(content, Configuration.getDocs().keySet(), true);
             String e = "You must get the doc name exactly right to remove a doc.\n" +
                     "Did you mean: " + game;
             event.getChannel().sendMessage(e).queue();

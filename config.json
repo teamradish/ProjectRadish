@@ -32,9 +32,11 @@
     "Ocarina of Time" : "https://docs.google.com/document/d/1tz91cBVdu0PJT7iTc8yTi629-bJmfJU0g88zgAbe0ac",
     "Wind Waker" : "https://docs.google.com/document/d/1DuLW4JsIwHvLlLTAOrsg-_z4c1oDy5l0LuAG5On5e18",
     "Super Mario Galaxy" : "https://docs.google.com/document/d/1KrK7c6EehC__rE6keDb41Agv_njqy3QyvqkxQ2cE5Mo",
-    "Super Mario RPG" : "https://docs.google.com/document/d/1GssMt4cdwXKTHwcpZ75Mz26B5e8xw4OrKjpAQMHTMFk"
+    "Super Mario RPG" : "https://docs.google.com/document/d/1GssMt4cdwXKTHwcpZ75Mz26B5e8xw4OrKjpAQMHTMFk",
+    "Ocarina of Time 2" : "https://docs.google.com/document/d/14CkVmdQH_W1drn57bkTR_3KvSsieM3JqBt9zWwY3TIg"
   },
   "Commands" : {
+    "help" : "HelpCommand",
     "play" : "VoiceCommands.VoicePlayCommand",
     "owo" : "OwoCommand",
     "roll" : "RollCommand",
@@ -54,6 +56,8 @@
     "restoredoc" : "DocCommands.RestoreDocCommand",
     "removecommand" : "MetaCommands.RemoveCmdCommand",
     "clear" : "VoiceCommands.VoiceClearCommand",
+    "reconnect" : "VoiceCommands.VoiceConnectCommand",
+    "disconnect" : "VoiceCommands.VoiceDisconnectCommand",
     "say" : "SayCommand",
     "renamecommand" : "MetaCommands.RenameCmdCommand",
     "currentsong" : "VoiceCommands.VoiceGetCommand",
@@ -64,6 +68,7 @@
     "playing" : "PresenceCommands.GameCommand",
     "streaminfo" : "StreamInfoCommand",
     "nextsong" : "VoiceCommands.VoiceNextCommand",
+    "queue" : "VoiceCommands.ViewQueueCommand",
     "status" : "PresenceCommands.StatusCommand"
   },
   "CommandPrefix" : "!"

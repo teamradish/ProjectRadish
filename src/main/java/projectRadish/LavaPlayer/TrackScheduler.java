@@ -4,10 +4,9 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
-import net.dv8tion.jda.core.entities.Invite;
-import net.dv8tion.jda.core.managers.GuildManager;
-import projectRadish.MessageListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -17,13 +16,15 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class TrackScheduler extends AudioEventAdapter {
   private final AudioPlayer player;
   private final BlockingQueue<AudioTrack> queue;
+  private final GuildMusicManager manager;
 
   /**
    * @param player The audio player this scheduler uses
    */
-  public TrackScheduler(AudioPlayer player) {
+  public TrackScheduler(AudioPlayer player, GuildMusicManager musicManager) {
     this.player = player;
     this.queue = new LinkedBlockingQueue<>();
+    this.manager = musicManager;
   }
 
   /**
@@ -44,9 +45,11 @@ public class TrackScheduler extends AudioEventAdapter {
    * Start the next track, stopping the current one if it is playing.
    */
   public void nextTrack() {
-    // Start the next track, regardless of if something is already playing or not. In case queue was empty, we are
-    // giving null to startTrack, which is a valid argument and will simply stop the player.
-    player.startTrack(queue.poll(), false);
+      // Start the next track, regardless of if something is already playing or not. In case queue was empty, we are
+      // giving null to startTrack, which is a valid argument and will simply stop the player.
+      AudioTrack next = queue.poll();
+      if (next == null) { this.manager.sendMessage("End of queue reached."); }
+      player.startTrack(next, false);
   }
 
   /**
@@ -59,16 +62,19 @@ public class TrackScheduler extends AudioEventAdapter {
   }
 
   /**
-   * Returns the size of the track queue.
-   * @return An integer representing the size of the queue.
+   * Returns a copy of the queue.
+   * @return a List copy of the music queue
    */
-  public int queueSize()
-  {
-      return queue.size();
+  public List<AudioTrack> getQueue() {
+    List<AudioTrack> queueCopy = new ArrayList<>();
+    for (AudioTrack t: queue) {
+      queueCopy.add(t);
+    }
+    return queueCopy;
   }
 
   public void clear() {
-    player.stopTrack();
+    queue.clear();
   }
 
   @Override

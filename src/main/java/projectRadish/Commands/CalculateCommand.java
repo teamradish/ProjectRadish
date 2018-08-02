@@ -5,6 +5,11 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public final class CalculateCommand extends BaseCommand
 {
+    @Override
+    public String getDescription() {
+        return "Does maths.";
+    }
+
     private Expression expression = new Expression();
 
     @Override

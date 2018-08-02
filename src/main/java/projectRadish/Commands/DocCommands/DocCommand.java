@@ -11,13 +11,19 @@ import projectRadish.Utilities;
 public final class DocCommand extends BaseCommand
 {
     @Override
+    public String getDescription() {
+        return "Provides the link to the doc for the game you input. Leave blank for current/most recent game's doc.";
+    }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         //No arguments - show current game doc
         if (content.length() == 0)
         {
             String game = Configuration.getCurrentGame();
-            String link = Configuration.getDocs().get(DidYouMean.getBest(game, Configuration.getDocs().keySet())) + "/edit";
+            String best_match = DidYouMean.getBest(game, Configuration.getDocs().keySet(), true);
+            String link = Configuration.getDocs().get(best_match) + "/edit";
 
             MessageEmbed e = Utilities.formatOutput("Current Game Document:", game, link);
             event.getChannel().sendMessage(e).queue();
@@ -29,7 +35,7 @@ public final class DocCommand extends BaseCommand
 
             boolean isGuess = false;
             if (game == null) {    // if no match found
-                game = DidYouMean.getBest(input, Configuration.getDocs().keySet());
+                game = DidYouMean.getBest(input, Configuration.getDocs().keySet(), true);
                 isGuess = true;
             }
 

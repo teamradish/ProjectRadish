@@ -12,6 +12,11 @@ import java.util.HashMap;
 public final class NewDocCommand extends AdminCommand
 {
     @Override
+    public String getDescription() {
+        return "Adds a new document to the bot's memory, with the name and link you provide (in that order).";
+    }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         String args[] = content.split(" ");

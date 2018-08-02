@@ -8,6 +8,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
  */
 public abstract class BaseCommand
 {
+    public abstract String getDescription();
+
     /**
      * Use for any initialization.
      */

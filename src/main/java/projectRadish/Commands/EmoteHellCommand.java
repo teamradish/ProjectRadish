@@ -10,6 +10,11 @@ import java.util.List;
 
 public final class EmoteHellCommand extends BaseCommand
 {
+    @Override
+    public String getDescription() {
+        return "Creates a big (but responsibly big) wall of random emotes. Has a per-user cooldown system.";
+    }
+
     private static DecimalFormat dp1 = new DecimalFormat(".#");
     static private final long cooldown = 1*60*60*1000; // 1 hour, in milliseconds
     private HashMap<String, Long> lastTimes = new HashMap<>();

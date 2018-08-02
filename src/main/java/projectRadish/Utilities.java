@@ -45,11 +45,36 @@ public final class Utilities
         return LocalDateTime.now(ZoneId.of("UTC"));
     }
 
+
+
     /**
-     * Formats a time value in milliseconds into a time format ("HH:mm:ss").
+     * Formats a time value in milliseconds into a time format ("H:mm:ss").
      * @param time The time value, in milliseconds.
      * @return A String containing the formatted time.
      */
+    public static String getTimeStringFromMs(long time) {
+        long hour = 60 * 60 * 1000;
+        long minute = 60 * 1000;
+        long second = 1000;
+
+        long h = time / hour; // Integer division
+        time = time - (h * hour);
+        long m = time / minute;
+        time = time - (m * minute);
+        long s = time / second;
+        // Ignore remaining milliseconds
+
+        String timeString;
+        if (h > 0) {
+            timeString = String.format("%d:%02d:%02d", h, m, s);
+        } else {
+            timeString = String.format("%d:%02d", m, s);
+        }
+
+        return timeString;
+    }
+    /* Kimi's old implementation, just in case mine breaks
+        replaced on 2nd Aug, so delete if we're well past that.
     public static String getTimeStringFromMs(final long time)
     {
         //Format to hours, minutes, and seconds
@@ -58,7 +83,7 @@ public final class Utilities
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         return formatter.format(zdt);
-    }
+    }*/
 
     /**
      * Tries to instantiate a command from a string.

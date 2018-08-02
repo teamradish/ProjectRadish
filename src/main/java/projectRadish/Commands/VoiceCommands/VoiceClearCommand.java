@@ -11,6 +11,11 @@ import projectRadish.MessageListener;
 public final class VoiceClearCommand extends BaseCommand
 {
     @Override
+    public String getDescription() {
+        return "Stops playback and removes all items from the music queue.";
+    }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         if (event.isFromType(ChannelType.PRIVATE)) {
@@ -18,8 +23,8 @@ public final class VoiceClearCommand extends BaseCommand
             return;
         }
 
-        MessageListener.vp.skipTrack(event.getTextChannel());
         MessageListener.vp.clearQueue(event.getTextChannel());
+        MessageListener.vp.skipTrack(event.getTextChannel());
         event.getChannel().sendMessage("Queue Cleared.").queue();
     }
 }

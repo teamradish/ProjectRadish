@@ -8,6 +8,11 @@ import java.util.Vector;
 public final class ScrambleCommand extends BaseCommand
 {
     @Override
+    public String getDescription() {
+        return "Rearranges your input into unintelligible gibberish.";
+    }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         StringBuilder strBuilder = new StringBuilder(content.length());

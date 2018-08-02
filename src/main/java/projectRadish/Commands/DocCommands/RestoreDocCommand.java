@@ -11,6 +11,11 @@ import java.util.HashMap;
 public final class RestoreDocCommand extends AdminCommand
 {
     @Override
+    public String getDescription() {
+        return "Undoes the removal of a doc from the bot's memory (if done reasonably soon after deletion) using the name you input.";
+    }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         if (content.equals("")) {
@@ -24,7 +29,7 @@ public final class RestoreDocCommand extends AdminCommand
             return;
         }
 
-        String game = DidYouMean.getBest(content, Utilities.recycleBin.keySet());
+        String game = DidYouMean.getBest(content, Utilities.recycleBin.keySet(), true);
 
         HashMap<String, String> docs = Configuration.getDocs();
         docs.put(game, Utilities.recycleBin.get(game));

@@ -10,6 +10,10 @@ import projectRadish.Commands.AdminCommand;
 public final class ListenCommand extends AdminCommand
 {
     @Override
+    public String getDescription() {
+        return "Set the bot's status message to \"Listening to <input>\". Set to \"none\" or \"nothing\" for no status message.";
+    }
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         String game = content;

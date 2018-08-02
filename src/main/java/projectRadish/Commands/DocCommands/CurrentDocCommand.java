@@ -2,18 +2,22 @@ package projectRadish.Commands.DocCommands;
 
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import projectRadish.Commands.BaseCommand;
+import projectRadish.Commands.AdminCommand;
 import projectRadish.Configuration;
-import projectRadish.Constants;
 import projectRadish.DidYouMean;
 import projectRadish.Utilities;
 
-public final class CurrentDocCommand extends BaseCommand
+public final class CurrentDocCommand extends AdminCommand
 {
+    @Override
+    public String getDescription() {
+        return "Sets the current (default) doc to the one that best matches your input.";
+    }
+
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
-        if (content.equals("")) {
+        if (content.equals("") || content.contains("www.")) {
             event.getChannel().sendMessage(String.format(
                     "Usage: `%scurrentdoc Game Name`", Configuration.getCommandPrefix())
             ).queue();
@@ -22,7 +26,7 @@ public final class CurrentDocCommand extends BaseCommand
 
         Configuration.setCurrentGame(content);
 
-        String game = DidYouMean.getBest(content, Configuration.getDocs().keySet());
+        String game = DidYouMean.getBest(content, Configuration.getDocs().keySet(), true);
         String link = Configuration.getDocs().get(game) + "/preview";
 
         MessageEmbed e = Utilities.formatOutput("Current Doc set to:", game, link);

@@ -7,13 +7,13 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.managers.AudioManager;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class VoicePlayer {
@@ -81,41 +81,47 @@ public class VoicePlayer {
   public AudioTrack getTrack(TextChannel channel)
   {
       GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
-
+      musicManager.textChannel = channel;
       return musicManager.player.getPlayingTrack();
   }
 
   public AudioTrack peekTrack(TextChannel channel)
   {
       GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
-
+      musicManager.textChannel = channel;
       return musicManager.scheduler.peekTrack();
   }
 
-  public int getQueueSize(TextChannel channel)
+  public List<AudioTrack> getQueue(TextChannel channel)
   {
       GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
-
-      return musicManager.scheduler.queueSize();
+      musicManager.textChannel = channel;
+      return musicManager.scheduler.getQueue();
   }
 
   private void play(Guild guild, GuildMusicManager musicManager, AudioTrack track) {
     connectToVoiceChannel(guild.getAudioManager());
-
     musicManager.scheduler.queue(track);
   }
 
-  public void skipTrack(TextChannel channel) {
+    public void skipTrack(TextChannel channel) {
     GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+    musicManager.textChannel = channel;
     musicManager.scheduler.nextTrack();
-  }
+    }
 
     public void clearQueue(TextChannel channel) {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+        musicManager.textChannel = channel;
         musicManager.scheduler.clear();
     }
 
-  private static void connectToVoiceChannel(AudioManager audioManager) {
+    public static void disconnectFromVoiceChannel(TextChannel channel) {
+        AudioManager audioManager = channel.getGuild().getAudioManager();
+        if (audioManager.isConnected()) { audioManager.closeAudioConnection(); }
+    }
+
+  public static void connectToVoiceChannel(AudioManager audioManager) {
     if (!audioManager.isConnected() && !audioManager.isAttemptingToConnect()) {
       for (VoiceChannel voiceChannel : audioManager.getGuild().getVoiceChannels()) {
           if (voiceChannel.getName().toLowerCase().contains("music")) {

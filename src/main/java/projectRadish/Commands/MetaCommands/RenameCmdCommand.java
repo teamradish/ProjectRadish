@@ -9,6 +9,11 @@ import java.util.HashMap;
 public final class RenameCmdCommand extends AdminCommand
 {
     @Override
+    public String getDescription() {
+        return "Renames a command, from <input 1> to <input 2>. Currently doesn't work for command names containing spaces.";
+    }
+
+    @Override
     public void ExecuteCommand(String contents, MessageReceivedEvent event)
     {
         String[] args = contents.split(" ");

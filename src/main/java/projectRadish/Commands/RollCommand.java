@@ -6,6 +6,11 @@ import projectRadish.Utilities;
 public final class RollCommand extends BaseCommand
 {
     @Override
+    public String getDescription() {
+        return "Outputs a random number. Default 1-6 inclusive, but you can input 2 numbers to define your own range.";
+    }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         String args[] = content.split(" ");
@@ -24,7 +29,8 @@ public final class RollCommand extends BaseCommand
             }
             catch (Exception e)
             {
-                System.out.println(e.getMessage());
+                event.getChannel().sendMessage("One of your inputs wasn't valid.").queue();
+                return;
             }
         }
 

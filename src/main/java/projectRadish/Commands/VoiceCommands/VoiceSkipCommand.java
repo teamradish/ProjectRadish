@@ -9,6 +9,11 @@ import projectRadish.MessageListener;
 public final class VoiceSkipCommand extends BaseCommand
 {
     @Override
+    public String getDescription() {
+        return "Skips the current track, and starts playback of the next.";
+    }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         if (event.isFromType(ChannelType.PRIVATE)) {
@@ -16,7 +21,7 @@ public final class VoiceSkipCommand extends BaseCommand
             return;
         }
 
-        MessageListener.vp.skipTrack(event.getTextChannel());
         event.getChannel().sendMessage("Track Skipped.").queue();
+        MessageListener.vp.skipTrack(event.getTextChannel());
     }
 }

@@ -10,6 +10,11 @@ import projectRadish.Configuration;
 public class ReloadCommand extends AdminCommand
 {
     @Override
+    public String getDescription() {
+        return "Reloads the config file, to make sure any changes are pushed through.";
+    }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         Configuration.loadConfiguration();

@@ -9,6 +9,11 @@ import projectRadish.Commands.AdminCommand;
 public final class StatusCommand extends AdminCommand
 {
     @Override
+    public String getDescription() {
+        return "Set the bot's visibility status - can be Online, Idle, DND, or Offline.";
+    }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event) {
         String status = content;
         try {

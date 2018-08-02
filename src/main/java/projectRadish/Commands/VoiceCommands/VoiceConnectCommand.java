@@ -5,12 +5,11 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.Commands.BaseCommand;
 import projectRadish.MessageListener;
 
-public final class VoicePlayCommand extends BaseCommand
+public final class VoiceConnectCommand extends BaseCommand
 {
     @Override
     public String getDescription() {
-        return "Queues up the song your input links to.\n" +
-                "The bot will resume playback and join the Voice Channel if it was not already connected.";
+        return "Rejoins the Voice Channel, and resumes playing music, unless the queue is empty.";
     }
 
     @Override
@@ -21,6 +20,6 @@ public final class VoicePlayCommand extends BaseCommand
             return;
         }
 
-        MessageListener.vp.loadAndPlay(event.getTextChannel(), content);
+        MessageListener.vp.connectToVoiceChannel(event.getGuild().getAudioManager());
     }
 }

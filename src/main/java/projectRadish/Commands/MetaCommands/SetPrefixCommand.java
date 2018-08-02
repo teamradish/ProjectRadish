@@ -8,6 +8,12 @@ import projectRadish.Configuration;
 public class SetPrefixCommand extends AdminCommand
 {
     @Override
+    public String getDescription() {
+        return "Sets the prefix to the text you input. Input must be enclosed in quotes to register leading or trailing whitespace.\n" +
+                "Note this command will only work via PM.";
+    }
+
+    @Override
     public void ExecuteCommand(String contents, MessageReceivedEvent event)
     {
         // Ignore messages that aren't PMs (otherwise you'll accidentally change the prefix for the live bot while testing)

@@ -10,6 +10,11 @@ import projectRadish.Utilities;
 public final class GuessCommand extends BaseCommand
 {
     @Override
+    public String getDescription() {
+        return "Takes your input and finds the closest match from all doc titles.";
+    }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         //Don't bother if there's no input
@@ -21,7 +26,7 @@ public final class GuessCommand extends BaseCommand
 
         String prefix = "Matched: ";
         if (game == null) {    // still no match found
-            game = DidYouMean.getBest(input, Configuration.getDocs().keySet());
+            game = DidYouMean.getBest(input, Configuration.getDocs().keySet(), true);
             prefix = "Best guess: ";
         }
         String abbr = DidYouMean.abbreviate(game);

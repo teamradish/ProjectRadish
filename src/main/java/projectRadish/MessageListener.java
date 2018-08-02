@@ -11,8 +11,7 @@ import java.util.Map.Entry;
 
 public class MessageListener extends ListenerAdapter implements ConfigListener
 {
-    //Hardcoded for now, but we might want to load them in from config somewhere later
-    private HashMap<String, BaseCommand> Commands = new HashMap<>();
+    private static Map<String, BaseCommand> Commands = new HashMap<>();
 
     public static VoicePlayer vp = new VoicePlayer();
 
@@ -69,6 +68,8 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
             }
         }
     }
+
+    public static Map<String, BaseCommand> getCommands() { return Commands; }
 
     /**
      * NOTE THE @Override!

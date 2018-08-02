@@ -9,6 +9,11 @@ import java.util.HashMap;
 public class RemoveCmdCommand extends AdminCommand
 {
     @Override
+    public String getDescription() {
+        return "Removes a command, using the name you input. Currently doesn't work for command names containing spaces.";
+    }
+
+    @Override
     public void ExecuteCommand(String contents, MessageReceivedEvent event) {
         String[] args = contents.split(" ");
 

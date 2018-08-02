@@ -28,7 +28,7 @@ public class DidYouMean {
     }
 
 
-    public static String getBest(String input, Set<String> targets) {
+    public static String getBest(String input, Set<String> targets, boolean test_abbreviations) {
         input = input.toLowerCase();
         String bestMatch = "";
         Integer leastDist = Integer.MAX_VALUE;
@@ -40,15 +40,17 @@ public class DidYouMean {
                 bestMatch = target;
             }
         }
-        // Abbreviations
-        for (String target: targets) {
-            Integer dist = DLAlgorithm.execute(input, abbreviate(target).toLowerCase());
-            if (dist < leastDist) {
-                leastDist = dist;
-                bestMatch = target;
+
+        if (test_abbreviations) { // Abbreviations
+            for (String target : targets) {
+                Integer dist = DLAlgorithm.execute(input, abbreviate(target).toLowerCase());
+                if (dist < leastDist) {
+                    leastDist = dist;
+                    bestMatch = target;
+                }
             }
         }
-        //System.out.println(leastDist);
+
         return bestMatch;
     }
 

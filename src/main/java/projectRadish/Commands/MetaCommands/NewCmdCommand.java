@@ -9,12 +9,17 @@ import java.util.HashMap;
 public final class NewCmdCommand extends AdminCommand
 {
     @Override
+    public String getDescription() {
+        return "Adds a new command, using the name and Java Class you input (in that order). Currently doesn't work for command names containing spaces.";
+    }
+
+    @Override
     public void ExecuteCommand(String contents, MessageReceivedEvent event)
     {
         String[] args = contents.split(" ");
 
         //Ignore messages without exactly two arguments
-        if (args.length <= 1 || args.length > 2)
+        if (args.length != 2)
         {
             event.getChannel().sendMessage("Usage: \"command\" \"ClassName\"").queue();
             return;
