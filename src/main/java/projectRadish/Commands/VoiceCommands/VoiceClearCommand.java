@@ -10,7 +10,7 @@ public final class VoiceClearCommand extends BaseCommand
 {
     @Override
     public String getDescription() {
-        return "Stops playback and removes all items from the music queue.";
+        return "Stops playback and removes all songs from the music queue.";
     }
 
     @Override

@@ -1,7 +1,5 @@
 package projectRadish.Commands.VoiceCommands;
 
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.Commands.BaseCommand;
 import projectRadish.LavaPlayer.QueueItem;
@@ -14,7 +12,7 @@ public class VoiceNextCommand extends BaseCommand
 {
     @Override
     public String getDescription() {
-        return "Displays the info of the next item in the queue.";
+        return "Displays the info of the next song in the queue.";
     }
 
     @Override
@@ -30,18 +28,16 @@ public class VoiceNextCommand extends BaseCommand
             return;
         }
 
-        AudioTrack track = item.getTrack();
-        AudioTrackInfo trackInfo = track.getInfo();
-
-        String title = trackInfo.title;
-        String duration = Utilities.getTimeStringFromMs(trackInfo.length);
-        String link = track.getInfo().uri;
+        String title = item.getTitle();
+        String duration = Utilities.getTimeStringFromMs(item.getLength());
+        String link = item.getLink();
 
         String req = "***`requested by "+item.getRequester()+"`***";
+        String plays = (item.getPlays() == 1) ? "" : "x"+String.valueOf(item.getPlays()); // Hide if only 1 play
 
         event.getChannel().sendMessage(String.format(
-                "Next up: %s\n" +
+                "Next up: **%s** %s\n" +
                 "Link: <%s>\n" +
-                "**[ %s ]**%70s", title, link, duration, req)).queue();
+                "**[ %s ]**%70s", title, plays, link, duration, req)).queue();
     }
 }

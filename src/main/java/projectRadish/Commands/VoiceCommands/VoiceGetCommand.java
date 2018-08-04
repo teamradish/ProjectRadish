@@ -1,6 +1,5 @@
 package projectRadish.Commands.VoiceCommands;
 
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.Commands.BaseCommand;
 import projectRadish.LavaPlayer.QueueItem;
@@ -13,7 +12,7 @@ public class VoiceGetCommand extends BaseCommand
 {
     @Override
     public String getDescription() {
-        return "Displays the info of the currently playing track.";
+        return "Displays the info of the currently playing song.";
     }
 
     @Override
@@ -31,11 +30,10 @@ public class VoiceGetCommand extends BaseCommand
         }
 
         //Kimimaru: Duration is returned in milliseconds!
-        AudioTrack track = item.getTrack();
-        String curTitle = track.getInfo().title;
-        String curPos = Utilities.getTimeStringFromMs(track.getPosition());
-        String curLen = Utilities.getTimeStringFromMs(track.getInfo().length);
-        String curLink = track.getInfo().uri;
+        String curTitle = item.getTitle();
+        String curPos = Utilities.getTimeStringFromMs(item.getPosition());
+        String curLen = Utilities.getTimeStringFromMs(item.getLength());
+        String curLink = item.getLink();
 
         // Horrible hack to fix case when curLen includes hours but curPos doesn't
         if (curLen.length() >= "H:mm:ss".length()) {
@@ -44,10 +42,11 @@ public class VoiceGetCommand extends BaseCommand
         }
 
         String req = "***`requested by "+item.getRequester()+"`***";
+        String plays = (item.getPlays() == 1) ? "" : "x"+String.valueOf(item.getPlays()); // Hide if only 1 play
 
         event.getChannel().sendMessage(String.format(
-                "Playing: %s \n" +
+                "Playing: **%s** %s\n" +
                 "Link: <%s>\n" +
-                "**[ %s / %s ]**%70s", curTitle, curLink, curPos, curLen, req)).queue();
+                "**[ %s / %s ]**%70s", curTitle, plays, curLink, curPos, curLen, req)).queue();
     }
 }

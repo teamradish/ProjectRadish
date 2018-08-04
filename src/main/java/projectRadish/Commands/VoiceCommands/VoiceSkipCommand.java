@@ -8,9 +8,7 @@ import projectRadish.MessageListener;
 public final class VoiceSkipCommand extends BaseCommand
 {
     @Override
-    public String getDescription() {
-        return "Skips the current track, and starts playback of the next.";
-    }
+    public String getDescription() { return "Skips the current song, and starts playback of the next."; }
 
     @Override
     public boolean canBeUsedViaPM() { return false; }

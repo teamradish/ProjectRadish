@@ -10,7 +10,7 @@ public final class VoiceDisconnectCommand extends BaseCommand
     @Override
     public String getDescription() {
         return "Disconnects from the Voice Channel and pauses playback.\n" +
-                "The queue and progress through current track will both be preserved.";
+                "The queue and progress through the current song will both be preserved.";
     }
 
     @Override

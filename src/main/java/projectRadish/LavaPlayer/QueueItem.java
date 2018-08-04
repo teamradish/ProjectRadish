@@ -5,25 +5,32 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 public class QueueItem {
     private AudioTrack track;
     private String requester;
-    private int repeats;        // Default 0 - play once.
-    private int playsLeft;
+    private int plays;        // Default 1 - play once.
+    private int playsCount;
 
 
-    public QueueItem(AudioTrack track, String requester, int repeats) {
+    public QueueItem(AudioTrack track, String requester, int plays) {
         this.track = track;
         this.requester = requester;
-        this.repeats = repeats;
-        this.playsLeft = repeats;
+        this.plays = plays;
+        if (this.plays < 1) { this.plays = 1; }
+        if (this.plays > 999) {this.plays = 999; }
+
+        this.playsCount = 0;
     }
 
     public boolean repeat() {
-        this.playsLeft -= 1;
-        return (this.playsLeft >= 0);
+        this.track = this.track.makeClone();
+        this.playsCount++;
+        return (this.playsCount < this.plays);
     }
 
     public AudioTrack getTrack() { return this.track; }
+    public String getLink() { return this.track.getInfo().uri; }
+    public String getTitle() { return this.track.getInfo().title; }
     public String getRequester() { return this.requester; }
+    public int getPlays() { return this.plays; }
 
-    public int getRepeats() { return this.repeats; }
-    public int getRepeatsLeft() { return this.playsLeft; }
+    public long getPosition() { return this.track.getDuration() * this.playsCount + this.track.getPosition(); }
+    public long getLength() { return this.track.getDuration() * this.plays; }
 }

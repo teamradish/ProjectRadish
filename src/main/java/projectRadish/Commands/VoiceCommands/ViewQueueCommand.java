@@ -1,6 +1,5 @@
 package projectRadish.Commands.VoiceCommands;
 
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.Commands.BaseCommand;
 import projectRadish.LavaPlayer.QueueItem;
@@ -34,10 +33,9 @@ public class ViewQueueCommand extends BaseCommand
         QueueItem curItem = MessageListener.vp.getItem(event.getTextChannel());
 
         if (!isNull(curItem)) {
-            AudioTrack curTrack = curItem.getTrack();
-            String curTitle = curTrack.getInfo().title;
-            String curPos = Utilities.getTimeStringFromMs(curTrack.getPosition());
-            String curLen = Utilities.getTimeStringFromMs(curTrack.getInfo().length);
+            String curTitle = curItem.getTitle();
+            String curPos = Utilities.getTimeStringFromMs(curItem.getPosition());
+            String curLen = Utilities.getTimeStringFromMs(curItem.getLength());
 
             // Horrible hack to fix case when curLen includes hours but curPos doesn't
             if (curLen.length() >= "H:mm:ss".length()) {
@@ -45,9 +43,11 @@ public class ViewQueueCommand extends BaseCommand
                 else if (curPos.length() == "mm:ss".length()) { curPos = "0:" + curPos; }
             }
 
+            String plays = (curItem.getPlays() == 1) ? "" : "x"+String.valueOf(curItem.getPlays()); // Hide if only 1 play
+
             replyB.append(String.format(
-                    "Playing: %s \n" +
-                    "**[ %s / %s ]**\n", curTitle, curPos, curLen));
+                    "Playing: **%s** %s\n" +
+                    "**[ %s / %s ]**\n", curTitle, plays, curPos, curLen));
         } else {
             replyB.append("No item currently playing.\n");
         }
@@ -59,19 +59,19 @@ public class ViewQueueCommand extends BaseCommand
             int i = 0;
             for (QueueItem item: queue) {
                 i++;
-                AudioTrack t = item.getTrack();
-                duration += t.getInfo().length;
+                duration += item.getLength();
 
                 if (i <= maxItemsShown && replyB.length() <= 1800) { // watch out for that character limit
-                    String title = t.getInfo().title;
+                    String title = item.getTitle();
                     if (title.length() > maxTitleLength) { title = title.substring(0, maxTitleLength-3) + "..."; }
 
-                    String len = Utilities.getTimeStringFromMs(t.getInfo().length);
+                    String len = Utilities.getTimeStringFromMs(item.getLength());
                     String req = item.getRequester();
+                    String plays = (item.getPlays() == 1) ? "" : "x"+String.valueOf(item.getPlays()); // Hide if only 1 play
 
                     replyB.append(String.format(
-                            "#%-3d| %s\n" +
-                            "____| %-9s%"+(maxTitleLength-13)+"s\n", i, title, len, req));
+                            "#%-3d| %s %s\n" +
+                            "____| %-8s %s\n", i, title, plays, len, req));
                 } else {
                     and_X_More++;
                 }

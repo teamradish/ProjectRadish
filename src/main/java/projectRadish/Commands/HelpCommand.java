@@ -91,7 +91,7 @@ public final class HelpCommand extends BaseCommand
                 reply.append(Configuration.getCommandPrefix());
 
                 if (i < 4) {
-                    reply.append(String.format("%0$-20s", cmdName));
+                    reply.append(String.format("%-16s", cmdName));
                 } else {
                     reply.append(String.format("%s", cmdName));
                     i = 0;

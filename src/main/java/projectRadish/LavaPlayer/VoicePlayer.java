@@ -44,22 +44,21 @@ public class VoicePlayer {
         return musicManager;
     }
 
-    public void loadAndPlay(final MessageReceivedEvent event, String content) {
+    public void loadAndPlay(final MessageReceivedEvent event, String link, int plays) {
         TextChannel channel = event.getTextChannel();
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         String requester = event.getAuthor().getName();
 
-        String trackUrl = content;
-        int repeats = 0;                                                                                ///////////////////////////////////
-
-        playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
+        playerManager.loadItemOrdered(musicManager, link, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
-                String durationString = Utilities.getTimeStringFromMs(track.getDuration());
+                QueueItem item = new QueueItem(track, requester, plays);
+                String lenString = Utilities.getTimeStringFromMs(item.getLength());
+                String plays = (item.getPlays() == 1) ? "" : "x"+String.valueOf(item.getPlays()); // Hide if only 1 play
                 channel.sendMessage(String.format(
-                        "Adding to queue: `%s`\n" +
-                        "**[ %s ]**", track.getInfo().title, durationString)).queue();
-                QueueItem item = new QueueItem(track, requester, repeats);
+                        "Adding to queue: **%s** %s\n" +
+                        "**[ %s ]**", item.getTitle(), plays, lenString)).queue();
+
                 play(channel.getGuild(), musicManager, item);
             }
 
@@ -67,21 +66,21 @@ public class VoicePlayer {
             public void playlistLoaded(AudioPlaylist playlist) { // Still dunno how these work.
                 long totalDuration = 0;
                 for (AudioTrack track : playlist.getTracks()) {
-                    totalDuration += track.getDuration();
-                    QueueItem item = new QueueItem(track, requester, 0);
+                    QueueItem item = new QueueItem(track, requester, 1);
+                    totalDuration += item.getLength();
                     play(channel.getGuild(), musicManager, item);
                 }
 
                 String durationString = Utilities.getTimeStringFromMs(totalDuration);
                 channel.sendMessage(String.format(
-                        "Adding playlist to queue: `%s`\n" +
+                        "Adding playlist to queue: **%s**\n" +
                         "Size: %s Tracks\n" +
                         "**[ %s ]**", playlist.getName(), playlist.getTracks().size(), durationString)).queue();
             }
 
             @Override
             public void noMatches() {
-                channel.sendMessage("Couldn't find a song at `" + trackUrl + "`").queue();
+                channel.sendMessage("Couldn't find a song at `" + link + "`").queue();
             }
 
             @Override

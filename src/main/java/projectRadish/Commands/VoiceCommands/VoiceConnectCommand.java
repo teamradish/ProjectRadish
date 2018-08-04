@@ -8,7 +8,9 @@ public final class VoiceConnectCommand extends BaseCommand
 {
     @Override
     public String getDescription() {
-        return "Rejoins the Voice Channel, and resumes playing music, unless the queue is empty.";
+        return "Rejoins the Voice Channel, and resumes playing music, unless the queue is empty.\n" +
+                "If used when already connected, briefly disconnects and rejoins - this can solve " +
+                "a few issues with audio playback.";
     }
 
     @Override
