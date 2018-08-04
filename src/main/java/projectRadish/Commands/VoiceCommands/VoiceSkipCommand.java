@@ -1,7 +1,6 @@
 package projectRadish.Commands.VoiceCommands;
 
 
-import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.Commands.BaseCommand;
 import projectRadish.MessageListener;
@@ -20,6 +19,6 @@ public final class VoiceSkipCommand extends BaseCommand
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         event.getChannel().sendMessage("Track Skipped.").queue();
-        MessageListener.vp.skipTrack(event.getTextChannel());
+        MessageListener.vp.skipItem(event.getTextChannel());
     }
 }

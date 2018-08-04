@@ -71,8 +71,8 @@ public class TopBitsCommand extends BaseCommand
         }
 
         boolean promoAdded = false;
-        StringBuilder reply = new StringBuilder("Cheer Leaderboard:\n");
-        reply.append("`twitch.tv/twitchplays_everything`\n```\n");
+        StringBuilder reply = new StringBuilder("<twitch.tv/twitchplays_everything>\n");
+        reply.append("Cheer Leaderboard:```\n");
         for (int i = 0; i < boardSize; i++) {
             String name = !isNull(leaderNames.get(i)) ? leaderNames.get(i) : "---"; // Name, or "-" if name is null
 

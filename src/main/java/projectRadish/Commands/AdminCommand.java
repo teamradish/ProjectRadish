@@ -25,6 +25,13 @@ public abstract class AdminCommand extends BaseCommand
         }
 
         // If we made it this far, there are no issues, so execute
-        ExecuteCommand(contents, event);
+        try {
+            ExecuteCommand(contents, event);
+        }
+        catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("text for message must be less than")) { // character limit alert
+                event.getChannel().sendMessage("Sorry, my reply hit the character limit.").queue();
+            }
+        }
     }
 }

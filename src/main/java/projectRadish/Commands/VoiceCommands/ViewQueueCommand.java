@@ -1,13 +1,15 @@
 package projectRadish.Commands.VoiceCommands;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.Commands.BaseCommand;
+import projectRadish.LavaPlayer.QueueItem;
 import projectRadish.MessageListener;
 import projectRadish.Utilities;
 
 import java.util.List;
+
+import static java.util.Objects.isNull;
 
 public class ViewQueueCommand extends BaseCommand
 {
@@ -22,13 +24,17 @@ public class ViewQueueCommand extends BaseCommand
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
-        List<AudioTrack> queue = MessageListener.vp.getQueue(event.getTextChannel());
+        int maxTitleLength = 50;
+        int maxItemsShown = 10;
+
+        List<QueueItem> queue = MessageListener.vp.getQueue(event.getTextChannel());
 
         StringBuilder replyB = new StringBuilder();
 
-        AudioTrack curTrack = MessageListener.vp.getTrack(event.getTextChannel());
+        QueueItem curItem = MessageListener.vp.getItem(event.getTextChannel());
 
-        if (curTrack != null) {
+        if (!isNull(curItem)) {
+            AudioTrack curTrack = curItem.getTrack();
             String curTitle = curTrack.getInfo().title;
             String curPos = Utilities.getTimeStringFromMs(curTrack.getPosition());
             String curLen = Utilities.getTimeStringFromMs(curTrack.getInfo().length);
@@ -39,29 +45,47 @@ public class ViewQueueCommand extends BaseCommand
                 else if (curPos.length() == "mm:ss".length()) { curPos = "0:" + curPos; }
             }
 
-            replyB.append(String.format("Playing: %s `%s/%s`\n", curTitle, curPos, curLen));
+            replyB.append(String.format(
+                    "Playing: %s \n" +
+                    "**[ %s / %s ]**\n", curTitle, curPos, curLen));
         } else {
-            replyB.append("No track currently playing.\n");
+            replyB.append("No item currently playing.\n");
         }
 
         if (queue.size() > 0) {
             long duration = 0;
+            int and_X_More = 0; // Number of tracks that couldn't be shown
             replyB.append("```");
             int i = 0;
-            for (AudioTrack t: queue) {
+            for (QueueItem item: queue) {
                 i++;
-                String title = t.getInfo().title;
-                if (title.length() > 64) { title = title.substring(0, 61) + "..."; }
-                String len = Utilities.getTimeStringFromMs(t.getInfo().length);
+                AudioTrack t = item.getTrack();
                 duration += t.getInfo().length;
-                replyB.append(String.format("#%0$-3d| %1s\n____| %2s\n", i, title, len));
+
+                if (i <= maxItemsShown && replyB.length() <= 1800) { // watch out for that character limit
+                    String title = t.getInfo().title;
+                    if (title.length() > maxTitleLength) { title = title.substring(0, maxTitleLength-3) + "..."; }
+
+                    String len = Utilities.getTimeStringFromMs(t.getInfo().length);
+                    String req = item.getRequester();
+
+                    replyB.append(String.format(
+                            "#%-3d| %s\n" +
+                            "____| %-9s%"+(maxTitleLength-13)+"s\n", i, title, len, req));
+                } else {
+                    and_X_More++;
+                }
             }
+            if (and_X_More > 0) {
+                replyB.append("...and "+and_X_More+" more.\n");
+            }
+
             if (queue.size() > 1) {
                 replyB.append("\nTotal Duration\n"+ Utilities.getTimeStringFromMs(duration) +"\n");
             }
             replyB.append("```");
         } else {
-            replyB.append("```No tracks in queue.```");
+            replyB.append("```No items in queue.```");
         }
 
         event.getChannel().sendMessage(replyB.toString()).queue();

@@ -1,11 +1,13 @@
 package projectRadish.Commands.VoiceCommands;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.Commands.BaseCommand;
+import projectRadish.LavaPlayer.QueueItem;
 import projectRadish.MessageListener;
 import projectRadish.Utilities;
+
+import static java.util.Objects.isNull;
 
 public class VoiceGetCommand extends BaseCommand
 {
@@ -20,15 +22,16 @@ public class VoiceGetCommand extends BaseCommand
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
-        AudioTrack track = MessageListener.vp.getTrack(event.getTextChannel());
+        QueueItem item = MessageListener.vp.getItem(event.getTextChannel());
 
-        if (track == null)
+        if (isNull(item))
         {
-            event.getChannel().sendMessage("No track is currently being played.").queue();
+            event.getChannel().sendMessage("No item is currently being played.").queue();
             return;
         }
 
         //Kimimaru: Duration is returned in milliseconds!
+        AudioTrack track = item.getTrack();
         String curTitle = track.getInfo().title;
         String curPos = Utilities.getTimeStringFromMs(track.getPosition());
         String curLen = Utilities.getTimeStringFromMs(track.getInfo().length);
@@ -40,8 +43,11 @@ public class VoiceGetCommand extends BaseCommand
             else if (curPos.length() == "mm:ss".length()) { curPos = "0:" + curPos; }
         }
 
-        event.getChannel().sendMessage(
-                String.format("Playing: %s \nLink: `%s`\n**[ %s / %s ]**", curTitle, curLink, curPos, curLen)
-        ).queue();
+        String req = "***`requested by "+item.getRequester()+"`***";
+
+        event.getChannel().sendMessage(String.format(
+                "Playing: %s \n" +
+                "Link: <%s>\n" +
+                "**[ %s / %s ]**%70s", curTitle, curLink, curPos, curLen, req)).queue();
     }
 }

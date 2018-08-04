@@ -1,6 +1,5 @@
 package projectRadish.Commands.VoiceCommands;
 
-import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.Commands.BaseCommand;
 import projectRadish.MessageListener;
@@ -18,6 +17,7 @@ public final class VoiceConnectCommand extends BaseCommand
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
-        MessageListener.vp.connectToVoiceChannel(event.getGuild().getAudioManager());
+        MessageListener.vp.disconnectFromVoiceChannel(event.getTextChannel());
+        MessageListener.vp.connectToVoiceChannel(event.getGuild().getAudioManager(), event.getTextChannel());
     }
 }
