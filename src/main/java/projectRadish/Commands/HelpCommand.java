@@ -12,7 +12,13 @@ import projectRadish.Utilities;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class HelpCommand extends BaseCommand {
+public final class HelpCommand extends BaseCommand
+{
+    //Kimimaru: Cached data
+    private Map<String, BaseCommand> nonAdminCommands = null;
+    private String cachedAdminStr = "";
+    private String cachedNonAdminStr = "";
+
     @Override
     public String getDescription() {
         return "This.";
@@ -31,22 +37,20 @@ public final class HelpCommand extends BaseCommand {
             channel = event.getMember().getUser().openPrivateChannel().complete();
         }
 
-        // Create the allCommands and plebCommands Maps
-        Map<String, BaseCommand> allCommands = MessageListener.getCommands();
-        Map<String, BaseCommand> plebCommands = new HashMap<>();
-        for (String s : allCommands.keySet()) {
-            BaseCommand cmd = allCommands.get(s);
-            if (cmd instanceof AdminCommand == false) { // If it's not an admin command
-                plebCommands.put(s, cmd);
-            }
-        }
-
         // Use the command set that the requesting person can use.
-        Map<String, BaseCommand> cmds;
-        if (Utilities.isAdmin(event.getAuthor())) {
-            cmds = allCommands;
-        } else {
-            cmds = plebCommands;
+        Map<String, BaseCommand> cmds = MessageListener.getCommands();
+        String cachedStr = cachedAdminStr;
+        boolean isAdmin = Utilities.isAdmin(event.getAuthor());
+
+        if (isAdmin == false)
+        {
+            //Populate the non-admin command map if null
+            if (nonAdminCommands == null) {
+                initNonAdminCommands();
+            }
+
+            cmds = nonAdminCommands;
+            cachedStr = cachedNonAdminStr;
         }
 
         // Generate response
@@ -54,7 +58,7 @@ public final class HelpCommand extends BaseCommand {
             content = content.substring(prefix.length());
         }
         if (content.equals("")) {
-            sendList(channel, allCommands); // List all commands
+            sendList(channel, cmds, isAdmin); // List all commands
         } else {
             String reply; // Give info on one command
             if (cmds.keySet().contains(content)) {
@@ -69,25 +73,54 @@ public final class HelpCommand extends BaseCommand {
         }
     }
 
-    private static void sendList(MessageChannel channel, Map<String, BaseCommand> cmds) {
-        StringBuilder reply = new StringBuilder();
-        reply.append("Type " + Configuration.getCommandPrefix() + "help <command name> for the full description.\n");
-        reply.append("```\n");
+    private void sendList(MessageChannel channel, Map<String, BaseCommand> cmds, boolean isAdmin)
+    {
+        String str = (isAdmin == true) ? cachedAdminStr : cachedNonAdminStr;
 
-        int i = 0;
-        for (String cmdName : cmds.keySet()) {
-            i++;
-            reply.append(Configuration.getCommandPrefix());
+        //Kimimaru: Create string if not already cached
+        if (str.isEmpty() == true)
+        {
+            StringBuilder reply = new StringBuilder();
+            reply.append("Type " + Configuration.getCommandPrefix() + "help <command name> for the full description.\n");
+            reply.append("```\n");
 
-            if (i < 4) {
-                reply.append(String.format("%0$-20s", cmdName));
-            } else {
-                reply.append(String.format("%s", cmdName));
-                i = 0;
-                reply.append("\n");
+            int i = 0;
+            for (String cmdName : cmds.keySet()) {
+                i++;
+                reply.append(Configuration.getCommandPrefix());
+
+                if (i < 4) {
+                    reply.append(String.format("%0$-20s", cmdName));
+                } else {
+                    reply.append(String.format("%s", cmdName));
+                    i = 0;
+                    reply.append("\n");
+                }
+            }
+            reply.append("```");
+
+            str = reply.toString();
+            if (isAdmin == true)
+                cachedAdminStr = str;
+            else
+                cachedNonAdminStr = str;
+        }
+
+        channel.sendMessage(str).queue();
+    }
+
+    private void initNonAdminCommands()
+    {
+        Map<String, BaseCommand> allCommands = MessageListener.getCommands();
+
+        nonAdminCommands = new HashMap<>();
+        for (String s : allCommands.keySet()) {
+            BaseCommand cmd = allCommands.get(s);
+            if (cmd instanceof AdminCommand == false)
+            {
+                // If it's not an admin command
+                nonAdminCommands.put(s, cmd);
             }
         }
-        reply.append("```");
-        channel.sendMessage(reply.toString()).queue();
     }
 }
