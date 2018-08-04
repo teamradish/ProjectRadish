@@ -1,5 +1,6 @@
 package projectRadish.Commands;
 
+import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 
@@ -8,14 +9,26 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
  */
 public abstract class BaseCommand
 {
+    protected BaseCommand(){}
+
+    /**
+     * Used to get the String returned by !help for each command.
+     * @return !help's description
+     */
     public abstract String getDescription();
+
+    /**
+     * Simply override this to "return false;" to automatically restrict the command.
+     * @return Whether or not this command can be used in a PM channel.
+     */
+    public boolean canBeUsedViaPM() { return true; }
+
 
     /**
      * Use for any initialization.
      */
     public void Initialize(){}
 
-    protected BaseCommand(){}
 
     /**
      * This is only here so that AdminCommand (and maybe other subclasses in future) can override it.
@@ -26,7 +39,11 @@ public abstract class BaseCommand
      */
     public void ProcessCommand(String contents, MessageReceivedEvent event)
     {
-        ExecuteCommand(contents, event);
+        if (event.isFromType(ChannelType.PRIVATE) && !canBeUsedViaPM()) {
+            event.getChannel().sendMessage("This command cannot be used in a PM.").queue();
+        } else {
+            ExecuteCommand(contents, event);
+        }
     }
 
     /**

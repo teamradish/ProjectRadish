@@ -58,7 +58,8 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
             //Log if we couldn't instantiate a command
             if (cmdObj == null)
             {
-                System.out.println("COMMAND " + cmdName + " WAS NOT ADDED BECAUSE IT'S NULL!");
+                System.out.println("MessageListener.loadCommandList()\n" +
+                        "COMMAND " + cmdName + " WAS NOT ADDED BECAUSE IT'S NULL!");
             }
             else
             {

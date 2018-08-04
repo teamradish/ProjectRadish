@@ -9,7 +9,8 @@ public class SetPrefixCommand extends AdminCommand
 {
     @Override
     public String getDescription() {
-        return "Sets the prefix to the text you input. Input must be enclosed in quotes to register leading or trailing whitespace.\n" +
+        return "Sets the prefix to the text you input.\n" +
+                "Input must be enclosed in quotes to register leading or trailing whitespace.\n" +
                 "Note this command will only work via PM.";
     }
 

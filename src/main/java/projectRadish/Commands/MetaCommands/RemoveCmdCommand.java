@@ -39,7 +39,7 @@ public class RemoveCmdCommand extends AdminCommand
         System.out.println("CMD: " + commandClass + " REAL: " + NewCmdCommand.class.getSimpleName());
 
         //Kimimaru: Don't allow removing the add command!
-        if (commandClass.equals(NewCmdCommand.class.getSimpleName()))
+        if (commandClass.endsWith(NewCmdCommand.class.getSimpleName()))
         {
             event.getChannel().sendMessage("Don't remove the command that adds commands!").queue();
             return;

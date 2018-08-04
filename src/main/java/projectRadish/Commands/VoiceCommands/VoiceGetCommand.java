@@ -18,9 +18,9 @@ public class VoiceGetCommand extends BaseCommand
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         if (event.isFromType(ChannelType.PRIVATE)) {
-            event.getChannel().sendMessage("This command cannot be used in a PM.").queue();
-            return;
-        }
+        event.getChannel().sendMessage("This command cannot be used in a PM.").queue();
+        return;
+    }
 
         AudioTrack track = MessageListener.vp.getTrack(event.getTextChannel());
 

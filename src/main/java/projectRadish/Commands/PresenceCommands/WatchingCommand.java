@@ -10,7 +10,8 @@ public final class WatchingCommand extends AdminCommand
 {
     @Override
     public String getDescription() {
-        return "Set the bot's status message to \"Watching <input>\". Always links to TPE's twitch. Set to \"none\" or \"nothing\" for no status message.";
+        return "Set the bot's status message to \"Watching <input>\". Always links to TPE's twitch.\n" +
+                "Set to \"none\" or \"nothing\" for no status message.";
     }
 
     @Override

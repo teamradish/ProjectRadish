@@ -93,7 +93,7 @@ public final class Utilities
     public static BaseCommand createCommandFromString(String commandName)
     {
         //Get the fully qualified name of the command
-        String fullCmdName = Constants.CommandPkgName + commandName;
+        String fullCmdName = Constants.CommandPkgName + "." + commandName;
 
         try
         {

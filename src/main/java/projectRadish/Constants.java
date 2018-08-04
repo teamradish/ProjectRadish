@@ -12,7 +12,8 @@ public final class Constants {
         return "\"" + Configuration.getCommandPrefix() + "\" = Command Prefix"; // Set to null for no initial game
     }
 
-    public static final String CommandPkgName = "projectRadish.Commands.";
+    public static final String PkgName = "projectRadish";
+    public static final String CommandPkgName = PkgName + ".Commands";
 
     /**
      * Client ID for the Project Radish bot.
