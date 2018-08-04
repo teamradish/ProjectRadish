@@ -1,31 +1,22 @@
 package projectRadish.Commands;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import java.awt.*;
 import java.net.*;
 import java.io.*;
-import java.time.*;
-import java.text.*;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import net.dv8tion.jda.core.requests.restaction.MessageAction;
 import projectRadish.Constants;
 import projectRadish.Twitch.*;
-import projectRadish.Utilities;
+
+import static java.util.Objects.isNull;
 
 public class TopBitsCommand extends BaseCommand
 {
@@ -34,10 +25,16 @@ public class TopBitsCommand extends BaseCommand
     private ObjectMapper objMapper = new ObjectMapper();
 
     @Override
+    public String getDescription() {
+        return "Displays the current Top Cheers leaderboard for TPE's stream.";
+    }
+
+    @Override
+    public boolean canBeUsedViaPM() { return true; }
+
+    @Override
     public void Initialize()
     {
-        super.Initialize();
-
         //Map the object to the class
         objMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         objMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
@@ -47,19 +44,53 @@ public class TopBitsCommand extends BaseCommand
     @Override
     public void ExecuteCommand(String contents, MessageReceivedEvent event)
     {
+        final int boardSize = 3;
+
         HashSet<BitsLeaderboardUser> leaderboard = GetUserLeaderboard();
         if (leaderboard.isEmpty())
         {
             event.getChannel().sendMessage("The leaderboard is empty.").queue();
             return;
         }
-        String reply = "Cheer Leaderboard:\n";
+
+        List<String> leaderNames = Arrays.asList(new String[boardSize]);    // List of nulls
+        List<Long> bitAmounts = Arrays.asList(new Long[boardSize]);         // List of nulls
+
+        int longestNameLen = 5;
+
         for (BitsLeaderboardUser user : leaderboard)
         {
-            reply += user.rank + " - " +
-                    GetUserData(user.userId).data[0].display_name + " - " +
-                    user.score + " bits\n";
+            if (user.rank <= boardSize) {
+                String leaderName = GetUserData(user.userId).data[0].display_name;
+                int rank = (int)(user.rank-1);
+
+                if (leaderName.length() > longestNameLen) { longestNameLen = leaderName.length(); }
+                leaderNames.set(rank, leaderName);
+                bitAmounts.set(rank, user.score);
+            }
         }
+
+        boolean promoAdded = false;
+        StringBuilder reply = new StringBuilder("Cheer Leaderboard:\n");
+        reply.append("`twitch.tv/twitchplays_everything`\n```\n");
+        for (int i = 0; i < boardSize; i++) {
+            String name = !isNull(leaderNames.get(i)) ? leaderNames.get(i) : "---"; // Name, or "-" if name is null
+
+            Long bits = bitAmounts.get(i);
+            String score;
+            if (isNull(bits)) {
+                if (!promoAdded && i < 3) {
+                    score = "Cheer to take #"+(i+1)+"!"; // If this is the first empty slot
+                    promoAdded = true;
+                } else { score = "-"; } // If this slot is empty but we already added the promo
+            }
+            else if (bits == 1) { score = "1 bit"; }
+            else { score = String.format("%d bits", bits); }
+
+            reply.append(String.format("#%d | %-"+(longestNameLen+3)+"s | %s\n", i+1, name, score));
+        }
+        reply.append("```");
+
         event.getChannel().sendMessage(reply).queue();
     }
 
@@ -126,7 +157,7 @@ public class TopBitsCommand extends BaseCommand
     }
 
     //This should be optimized to request multiple users at once.
-    public UserData GetUserData(String userID)
+    private UserData GetUserData(String userID)
     {
         try
         {

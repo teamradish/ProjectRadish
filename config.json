@@ -67,15 +67,10 @@
     "doc" : "DocCommands.DocCommand",
     "playing" : "PresenceCommands.GameCommand",
     "streaminfo" : "StreamInfoCommand",
-<<<<<<< HEAD
     "nextsong" : "VoiceCommands.VoiceNextCommand",
     "queue" : "VoiceCommands.ViewQueueCommand",
-    "status" : "PresenceCommands.StatusCommand"
+    "status" : "PresenceCommands.StatusCommand",
+    "topbits" : "TopBitsCommand"
   },
   "CommandPrefix" : "!"
-=======
-    "status" : "StatusCommand",
-    "topbits" : "TopBitsCommand"
-  }
->>>>>>> Alencar/CheerLeaderboard
 }
