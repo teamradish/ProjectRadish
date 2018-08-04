@@ -32,6 +32,7 @@ public class VoiceGetCommand extends BaseCommand
         String curTitle = track.getInfo().title;
         String curPos = Utilities.getTimeStringFromMs(track.getPosition());
         String curLen = Utilities.getTimeStringFromMs(track.getInfo().length);
+        String curLink = track.getInfo().uri;
 
         // Horrible hack to fix case when curLen includes hours but curPos doesn't
         if (curLen.length() >= "H:mm:ss".length()) {
@@ -39,6 +40,8 @@ public class VoiceGetCommand extends BaseCommand
             else if (curPos.length() == "mm:ss".length()) { curPos = "0:" + curPos; }
         }
 
-        event.getChannel().sendMessage(String.format("Playing: %s `%s/%s`\n", curTitle, curPos, curLen)).queue();
+        event.getChannel().sendMessage(
+                String.format("Playing: %s \nLink: `%s`\n**[ %s / %s ]**", curTitle, curLink, curPos, curLen)
+        ).queue();
     }
 }

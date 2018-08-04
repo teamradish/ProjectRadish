@@ -19,6 +19,10 @@ public final class VoicePlayCommand extends BaseCommand
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
+        // Strip `backticks` if present
+        if (content.length() > 1 && content.startsWith("`") && content.endsWith("`")) {
+            content = content.substring(1, content.length()-1);
+        }
         MessageListener.vp.loadAndPlay(event.getTextChannel(), content);
     }
 }

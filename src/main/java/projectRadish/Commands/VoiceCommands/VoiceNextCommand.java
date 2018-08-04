@@ -38,7 +38,8 @@ public class VoiceNextCommand extends BaseCommand
 
         String title = trackInfo.title;
         String duration = Utilities.getTimeStringFromMs(trackInfo.length);
+        String link = track.getInfo().uri;
 
-        event.getChannel().sendMessage(String.format("Next up: %s `%%s`\n", title, duration)).queue();
+        event.getChannel().sendMessage(String.format("Next up: %s\nLink: `%s`\n**%s**", title, link, duration)).queue();
     }
 }
