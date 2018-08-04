@@ -28,6 +28,8 @@ public final class CurrentDocCommand extends AdminCommand
         }
 
         Configuration.setCurrentGame(content);
+        Configuration.saveConfiguration();
+        Configuration.loadConfiguration();
 
         String game = DidYouMean.getBest(content, Configuration.getDocs().keySet(), true);
         String link = Configuration.getDocs().get(game) + "/preview";

@@ -40,7 +40,7 @@ public final class HelpCommand extends BaseCommand
 
         // Use the command set that the requesting person can use.
         Map<String, BaseCommand> cmds = MessageListener.getCommands();
-        String cachedStr = cachedAdminStr;
+        String cachedStr = cachedAdminStr;                              // Assigned but never accessed
         boolean isAdmin = Utilities.isAdmin(event.getAuthor());
 
         if (isAdmin == false)
@@ -51,7 +51,7 @@ public final class HelpCommand extends BaseCommand
             }
 
             cmds = nonAdminCommands;
-            cachedStr = cachedNonAdminStr;
+            cachedStr = cachedNonAdminStr;                              // Assigned but never accessed
         }
 
         // Generate response
