@@ -15,6 +15,9 @@ public final class GameCommand extends AdminCommand
     }
 
     @Override
+    public boolean canBeUsedViaPM() { return true; }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event) {
         String game = content;
         if (game.toLowerCase().equals("none") || game.toLowerCase().equals("nothing")) {

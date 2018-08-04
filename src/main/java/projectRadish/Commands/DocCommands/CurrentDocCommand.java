@@ -15,6 +15,9 @@ public final class CurrentDocCommand extends AdminCommand
     }
 
     @Override
+    public boolean canBeUsedViaPM() { return true; }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         if (content.equals("") || content.contains("www.")) {

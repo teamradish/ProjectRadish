@@ -24,6 +24,9 @@ public class StreamInfoCommand extends BaseCommand
         return "Displays current status of TPE's twitch stream.";
     }
 
+    @Override
+    public boolean canBeUsedViaPM() { return true; }
+
     private static final int thumbnailWidth = 284;
     private static final int thumnailHeight = 160;
 

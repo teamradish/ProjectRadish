@@ -20,9 +20,10 @@ public final class HelpCommand extends BaseCommand
     private String cachedNonAdminStr = "";
 
     @Override
-    public String getDescription() {
-        return "This.";
-    }
+    public String getDescription() { return "This."; }
+
+    @Override
+    public boolean canBeUsedViaPM() { return true; }
 
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event) {

@@ -17,6 +17,9 @@ public final class NewDocCommand extends AdminCommand
     }
 
     @Override
+    public boolean canBeUsedViaPM() { return true; }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         String args[] = content.split(" ");

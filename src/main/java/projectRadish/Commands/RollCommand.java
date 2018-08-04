@@ -11,6 +11,9 @@ public final class RollCommand extends BaseCommand
     }
 
     @Override
+    public boolean canBeUsedViaPM() { return true; }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         String args[] = content.split(" ");

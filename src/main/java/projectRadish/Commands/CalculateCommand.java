@@ -10,6 +10,9 @@ public final class CalculateCommand extends BaseCommand
         return "Does maths.";
     }
 
+    @Override
+    public boolean canBeUsedViaPM() { return true; }
+
     private Expression expression = new Expression();
 
     @Override

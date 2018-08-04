@@ -15,6 +15,9 @@ public final class GuessCommand extends BaseCommand
     }
 
     @Override
+    public boolean canBeUsedViaPM() { return true; }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         //Don't bother if there's no input

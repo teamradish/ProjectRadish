@@ -21,13 +21,11 @@ public class VoiceNextCommand extends BaseCommand
     }
 
     @Override
+    public boolean canBeUsedViaPM() { return false; }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
-        if (event.isFromType(ChannelType.PRIVATE)) {
-            event.getChannel().sendMessage("This command cannot be used in a PM.").queue();
-            return;
-        }
-
         AudioTrack track = MessageListener.vp.peekTrack(event.getTextChannel());
 
         if (track == null)

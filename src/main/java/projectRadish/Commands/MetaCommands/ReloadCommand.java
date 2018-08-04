@@ -15,6 +15,9 @@ public class ReloadCommand extends AdminCommand
     }
 
     @Override
+    public boolean canBeUsedViaPM() { return true; }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         Configuration.loadConfiguration();

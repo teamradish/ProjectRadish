@@ -13,6 +13,10 @@ public final class ListenCommand extends AdminCommand
     public String getDescription() {
         return "Set the bot's status message to \"Listening to <input>\". Set to \"none\" or \"nothing\" for no status message.";
     }
+
+    @Override
+    public boolean canBeUsedViaPM() { return true; }
+
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {

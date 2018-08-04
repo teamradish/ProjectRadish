@@ -14,13 +14,11 @@ public final class VoiceSkipCommand extends BaseCommand
     }
 
     @Override
+    public boolean canBeUsedViaPM() { return false; }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
-        if (event.isFromType(ChannelType.PRIVATE)) {
-            event.getChannel().sendMessage("This command cannot be used in a PM.").queue();
-            return;
-        }
-
         event.getChannel().sendMessage("Track Skipped.").queue();
         MessageListener.vp.skipTrack(event.getTextChannel());
     }

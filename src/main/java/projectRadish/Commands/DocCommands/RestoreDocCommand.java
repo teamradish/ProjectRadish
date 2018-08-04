@@ -16,6 +16,9 @@ public final class RestoreDocCommand extends AdminCommand
     }
 
     @Override
+    public boolean canBeUsedViaPM() { return true; }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         if (content.equals("")) {

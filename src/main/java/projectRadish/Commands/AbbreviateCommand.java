@@ -12,6 +12,9 @@ public final class AbbreviateCommand extends BaseCommand
     }
 
     @Override
+    public boolean canBeUsedViaPM() { return true; }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         event.getChannel().sendMessage(DidYouMean.abbreviate(content)).queue();

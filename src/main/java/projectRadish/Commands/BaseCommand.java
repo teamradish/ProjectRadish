@@ -21,7 +21,7 @@ public abstract class BaseCommand
      * Simply override this to "return false;" to automatically restrict the command.
      * @return Whether or not this command can be used in a PM channel.
      */
-    public boolean canBeUsedViaPM() { return true; }
+    public abstract boolean canBeUsedViaPM();
 
 
     /**

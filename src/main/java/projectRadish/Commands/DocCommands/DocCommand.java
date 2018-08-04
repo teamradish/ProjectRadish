@@ -16,6 +16,9 @@ public final class DocCommand extends BaseCommand
     }
 
     @Override
+    public boolean canBeUsedViaPM() { return true; }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         //No arguments - show current game doc

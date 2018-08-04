@@ -13,6 +13,9 @@ public final class ScrambleCommand extends BaseCommand
     }
 
     @Override
+    public boolean canBeUsedViaPM() { return true; }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         StringBuilder strBuilder = new StringBuilder(content.length());

@@ -14,13 +14,11 @@ public final class VoiceDisconnectCommand extends BaseCommand
     }
 
     @Override
+    public boolean canBeUsedViaPM() { return false; }
+
+    @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
-        if (event.isFromType(ChannelType.PRIVATE)) {
-            event.getChannel().sendMessage("This command cannot be used in a PM.").queue();
-            return;
-        }
-
         MessageListener.vp.disconnectFromVoiceChannel(event.getTextChannel());
     }
 }

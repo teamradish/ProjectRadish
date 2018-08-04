@@ -14,6 +14,9 @@ public class RemoveCmdCommand extends AdminCommand
     }
 
     @Override
+    public boolean canBeUsedViaPM() { return true; }
+
+    @Override
     public void ExecuteCommand(String contents, MessageReceivedEvent event) {
         String[] args = contents.split(" ");
 
