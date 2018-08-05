@@ -202,6 +202,11 @@ public final class Utilities
         return Configuration.getRadishAdmin().contains(author.getId());
     }
 
+    public static boolean isSilenced(User author)
+    {
+        return Configuration.getSilencedUsers().contains(author.getId());
+    }
+
     public static HashMap<String, String> recycleBin = new HashMap<>();
 
     private Utilities() {}

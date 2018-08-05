@@ -17,7 +17,7 @@ public final class StatusCommand extends AdminCommand
     public boolean canBeUsedViaPM() { return true; }
 
     @Override
-    public void ExecuteCommand(String content, MessageReceivedEvent event) {
+    protected void ExecuteCommand(String content, MessageReceivedEvent event) {
         String status = content;
         try {
             event.getJDA().getPresence().setStatus(OnlineStatus.fromKey(status));

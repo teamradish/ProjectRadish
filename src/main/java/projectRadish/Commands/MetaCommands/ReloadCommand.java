@@ -18,7 +18,7 @@ public class ReloadCommand extends AdminCommand
     public boolean canBeUsedViaPM() { return true; }
 
     @Override
-    public void ExecuteCommand(String content, MessageReceivedEvent event)
+    protected void ExecuteCommand(String content, MessageReceivedEvent event)
     {
         Configuration.loadConfiguration();
         event.getChannel().sendMessage("Config reloaded!").queue();

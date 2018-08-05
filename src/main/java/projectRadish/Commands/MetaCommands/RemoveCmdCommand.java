@@ -17,7 +17,7 @@ public class RemoveCmdCommand extends AdminCommand
     public boolean canBeUsedViaPM() { return true; }
 
     @Override
-    public void ExecuteCommand(String contents, MessageReceivedEvent event) {
+    protected void ExecuteCommand(String contents, MessageReceivedEvent event) {
         String[] args = contents.split(" ");
 
         //Ignore messages without exactly one argument

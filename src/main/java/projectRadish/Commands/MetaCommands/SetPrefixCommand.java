@@ -18,7 +18,7 @@ public class SetPrefixCommand extends AdminCommand
     public boolean canBeUsedViaPM() { return true; }
 
     @Override
-    public void ExecuteCommand(String contents, MessageReceivedEvent event)
+    protected void ExecuteCommand(String contents, MessageReceivedEvent event)
     {
         // Ignore messages that aren't PMs (otherwise you'll accidentally change the prefix for the live bot while testing)
         if (!event.isFromType(ChannelType.PRIVATE))

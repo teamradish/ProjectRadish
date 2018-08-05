@@ -44,6 +44,7 @@
     "setprefix" : "MetaCommands.SetPrefixCommand",
     "skip" : "VoiceCommands.VoiceSkipCommand",
     "watching" : "PresenceCommands.WatchingCommand",
+    "topbits" : "TopBitsCommand",
     "scramble" : "ScrambleCommand",
     "emotehell" : "EmoteHellCommand",
     "streaming" : "PresenceCommands.StreamingCommand",
@@ -51,12 +52,14 @@
     "reconnect" : "VoiceCommands.VoiceConnectCommand",
     "removedoc" : "DocCommands.RemoveDocCommand",
     "calculate" : "CalculateCommand",
+    "silence" : "ModerationCommands.SilenceCommand",
     "addcommand" : "MetaCommands.NewCmdCommand",
     "abbreviate" : "AbbreviateCommand",
     "newdoc" : "DocCommands.NewDocCommand",
     "restoredoc" : "DocCommands.RestoreDocCommand",
     "removecommand" : "MetaCommands.RemoveCmdCommand",
     "clear" : "VoiceCommands.VoiceClearCommand",
+    "unsilence" : "ModerationCommands.UnsilenceCommand",
     "say" : "SayCommand",
     "renamecommand" : "MetaCommands.RenameCmdCommand",
     "currentsong" : "VoiceCommands.VoiceGetCommand",
@@ -69,8 +72,8 @@
     "streaminfo" : "StreamInfoCommand",
     "nextsong" : "VoiceCommands.VoiceNextCommand",
     "queue" : "VoiceCommands.ViewQueueCommand",
-    "status" : "PresenceCommands.StatusCommand",
-    "topbits" : "TopBitsCommand"
+    "status" : "PresenceCommands.StatusCommand"
   },
-  "CommandPrefix" : "!"
+  "CommandPrefix" : "!",
+  "SilencedUsers" : [ ]
 }

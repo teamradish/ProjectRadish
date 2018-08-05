@@ -16,6 +16,7 @@ public final class Config
     public HashMap<String, String> Docs = new HashMap<>();
     public HashMap<String, String> Commands = new HashMap<String, String>();
     public String CommandPrefix = "!";
+    public Set<String> SilencedUsers = new HashSet<>();
 
     public Config()
     {
