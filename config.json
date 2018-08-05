@@ -46,6 +46,7 @@
     "watching" : "PresenceCommands.WatchingCommand",
     "topbits" : "TopBitsCommand",
     "scramble" : "ScrambleCommand",
+    "silencelist" : "ModerationCommands.GetSilencedCommand",
     "emotehell" : "EmoteHellCommand",
     "streaming" : "PresenceCommands.StreamingCommand",
     "reload" : "MetaCommands.ReloadCommand",

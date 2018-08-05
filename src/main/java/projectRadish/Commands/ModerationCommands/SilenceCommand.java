@@ -15,7 +15,7 @@ public final class SilenceCommand extends AdminCommand
     }
 
     @Override
-    public boolean canBeUsedViaPM() { return false; }
+    public boolean canBeUsedViaPM() { return true; }
 
     @Override
     protected void ExecuteCommand(String contents, MessageReceivedEvent event)
@@ -38,6 +38,12 @@ public final class SilenceCommand extends AdminCommand
             silencedUser = event.getJDA().getUserById(userID);
         }
         catch (Exception e)
+        {
+            silencedUser = null;
+        }
+
+        //If null, the user wasn't found
+        if (silencedUser == null)
         {
             event.getChannel().sendMessage("User cannot be found.").queue();
             return;

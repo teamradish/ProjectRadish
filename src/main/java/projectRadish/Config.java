@@ -3,6 +3,7 @@ package projectRadish;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Vector;
 
 /**
  * Config class for easily converting to and from JSON.
@@ -16,7 +17,7 @@ public final class Config
     public HashMap<String, String> Docs = new HashMap<>();
     public HashMap<String, String> Commands = new HashMap<String, String>();
     public String CommandPrefix = "!";
-    public Set<String> SilencedUsers = new HashSet<>();
+    public Vector<String> SilencedUsers = new Vector<>();
 
     public Config()
     {

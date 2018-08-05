@@ -15,7 +15,7 @@ public final class UnsilenceCommand extends AdminCommand
     }
 
     @Override
-    public boolean canBeUsedViaPM() { return false; }
+    public boolean canBeUsedViaPM() { return true; }
 
     @Override
     protected void ExecuteCommand(String contents, MessageReceivedEvent event)

@@ -209,5 +209,41 @@ public final class Utilities
 
     public static HashMap<String, String> recycleBin = new HashMap<>();
 
+    /**
+     * Attempts to parse an int from a String, returning a default value upon failure.
+     * @param value The String to parse.
+     * @param defaultValue The default value to return if parsing failed.
+     * @return An int parsed from the String, otherwise defaultValue.
+     */
+    public static int TryParse(String value, int defaultValue)
+    {
+        try { return Integer.parseInt(value); }
+        catch (NumberFormatException e) { return defaultValue; }
+    }
+
+    /**
+     * Attempts to parse a float from a String, returning a default value upon failure.
+     * @param value The String to parse.
+     * @param defaultValue The default value to return if parsing failed.
+     * @return A float parsed from the String, otherwise defaultValue.
+     */
+    public static float TryParse(String value, float defaultValue)
+    {
+        try { return Float.parseFloat(value); }
+        catch (NumberFormatException e) { return defaultValue; }
+    }
+
+    /**
+     * Attempts to parse a double from a String, returning a default value upon failure.
+     * @param value The String to parse.
+     * @param defaultValue The default value to return if parsing failed.
+     * @return A double parsed from the String, otherwise defaultValue.
+     */
+    public static double TryParse(String value, double defaultValue)
+    {
+        try { return Double.parseDouble(value); }
+        catch (NumberFormatException e) { return defaultValue; }
+    }
+
     private Utilities() {}
 }
