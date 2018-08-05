@@ -17,7 +17,7 @@ public final class RenameCmdCommand extends AdminCommand
     public boolean canBeUsedViaPM() { return true; }
 
     @Override
-    public void ExecuteCommand(String contents, MessageReceivedEvent event)
+    protected void ExecuteCommand(String contents, MessageReceivedEvent event)
     {
         String[] args = contents.split(" ");
 

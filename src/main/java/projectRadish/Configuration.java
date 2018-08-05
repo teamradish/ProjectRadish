@@ -56,6 +56,8 @@ public final class Configuration
 
     public static void setCommandPrefix(String prefix) { config.CommandPrefix = prefix; }
 
+    public static Vector<String> getSilencedUsers() { return config.SilencedUsers; }
+
     public static void addConfigListener(ConfigListener configListener)
     {
         configListeners.add(configListener);

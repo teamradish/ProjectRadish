@@ -111,6 +111,9 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
         // Standard practice is to ignore other bots (avoids loops and things)
         if (author.isBot()) { ignore = true; }
 
+        //Ignore if the user is silenced
+        if (Utilities.isSilenced(author)) { ignore = true; }
+
         return ignore;
     }
 
