@@ -11,7 +11,7 @@ public final class SilenceCommand extends AdminCommand
     @Override
     public String getDescription()
     {
-        return "Silences a user by mention, preventing them from using bot commands.";
+        return "Silences a user by ID or mention, preventing them from using bot commands.";
     }
 
     @Override
@@ -23,21 +23,44 @@ public final class SilenceCommand extends AdminCommand
         String[] args = contents.split(" ");
 
         //Ignore messages without exactly one argument
-        if (args.length != 1)
+        if (args.length != 1 || args[0].isEmpty() == true)
         {
-            event.getChannel().sendMessage("Usage: \"@user\"").queue();
+            event.getChannel().sendMessage("Usage: \"ID\" or \"@user\"").queue();
             return;
         }
 
-        if (event.getMessage().getMentionedUsers().isEmpty())
+        //Presume it's an ID first
+        String input = args[0];
+        User silencedUser = null;
+
+        //If it's a number, it's a user ID
+        boolean isNumber = (Utilities.TryParse(input, -1L) != -1L);
+
+        //Check for user ID
+        if (isNumber == true)
         {
-            event.getChannel().sendMessage("An user was not specified.").queue();
-            return;
+            //This tries to cast to a User even if it can't find the user, so we have to handle an exception
+            try
+            {
+                silencedUser = event.getJDA().getUserById(input);
+            }
+            catch (Exception e)
+            {
+                silencedUser = null;
+            }
+        }
+        //Check for mentions
+        else if (event.getMessage().getMentionedUsers().isEmpty() == false)
+        {
+            silencedUser = event.getMessage().getMentionedUsers().get(0);
         }
 
-        //This could be expanded to silence more than one user (???)
-        User silencedUser = event.getMessage().getMentionedUsers().get(0);
-        String userID = silencedUser.getId();
+        //If null, the user wasn't found
+        if (silencedUser == null)
+        {
+            event.getChannel().sendMessage("User cannot be found.").queue();
+            return;
+        }
 
         //Make sure the user isn't an admin
         if (Utilities.isAdmin(silencedUser) == true)
@@ -54,7 +77,7 @@ public final class SilenceCommand extends AdminCommand
         }
 
         //Silence the user and save the config
-        Configuration.getSilencedUsers().add(userID);
+        Configuration.getSilencedUsers().add(silencedUser.getId());
         Configuration.saveConfiguration();
 
         event.getChannel().sendMessage("User silenced.").queue();
