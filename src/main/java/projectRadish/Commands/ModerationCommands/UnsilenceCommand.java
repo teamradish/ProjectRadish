@@ -11,7 +11,7 @@ public final class UnsilenceCommand extends AdminCommand
     @Override
     public String getDescription()
     {
-        return "Unsilences a user by ID, allowing them to use bot commands once again.";
+        return "Unsilences a user by mention, allowing them to use bot commands once again.";
     }
 
     @Override
@@ -25,23 +25,19 @@ public final class UnsilenceCommand extends AdminCommand
         //Ignore messages without exactly one argument
         if (args.length != 1)
         {
-            event.getChannel().sendMessage("Usage: \"userID\"").queue();
+            event.getChannel().sendMessage("Usage: \"@user\"").queue();
             return;
         }
 
-        String userID = args[0];
-        User unSilencedUser = null;
-
-        //This tries to cast to a User even if it can't find the user, so we have to handle an exception
-        try
+        if (event.getMessage().getMentionedUsers().isEmpty())
         {
-            unSilencedUser = event.getJDA().getUserById(userID);
-        }
-        catch (Exception e)
-        {
-            event.getChannel().sendMessage("User cannot be found.").queue();
+            event.getChannel().sendMessage("An user was not specified.").queue();
             return;
         }
+
+        //This could be expanded to silence more than one user (???)
+        User unSilencedUser = event.getMessage().getMentionedUsers().get(0);
+        String userID = unSilencedUser.getId();
 
         //Make sure the user is already silenced
         if (Utilities.isSilenced(unSilencedUser) == false)
