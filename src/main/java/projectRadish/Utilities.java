@@ -210,6 +210,18 @@ public final class Utilities
     public static HashMap<String, String> recycleBin = new HashMap<>();
 
     /**
+     * Attempts to parse a long from a String, returning a default value upon failure.
+     * @param value The String to parse.
+     * @param defaultValue The default value to return if parsing failed.
+     * @return A long parsed from the String, otherwise defaultValue.
+     */
+    public static long TryParse(String value, long defaultValue)
+    {
+        try { return Long.parseLong(value); }
+        catch (NumberFormatException e) { return defaultValue; }
+    }
+
+    /**
      * Attempts to parse an int from a String, returning a default value upon failure.
      * @param value The String to parse.
      * @param defaultValue The default value to return if parsing failed.
