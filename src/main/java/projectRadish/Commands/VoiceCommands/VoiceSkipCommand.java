@@ -18,5 +18,8 @@ public final class VoiceSkipCommand extends BaseCommand
     {
         event.getChannel().sendMessage("Track Skipped.").queue();
         MessageListener.vp.skipItem(event.getTextChannel());
+
+        //Kimimaru: If it's paused, we should resume it so the next song plays
+        MessageListener.vp.resume(event.getTextChannel());
     }
 }

@@ -105,6 +105,16 @@ public class TrackScheduler extends AudioEventAdapter {
         return queueCopy;
     }
 
+    public void pause()
+    {
+        player.setPaused(true);
+    }
+
+    public void resume()
+    {
+        player.setPaused(false);
+    }
+
     public void clear() {
         queue.clear();
     }
