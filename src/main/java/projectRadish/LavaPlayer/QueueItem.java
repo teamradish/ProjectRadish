@@ -6,7 +6,7 @@ import projectRadish.Utilities;
 public class QueueItem {
     private AudioTrack track;
     private String requester;
-    private int plays;        // Default 1 - play once.
+    private final int plays;        // Default 1 - play once.
     private int playsCount;
 
 
@@ -30,6 +30,17 @@ public class QueueItem {
     public String getRequester() { return this.requester; }
     public int getPlays() { return this.plays; }
 
-    public long getPosition() { return this.track.getDuration() * this.playsCount + this.track.getPosition(); }
-    public long getLength() { return this.track.getDuration() * this.plays; }
+    public boolean isSeekable() { return this.track.isSeekable(); }
+    public boolean isStream() {return this.track.getInfo().isStream; }
+
+    public long getPosition() { return this.track.getInfo().length * this.playsCount + this.track.getPosition(); }
+
+    public void setPosition(Long pos) {
+        if (pos >= this.getLength() || pos < 0) { return; } // Ignore nonsense inputs
+
+        this.playsCount = (int) (pos / this.track.getInfo().length); // integer division
+        this.track.setPosition(pos % this.track.getInfo().length);
+    }
+
+    public long getLength() { return this.track.getInfo().length * this.plays; }
 }

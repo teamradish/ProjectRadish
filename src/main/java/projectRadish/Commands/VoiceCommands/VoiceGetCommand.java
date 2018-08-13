@@ -25,7 +25,7 @@ public class VoiceGetCommand extends BaseCommand
 
         if (isNull(item))
         {
-            event.getChannel().sendMessage("No item is currently being played.").queue();
+            event.getChannel().sendMessage("No song is currently being played.").queue();
             return;
         }
 

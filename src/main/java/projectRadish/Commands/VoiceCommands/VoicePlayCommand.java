@@ -23,17 +23,17 @@ public final class VoicePlayCommand extends BaseCommand {
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event) {
         String link = content;
-        String playsArg = "1";
+        String playsArg = "1"; // safe default
 
         String[] args = content.split(" ");
         if (args.length == 2) {
             link = args[0];
-            playsArg = args[1];
+            playsArg = args[1].toLowerCase();
             // Remove the x from before the number if present
             if (playsArg.startsWith("x")) { playsArg = playsArg.substring(1); }
         }
 
-        if (args.length == 3 && args[1].equals("x")) { // they put a space between the x and the number
+        if (args.length == 3 && (args[1].equals("x") || args[1].equals("X"))) { // they put a space between the x and the number
             link = args[0];
             playsArg = args[2];
         }

@@ -1,6 +1,5 @@
 package projectRadish.Commands.VoiceCommands;
 
-import com.sedmelluq.discord.lavaplayer.track.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.Commands.BaseCommand;
 import projectRadish.LavaPlayer.QueueItem;
@@ -36,13 +35,12 @@ public class VoiceSeekCommand extends BaseCommand
         }
 
         QueueItem item = MessageListener.vp.getItem(event.getTextChannel());
-        AudioTrack track = item.getTrack();
 
-        long trackLength = track.getDuration();
-        long curPos = track.getPosition();
+        long trackLength = item.getLength();
+        long curPos = item.getPosition();
 
         //If not seekable for a reason, then we can't use this command
-        if (track.isSeekable() == false)
+        if (item.isSeekable() == false)
         {
             event.getChannel().sendMessage("The current track is not seekable.").queue();
             return;
@@ -80,7 +78,7 @@ public class VoiceSeekCommand extends BaseCommand
             finalAmount += val * timeConstants[timeInd];
         }
 
-        System.out.println("Final: " + finalAmount + " Dur: " + trackLength);
+        //System.out.println("Final: " + finalAmount + " Dur: " + trackLength);
 
         //Kimimaru: Don't let them seek further than the track length, as that ends the track
         //"skip" is for skipping tracks, so they should use that instead if they want to do so
@@ -96,7 +94,7 @@ public class VoiceSeekCommand extends BaseCommand
             return;
         }
 
-        track.setPosition(finalAmount);
+        item.setPosition(finalAmount);
         event.getChannel().sendMessage("Track seeked from `" + Utilities.getTimeStringFromMs(curPos) +
                 "` to `" + Utilities.getTimeStringFromMs(finalAmount) + "`").queue();
     }
