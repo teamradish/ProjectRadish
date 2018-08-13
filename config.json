@@ -75,7 +75,8 @@
     "queue" : "VoiceCommands.ViewQueueCommand",
     "status" : "PresenceCommands.StatusCommand",
     "pause" : "VoiceCommands.VoicePauseCommand",
-    "resume" : "VoiceCommands.VoiceResumeCommand"
+    "resume" : "VoiceCommands.VoiceResumeCommand",
+    "seek" : "VoiceCommands.VoiceSeekCommand"
   },
   "CommandPrefix" : "!",
   "SilencedUsers" : [ ]
