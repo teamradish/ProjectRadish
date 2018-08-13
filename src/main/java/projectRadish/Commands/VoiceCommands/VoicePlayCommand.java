@@ -3,6 +3,7 @@ package projectRadish.Commands.VoiceCommands;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.Commands.BaseCommand;
 import projectRadish.MessageListener;
+import sun.plugin2.message.Message;
 
 public final class VoicePlayCommand extends BaseCommand {
     @Override
@@ -52,6 +53,12 @@ public final class VoicePlayCommand extends BaseCommand {
         if (plays < 1) {
             link = content;
             plays = 1;
+        }
+
+        //Kimimaru: Unpause if no track is being played
+        if (MessageListener.vp.isPlayingTrack(event.getTextChannel()) == false)
+        {
+            MessageListener.vp.resume(event.getTextChannel());
         }
 
         MessageListener.vp.loadAndPlay(event, link, plays);

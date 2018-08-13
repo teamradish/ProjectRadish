@@ -73,7 +73,10 @@
     "streaminfo" : "StreamInfoCommand",
     "nextsong" : "VoiceCommands.VoiceNextCommand",
     "queue" : "VoiceCommands.ViewQueueCommand",
-    "status" : "PresenceCommands.StatusCommand"
+    "status" : "PresenceCommands.StatusCommand",
+    "pause" : "VoiceCommands.VoicePauseCommand",
+    "resume" : "VoiceCommands.VoiceResumeCommand",
+    "seek" : "VoiceCommands.VoiceSeekCommand"
   },
   "CommandPrefix" : "!",
   "SilencedUsers" : [ ]

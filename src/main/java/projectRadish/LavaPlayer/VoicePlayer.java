@@ -96,6 +96,23 @@ public class VoicePlayer {
         return musicManager.scheduler.getCurrentItem();
     }
 
+    public boolean isPlayingTrack(TextChannel channel)
+    {
+        return (getItem(channel) != null);
+    }
+
+    public boolean isPaused(TextChannel channel)
+    {
+        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+        musicManager.textChannel = channel;
+        return musicManager.player.isPaused();
+    }
+
+    public boolean isPlaying(TextChannel channel)
+    {
+        return (isPlayingTrack(channel) == true && isPaused(channel) == false);
+    }
+
     public QueueItem peekItem(TextChannel channel) {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         musicManager.textChannel = channel;
@@ -111,6 +128,20 @@ public class VoicePlayer {
     private void play(Guild guild, GuildMusicManager musicManager, QueueItem item) {
         connectToVoiceChannel(guild.getAudioManager(), musicManager.textChannel);
         musicManager.scheduler.queue(item);
+    }
+
+    public void pause(TextChannel channel)
+    {
+        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+        musicManager.textChannel = channel;
+        musicManager.scheduler.pause();
+    }
+
+    public void resume(TextChannel channel)
+    {
+        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+        musicManager.textChannel = channel;
+        musicManager.scheduler.resume();
     }
 
     public void skipItem(TextChannel channel) {
