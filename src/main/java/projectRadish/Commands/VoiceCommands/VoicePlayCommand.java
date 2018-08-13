@@ -55,7 +55,7 @@ public final class VoicePlayCommand extends BaseCommand {
             plays = 1;
         }
 
-        //Kimimaru: Unpause if no track is being played and it's paused
+        //Kimimaru: Unpause if no track is being played
         if (MessageListener.vp.isPlayingTrack(event.getTextChannel()) == false)
         {
             MessageListener.vp.resume(event.getTextChannel());

@@ -9,7 +9,7 @@ public final class VoiceResumeCommand extends BaseCommand
     @Override
     public String getDescription()
     {
-        return "Resumes the current track if one is playing.";
+        return "Resumes the current track if one is paused.";
     }
 
     @Override

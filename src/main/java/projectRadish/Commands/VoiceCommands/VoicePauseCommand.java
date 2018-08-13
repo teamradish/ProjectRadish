@@ -10,7 +10,7 @@ public final class VoicePauseCommand extends BaseCommand
     @Override
     public String getDescription()
     {
-        return "Pauses the current playing track.";
+        return "Pauses the current track if one is playing.";
     }
 
     @Override

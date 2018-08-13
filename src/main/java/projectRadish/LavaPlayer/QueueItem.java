@@ -1,6 +1,7 @@
 package projectRadish.LavaPlayer;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import projectRadish.Utilities;
 
 public class QueueItem {
     private AudioTrack track;
@@ -12,9 +13,7 @@ public class QueueItem {
     public QueueItem(AudioTrack track, String requester, int plays) {
         this.track = track;
         this.requester = requester;
-        this.plays = plays;
-        if (this.plays < 1) { this.plays = 1; }
-        if (this.plays > 999) {this.plays = 999; }
+        this.plays = Utilities.clamp(plays, 1, 999);
 
         this.playsCount = 0;
     }

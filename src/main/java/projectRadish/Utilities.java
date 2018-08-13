@@ -257,5 +257,41 @@ public final class Utilities
         catch (NumberFormatException e) { return defaultValue; }
     }
 
+    /**
+     * Clamps an int between a min and max value.
+     * @param value The value to test.
+     * @param minValue The minimum value.
+     * @param maxValue The maximum value.
+     * @return An int between minValue and maxValue.
+     */
+    public static int clamp(int value, int minValue, int maxValue)
+    {
+        return (value < minValue) ? minValue : (value > maxValue) ? maxValue : value;
+    }
+
+    /**
+     * Clamps a float between a min and max value.
+     * @param value The value to test.
+     * @param minValue The minimum value.
+     * @param maxValue The maximum value.
+     * @return A float between minValue and maxValue.
+     */
+    public static float clamp(float value, float minValue, float maxValue)
+    {
+        return (value < minValue) ? minValue : (value > maxValue) ? maxValue : value;
+    }
+
+    /**
+     * Clamps a double between a min and max value.
+     * @param value The value to test.
+     * @param minValue The minimum value.
+     * @param maxValue The maximum value.
+     * @return A double between minValue and maxValue.
+     */
+    public static double clamp(double value, double minValue, double maxValue)
+    {
+        return (value < minValue) ? minValue : (value > maxValue) ? maxValue : value;
+    }
+
     private Utilities() {}
 }
