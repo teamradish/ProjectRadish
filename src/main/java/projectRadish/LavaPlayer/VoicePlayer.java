@@ -53,7 +53,10 @@ public class VoicePlayer {
             @Override
             public void trackLoaded(AudioTrack track) {
                 QueueItem item = new QueueItem(track, requester, plays);
+
                 String lenString = Utilities.getTimeStringFromMs(item.getLength());
+                if (item.isStream()) { lenString = "Stream"; }
+
                 String plays = (item.getPlays() == 1) ? "" : "x"+String.valueOf(item.getPlays()); // Hide if only 1 play
                 channel.sendMessage(String.format(
                         "Adding to queue: **%s** %s\n" +

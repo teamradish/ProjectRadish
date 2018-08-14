@@ -13,7 +13,12 @@ public class QueueItem {
     public QueueItem(AudioTrack track, String requester, int plays) {
         this.track = track;
         this.requester = requester;
-        this.plays = Utilities.clamp(plays, 1, 999);
+
+        if (this.isStream()) {
+            this.plays = 1;
+        } else {
+            this.plays = Utilities.clamp(plays, 1, 999);
+        }
 
         this.playsCount = 0;
     }
@@ -31,7 +36,7 @@ public class QueueItem {
     public int getPlays() { return this.plays; }
 
     public boolean isSeekable() { return this.track.isSeekable(); }
-    public boolean isStream() {return this.track.getInfo().isStream; }
+    public boolean isStream() { return this.track.getInfo().isStream; }
 
     public long getPosition() { return this.track.getInfo().length * this.playsCount + this.track.getPosition(); }
 
@@ -42,5 +47,11 @@ public class QueueItem {
         this.track.setPosition(pos % this.track.getInfo().length);
     }
 
-    public long getLength() { return this.track.getInfo().length * this.plays; }
+    public long getLength() {
+        if (this.isStream()) {
+            return 0;
+        } else {
+            return this.track.getInfo().length * this.plays;
+        }
+    }
 }

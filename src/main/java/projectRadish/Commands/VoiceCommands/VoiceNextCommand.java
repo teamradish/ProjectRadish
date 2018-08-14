@@ -29,7 +29,10 @@ public class VoiceNextCommand extends BaseCommand
         }
 
         String title = item.getTitle();
+
         String duration = Utilities.getTimeStringFromMs(item.getLength());
+        if (item.isStream()) { duration = "Stream"; }
+
         String link = item.getLink();
 
         String req = "***`requested by "+item.getRequester()+"`***";

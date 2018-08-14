@@ -43,11 +43,14 @@ public class ViewQueueCommand extends BaseCommand
                 else if (curPos.length() == "mm:ss".length()) { curPos = "0:" + curPos; }
             }
 
+            String time = curPos + " / " + curLen;
+            if (curItem.isStream()) { time = "Stream"; }
+
             String plays = (curItem.getPlays() == 1) ? "" : "x"+String.valueOf(curItem.getPlays()); // Hide if only 1 play
 
             replyB.append(String.format(
                     "Playing: **%s** %s\n" +
-                    "**[ %s / %s ]**\n", curTitle, plays, curPos, curLen));
+                    "**[ %s ]**\n", curTitle, plays, time));
         } else {
             replyB.append("No item currently playing.\n");
         }
@@ -55,17 +58,22 @@ public class ViewQueueCommand extends BaseCommand
         if (queue.size() > 0) {
             long duration = 0;
             int and_X_More = 0; // Number of tracks that couldn't be shown
+            int numStreams = 0;
             replyB.append("```");
             int i = 0;
             for (QueueItem item: queue) {
                 i++;
-                duration += item.getLength();
-
+                if (item.isStream()) {
+                    numStreams++;
+                } else {
+                    duration += item.getLength();
+                }
                 if (i <= maxItemsShown && replyB.length() <= 1800) { // watch out for that character limit
                     String title = item.getTitle();
                     if (title.length() > maxTitleLength) { title = title.substring(0, maxTitleLength-3) + "..."; }
 
                     String len = Utilities.getTimeStringFromMs(item.getLength());
+                    if (item.isStream()) { len = "Stream"; }
                     String req = item.getRequester();
                     String plays = (item.getPlays() == 1) ? "" : "x"+String.valueOf(item.getPlays()); // Hide if only 1 play
 
@@ -81,7 +89,14 @@ public class ViewQueueCommand extends BaseCommand
             }
 
             if (queue.size() > 1) {
-                replyB.append("\nTotal Duration\n"+ Utilities.getTimeStringFromMs(duration) +"\n");
+                String durString = Utilities.getTimeStringFromMs(duration);
+                String streamString = String.format("%d Stream%s", numStreams, new String (numStreams == 1 ? "" : "s"));
+
+                String outputString;
+                if (numStreams == 0) { outputString = durString; } // No streams
+                else if (numStreams == queue.size()) { outputString = streamString; } // All streams
+                else { outputString = durString + " + " + streamString; }// Some streams, some normal tracks
+                replyB.append("\nTotal Duration\n"+outputString+"\n");
             }
             replyB.append("```");
         } else {

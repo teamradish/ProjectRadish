@@ -41,12 +41,15 @@ public class VoiceGetCommand extends BaseCommand
             else if (curPos.length() == "mm:ss".length()) { curPos = "0:" + curPos; }
         }
 
+        String time = curPos + " / " + curLen;
+        if (item.isStream()) { time = "Stream"; }
+
         String req = "***`requested by "+item.getRequester()+"`***";
         String plays = (item.getPlays() == 1) ? "" : "x"+String.valueOf(item.getPlays()); // Hide if only 1 play
 
         event.getChannel().sendMessage(String.format(
                 "Playing: **%s** %s\n" +
                 "Link: <%s>\n" +
-                "**[ %s / %s ]**%70s", curTitle, plays, curLink, curPos, curLen, req)).queue();
+                "**[ %s ]**%70s", curTitle, plays, curLink, time, req)).queue();
     }
 }
