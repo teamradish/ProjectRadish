@@ -21,7 +21,7 @@ public final class RenameCmdCommand extends AdminCommand
     {
         String[] args = contents.split(" ");
 
-        //Ignore messages without exactly two arguments
+        //Ignore messages without exactly two arguments or a single empty argument
         if (args.length <= 1 || args.length > 2)
         {
             event.getChannel().sendMessage("Usage: \"commandName\" \"newCommandName\"").queue();
@@ -34,7 +34,7 @@ public final class RenameCmdCommand extends AdminCommand
         //Check if it doesn't exist and return if so
         if (cmds.containsKey(cmdToLower) == false)
         {
-            event.getChannel().sendMessage("Command " + cmdToLower + " does not exist").queue();
+            event.getChannel().sendMessage("Command \"" + cmdToLower + "\" does not exist").queue();
             return;
         }
 

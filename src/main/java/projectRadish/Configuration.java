@@ -28,10 +28,6 @@ public final class Configuration
         return config.RadishAdmin;
     }
 
-    public static Set<String> getTPEAdmin() {
-        return config.TPEAdmin;
-    }
-
     public static String getBotToken() {
         return config.BotToken;
     }
