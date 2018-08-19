@@ -75,6 +75,7 @@
     "gamesuggestions" : "SuggestionsCommand",
     "streaminfo" : "StreamInfoCommand",
     "nextsong" : "VoiceCommands.VoiceNextCommand",
+    "seekr" : "VoiceCommands.VoiceSeekRelativeCommand",
     "queue" : "VoiceCommands.ViewQueueCommand",
     "status" : "PresenceCommands.StatusCommand"
   },
