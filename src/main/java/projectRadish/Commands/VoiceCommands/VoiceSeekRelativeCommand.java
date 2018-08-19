@@ -94,6 +94,13 @@ public class VoiceSeekRelativeCommand extends BaseCommand
             finalAmount += val * timeConstants[timeInd];
         }
 
+        //Don't do anything if we're not actually seeking!
+        if (finalAmount == 0L)
+        {
+            event.getChannel().sendMessage("If you wanted me to do nothing, you could've just not done anything!").queue();
+            return;
+        }
+
         //Add to the current position
         long finalSeekPos = finalAmount + curPos;
 

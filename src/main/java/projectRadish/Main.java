@@ -1,5 +1,6 @@
 package projectRadish;
 
+import com.sedmelluq.discord.lavaplayer.jdaudp.NativeAudioSendFactory;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -27,6 +28,7 @@ public class Main
             jda = new JDABuilder(AccountType.BOT)
                     .setToken(Configuration.getBotToken())           //The token of the account that is logging in.
                     .addEventListener(new MessageListener())  //An instance of a class that will handle events.
+                    .setAudioSendFactory(new NativeAudioSendFactory())
                     .buildBlocking();  //There are 2 ways to login, blocking vs async. Blocking guarantees that JDA will be completely loaded.
             initialise(jda);
         } catch (LoginException e) {
