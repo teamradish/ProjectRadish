@@ -21,6 +21,7 @@ public final class EmoteHellCommand extends BaseCommand
     private static DecimalFormat dp1 = new DecimalFormat(".#");
     static private final long cooldown = 1*60*60*1000; // 1 hour, in milliseconds
     private HashMap<String, Long> lastTimes = new HashMap<>();
+    private StringBuilder replyBuilder = new StringBuilder(2000);
 
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
@@ -74,7 +75,7 @@ public final class EmoteHellCommand extends BaseCommand
                 return;
             }
 
-            StringBuilder replyBuilder = new StringBuilder(1);
+            replyBuilder.setLength(0);
             for (int i = 0; i < y; i++) {
                 for (int j = 0; j < x; j++) {
                     int emoteNum = Utilities.randRange(0, emotes.size() - 1);

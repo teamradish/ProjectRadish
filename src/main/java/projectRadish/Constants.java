@@ -2,6 +2,8 @@ package projectRadish;
 
 import net.dv8tion.jda.core.OnlineStatus;
 
+import java.time.ZoneId;
+
 public final class Constants {
 
 	//public static final String COMMAND_PREFIX = "?";
@@ -32,6 +34,8 @@ public final class Constants {
 
     public static final String STREAM_NAME = "twitchplays_everything";
     public static final String STREAM_ID = "57950757";
+
+    public static final ZoneId UTC_ZoneID = ZoneId.of("UTC");
 
 	// Private Constructor to prevent instantiation
 	private Constants() {}

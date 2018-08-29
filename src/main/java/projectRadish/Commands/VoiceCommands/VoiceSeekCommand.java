@@ -9,7 +9,7 @@ import projectRadish.Utilities;
 public class VoiceSeekCommand extends BaseCommand
 {
     //Used for conversions; in order, Hours, Minutes, Seconds
-    private static long[] timeConstants = new long[] { ((60L * 60L) * 1000L), (60L * 1000L), 1000L };
+    public static long[] timeConstants = new long[] { ((60L * 60L) * 1000L), (60L * 1000L), 1000L };
 
     private final String usageMsg = "Usage: \"Track position in time `hhh:mm:ss`\"";
 

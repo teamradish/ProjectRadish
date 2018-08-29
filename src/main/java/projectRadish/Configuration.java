@@ -3,6 +3,8 @@ package projectRadish;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -15,7 +17,7 @@ public final class Configuration
     /**
      * The reference to the config object used.
      */
-    private static Config config = null;
+    private static Config config = new Config();
 
     /**
      * The objects listening for when the config is loaded.
@@ -71,8 +73,14 @@ public final class Configuration
 
         try
         {
+            //Kimimaru: I didn't look much into this, but it looks like it automatically opens the file
+            //The ObjectMapper will close the file; I can't find a way to reopen it, so let's stick with creating new instances for now
+            FileReader fileReader = new FileReader("config.json");
+
             //Convert from JSON to our object
-            config = objMapper.readValue(new String(Files.readAllBytes(Paths.get("config.json"))), Config.class);
+            objMapper.readerForUpdating(config).readValue(fileReader);
+
+            fileReader.close();
         }
         catch (Exception e)
         {

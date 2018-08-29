@@ -7,6 +7,8 @@ import java.util.Vector;
 
 public final class ScrambleCommand extends BaseCommand
 {
+    private StringBuilder strBuilder = new StringBuilder(100);
+
     @Override
     public String getDescription() {
         return "Rearranges your input into unintelligible gibberish.";
@@ -18,7 +20,14 @@ public final class ScrambleCommand extends BaseCommand
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
-        StringBuilder strBuilder = new StringBuilder(content.length());
+        if (content.isEmpty() == true || content.length() < 2)
+        {
+            event.getChannel().sendMessage("Usage: \"Message\" - must be longer than 1 character").queue();
+            return;
+        }
+
+        strBuilder.setLength(0);
+        strBuilder.ensureCapacity(content.length());
 
         //Remove all spaces before scrambling
         String noSpaces = content.replaceAll(" ", "");

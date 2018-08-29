@@ -42,7 +42,7 @@ public final class Utilities
         }
 
         //If we encountered an error, simply return now in UTC time
-        return LocalDateTime.now(ZoneId.of("UTC"));
+        return LocalDateTime.now(Constants.UTC_ZoneID);
     }
 
 
@@ -153,6 +153,20 @@ public final class Utilities
      * @return The response, formatted as an Embed, to be sent back to the channel.
      */
     public static MessageEmbed formatOutput(String header, String game, String link){
+        return formatOutput(header, game, link, new EmbedBuilder());
+    }
+
+    /**
+     * Function to create the reply's message embed, from !doc command results
+     * This function handles Guessed replies.
+     *
+     * @param header Any text to display in the header (null if none);
+     * @param game Game title (eg. "Super Mario Sunshine")
+     * @param link Link to the game's document (eg. "https://docs.google.com/document/d/...")
+     * @param eb An existing EmbedBuilder used to create the embed.
+     * @return The response, formatted as an Embed, to be sent back to the channel.
+     */
+    public static MessageEmbed formatOutput(String header, String game, String link, EmbedBuilder eb){
         String abbr = DidYouMean.abbreviate(game);
         String thumbnailPrefix = "https://drive.google.com/thumbnail?authuser=0&sz=w320&id=";
         String docId = link.replaceFirst("https://docs.google.com/document/d/", ""); // Remove prefix
@@ -162,8 +176,9 @@ public final class Utilities
             if (header.length() > 100) { header = header.substring(0, 96) + "..."; } // limit it to 100 chars
         }
 
-        // Create the EmbedBuilder instance
-        EmbedBuilder eb = new EmbedBuilder();
+        //Clear the EmbedBuilder
+        eb.clear();
+
         eb.setTitle(String.format("%s [%s] Doc", game, abbr), link);
         if (header != null) { eb.setAuthor(header, null); }
         eb.setThumbnail(thumbnailPrefix+docId);
