@@ -42,7 +42,7 @@ public class StreamInfoCommand extends BaseCommand
     private ObjectMapper objMapper = new ObjectMapper();
     private EmbedBuilder embedBuilder = new EmbedBuilder();
 
-    private StringBuilder strBuilder = new StringBuilder();
+    private StringBuilder strBuilder = new StringBuilder(40);
 
     @Override
     public void Initialize()
