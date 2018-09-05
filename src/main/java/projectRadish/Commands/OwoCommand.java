@@ -17,10 +17,8 @@ public final class OwoCommand extends BaseCommand
     {
         String reply = content;
 
-        reply = reply.replaceAll("l", "w");
-        reply = reply.replaceAll("r", "w");
-        reply = reply.replaceAll("L", "W");
-        reply = reply.replaceAll("R", "W");
+        reply = reply.replaceAll("[lr]", "w");
+        reply = reply.replaceAll("[LR]", "W");
         reply = reply.replaceAll(" :\\)", " OwO");
         reply = reply.replaceAll(" :'\\(", " QnQ");
         reply = reply.replaceAll(" ;\\)", " ;3");

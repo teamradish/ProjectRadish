@@ -16,6 +16,12 @@ public final class VoiceSkipCommand extends BaseCommand
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
+        if (MessageListener.vp.isPlayingTrack(event.getTextChannel()) == false)
+        {
+            event.getChannel().sendMessage("There is no track being played!").queue();
+            return;
+        }
+
         event.getChannel().sendMessage("Track Skipped.").queue();
         MessageListener.vp.skipItem(event.getTextChannel());
 

@@ -5,6 +5,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public final class SayCommand extends BaseCommand
 {
+    private final String usageStr = "Usage: \"Message\"";
+
     @Override
     public String getDescription() {
         return "Sends your input right back at you.\n" +
@@ -19,6 +21,10 @@ public final class SayCommand extends BaseCommand
     {
         if (content.length() > 0) {
             event.getChannel().sendMessage(content).queue();
+        }
+        else
+        {
+            event.getChannel().sendMessage(usageStr);
         }
     }
 }

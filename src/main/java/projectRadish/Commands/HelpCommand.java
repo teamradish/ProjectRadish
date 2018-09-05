@@ -79,7 +79,7 @@ public final class HelpCommand extends BaseCommand
         //Kimimaru: Create string if not already cached
         if (str.isEmpty() == true)
         {
-            StringBuilder reply = new StringBuilder();
+            StringBuilder reply = new StringBuilder(1000);
             reply.append("Type " + Configuration.getCommandPrefix() + "help <command name> for the full description.\n");
             reply.append("```\n");
 

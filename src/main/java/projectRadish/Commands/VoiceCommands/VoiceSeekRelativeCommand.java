@@ -13,9 +13,6 @@ import projectRadish.Utilities;
 
 public class VoiceSeekRelativeCommand extends BaseCommand
 {
-    //Used for conversions; in order, Hours, Minutes, Seconds
-    private static long[] timeConstants = new long[] { ((60L * 60L) * 1000L), (60L * 1000L), 1000L };
-
     private final String usageMsg = "Usage: \"Relative track position in time `hhh:mm:ss`\"";
 
     @Override
@@ -64,7 +61,7 @@ public class VoiceSeekRelativeCommand extends BaseCommand
         long finalAmount = 0L;
 
         //Kimimaru: This offset helps with conversions if the user specified only minutes or seconds
-        int timeOffset = timeConstants.length - args.length;
+        int timeOffset = VoiceSeekCommand.timeConstants.length - args.length;
 
         for (int i = 0; i < args.length; i++)
         {
@@ -91,7 +88,7 @@ public class VoiceSeekRelativeCommand extends BaseCommand
                 return;
             }
 
-            finalAmount += val * timeConstants[timeInd];
+            finalAmount += val * VoiceSeekCommand.timeConstants[timeInd];
         }
 
         //Don't do anything if we're not actually seeking!

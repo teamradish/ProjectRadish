@@ -14,6 +14,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.managers.AudioManager;
 import projectRadish.Utilities;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,9 +124,18 @@ public class VoicePlayer {
     }
 
     public List<QueueItem> getQueue(TextChannel channel) {
+        List<QueueItem> copy = new ArrayList<>();
+
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         musicManager.textChannel = channel;
-        return musicManager.scheduler.getQueue();
+        musicManager.scheduler.getQueue(copy);
+        return copy;
+    }
+
+    public void getQueue(TextChannel channel, List<QueueItem> list) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+        musicManager.textChannel = channel;
+        musicManager.scheduler.getQueue(list);
     }
 
     private void play(Guild guild, GuildMusicManager musicManager, QueueItem item) {

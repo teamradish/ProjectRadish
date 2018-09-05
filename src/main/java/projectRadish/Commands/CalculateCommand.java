@@ -5,6 +5,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public final class CalculateCommand extends BaseCommand
 {
+    private final String usageStr = "Usage: \"Math expression\"";
+
     @Override
     public String getDescription() {
         return "Does maths.";
@@ -29,6 +31,12 @@ public final class CalculateCommand extends BaseCommand
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
+        if (content.length() == 0)
+        {
+            event.getChannel().sendMessage(usageStr).queue();
+            return;
+        }
+
         expression.setExpressionString(content);
 
         double val = 0d;

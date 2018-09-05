@@ -1,5 +1,7 @@
 package projectRadish;
 
+import com.sun.deploy.util.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -8,11 +10,20 @@ import java.util.Set;
 public class DidYouMean {
 
     public static String abbreviate(String input) {
-        StringBuilder abbr = new StringBuilder();
+        return abbreviate(input, new StringBuilder(input.length()));
+    }
 
-        char[] chars = input.toCharArray();
+    public static String abbreviate(String input, StringBuilder abbr) {
+        //Kimimaru: Length should work well for most cases. Ideally, we'd check the number of spaces in the string and use that number + 1
+        abbr.setLength(0);
+        abbr.ensureCapacity(input.length());
+
         boolean afterSpace = true;
-        for (char c: chars) {
+
+        for (int i = 0; i < input.length(); i++)
+        {
+            char c = input.charAt(i);
+
             if (afterSpace && !Character.isWhitespace(c)) {
                 abbr.append(c);
             } else if (Character.isUpperCase(c)) {
@@ -26,7 +37,6 @@ public class DidYouMean {
         }
         return abbr.toString();
     }
-
 
     public static String getBest(String input, Set<String> targets, boolean test_abbreviations) {
         input = input.toLowerCase();

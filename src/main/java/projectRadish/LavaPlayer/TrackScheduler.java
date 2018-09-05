@@ -93,16 +93,15 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     /**
-     * Returns a copy of the queue.
-     *
-     * @return a List copy of the music queue
+     * Places the items in the queue into an existing list.
+     * @param list The list to put the queued tracks into.
      */
-    public List<QueueItem> getQueue() {
-        List<QueueItem> queueCopy = new ArrayList<>();
-        for (QueueItem item : queue) {
-            queueCopy.add(item);
+    public void getQueue(List<QueueItem> list)
+    {
+        for (QueueItem item : queue)
+        {
+            list.add(item);
         }
-        return queueCopy;
     }
 
     public void pause()

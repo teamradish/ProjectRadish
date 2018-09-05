@@ -16,28 +16,34 @@ public final class RollCommand extends BaseCommand
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
-        String args[] = content.split(" ");
-
         //Default values
         int min = 1;
         int max = 6;
 
-        //Allow user to specify the range
-        if (args.length == 2)
+        //Don't bother if there's nothing to parse
+        if (content.isEmpty() == false)
         {
-            try
+            String args[] = content.split(" ");
+
+            //Allow user to specify the range
+            if (args.length == 2)
             {
-                min = Integer.parseInt(args[0]);
-                max = Integer.parseInt(args[1]);
+                try {
+                    min = Integer.parseInt(args[0]);
+                    max = Integer.parseInt(args[1]);
+                } catch (Exception e) {
+                    event.getChannel().sendMessage("Usage: \"Min\" \"Max\"").queue();
+                    return;
+                }
             }
-            catch (Exception e)
+            else
             {
-                event.getChannel().sendMessage("One of your inputs wasn't valid.").queue();
+                event.getChannel().sendMessage("Usage: \"Min\" \"Max\"").queue();
                 return;
             }
         }
 
         int roll = Utilities.randRange(min, max);
-        event.getChannel().sendMessage("Your roll: " + roll).queue();
+        event.getChannel().sendMessage("Your roll is " + roll).queue();
     }
 }

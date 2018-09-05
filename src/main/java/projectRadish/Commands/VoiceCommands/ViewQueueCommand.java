@@ -6,12 +6,16 @@ import projectRadish.LavaPlayer.QueueItem;
 import projectRadish.MessageListener;
 import projectRadish.Utilities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.isNull;
 
 public class ViewQueueCommand extends BaseCommand
 {
+    private StringBuilder replyB = new StringBuilder(5000);
+    private List<QueueItem> queueCopy = new ArrayList<QueueItem>();
+
     @Override
     public String getDescription() {
         return "Displays the current music queue.";
@@ -26,13 +30,15 @@ public class ViewQueueCommand extends BaseCommand
         int maxTitleLength = 50;
         int maxItemsShown = 10;
 
-        List<QueueItem> queue = MessageListener.vp.getQueue(event.getTextChannel());
+        queueCopy.clear();
+        MessageListener.vp.getQueue(event.getTextChannel(), queueCopy);
 
-        StringBuilder replyB = new StringBuilder();
+        replyB.setLength(0);
 
         QueueItem curItem = MessageListener.vp.getItem(event.getTextChannel());
 
-        if (!isNull(curItem)) {
+        if (curItem != null)
+        {
             String curTitle = curItem.getTitle();
             String curPos = Utilities.getTimeStringFromMs(curItem.getPosition());
             String curLen = Utilities.getTimeStringFromMs(curItem.getLength());
@@ -55,13 +61,13 @@ public class ViewQueueCommand extends BaseCommand
             replyB.append("No item currently playing.\n");
         }
 
-        if (queue.size() > 0) {
+        if (queueCopy.size() > 0) {
             long duration = 0;
             int and_X_More = 0; // Number of tracks that couldn't be shown
             int numStreams = 0;
             replyB.append("```");
             int i = 0;
-            for (QueueItem item: queue) {
+            for (QueueItem item: queueCopy) {
                 i++;
                 if (item.isStream()) {
                     numStreams++;
@@ -88,13 +94,13 @@ public class ViewQueueCommand extends BaseCommand
                 replyB.append("...and "+and_X_More+" more.\n");
             }
 
-            if (queue.size() > 1) {
+            if (queueCopy.size() > 1) {
                 String durString = Utilities.getTimeStringFromMs(duration);
-                String streamString = String.format("%d Stream%s", numStreams, new String (numStreams == 1 ? "" : "s"));
+                String streamString = String.format("%d Stream%s", numStreams, numStreams == 1 ? "" : "s");
 
                 String outputString;
                 if (numStreams == 0) { outputString = durString; } // No streams
-                else if (numStreams == queue.size()) { outputString = streamString; } // All streams
+                else if (numStreams == queueCopy.size()) { outputString = streamString; } // All streams
                 else { outputString = durString + " + " + streamString; }// Some streams, some normal tracks
                 replyB.append("\nTotal Duration\n"+outputString+"\n");
             }
