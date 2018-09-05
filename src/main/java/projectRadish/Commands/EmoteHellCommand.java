@@ -16,7 +16,7 @@ public final class EmoteHellCommand extends BaseCommand
     }
 
     @Override
-    public boolean canBeUsedViaPM() { return true; }
+    public boolean canBeUsedViaPM() { return false; }
 
     private static DecimalFormat dp1 = new DecimalFormat(".#");
     static private final long cooldown = 1*60*60*1000; // 1 hour, in milliseconds
@@ -26,22 +26,16 @@ public final class EmoteHellCommand extends BaseCommand
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)
     {
-        if (event.isFromType(ChannelType.PRIVATE)) {
-            event.getChannel().sendMessage("This command cannot be used in a PM.").queue();
-            return;
-        }
-
         long now = System.currentTimeMillis();
         String user = event.getAuthor().getId();
 
         if (!lastTimes.containsKey(user)){ // user hasn't used it since last restart
-            lastTimes.put(user, new Long(0));
+            lastTimes.put(user, 0L);
         }
 
         long lastTime = lastTimes.get(user);
 
         long timeLeft = lastTime + cooldown - now;
-
 
         if (timeLeft > 0) {
             String timeLeftString;

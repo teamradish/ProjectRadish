@@ -21,6 +21,8 @@ import static java.util.Objects.isNull;
 public class TopBitsCommand extends BaseCommand
 {
     private static final String TWITCH_GQL =  "https://gql.twitch.tv/gql";
+    private final int boardSize = 3;
+    private final HashSet<BitsLeaderboardUser> leaderboard = new HashSet<>();
 
     private ObjectMapper objMapper = new ObjectMapper();
 
@@ -44,15 +46,14 @@ public class TopBitsCommand extends BaseCommand
     @Override
     public void ExecuteCommand(String contents, MessageReceivedEvent event)
     {
-        final int boardSize = 3;
-
-        HashSet<BitsLeaderboardUser> leaderboard = GetUserLeaderboard();
+        GetUserLeaderboard();
         if (leaderboard.isEmpty())
         {
             event.getChannel().sendMessage("The leaderboard is empty.").queue();
             return;
         }
 
+        //Kimimaru: We can optimize memory usage here; I think Twitch sorts the results by rank, so if that's the case, we shouldn't need these lists
         List<String> leaderNames = Arrays.asList(new String[boardSize]);    // List of nulls
         List<Long> bitAmounts = Arrays.asList(new Long[boardSize]);         // List of nulls
 
@@ -94,7 +95,7 @@ public class TopBitsCommand extends BaseCommand
         event.getChannel().sendMessage(reply).queue();
     }
 
-    public HashSet<BitsLeaderboardUser> GetUserLeaderboard()
+    public void GetUserLeaderboard()
     {
         try
         {
@@ -137,26 +138,23 @@ public class TopBitsCommand extends BaseCommand
                     .get("data").get("user").get("cheer").get("leaderboard")
                     .get("items").get("edges");
 
-            HashSet<BitsLeaderboardUser> users = new HashSet<>();
+            leaderboard.clear();
             for (JsonNode item : jsonLeaderboard)
             {
                 BitsLeaderboardUser user = new BitsLeaderboardUser();
                 user.userId = item.get("node").get("entryKey").asText();
                 user.rank = item.get("node").get("rank").asLong();
                 user.score = item.get("node").get("score").asLong();
-                users.add(user);
+                leaderboard.add(user);
             }
-
-            return users;
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
-        return null;
     }
 
-    //This should be optimized to request multiple users at once.
+    //This should be optimized to request multiple leaderboard at once.
     private UserData GetUserData(String userID)
     {
         try
