@@ -6,18 +6,27 @@ import projectRadish.MessageListener;
 import sun.plugin2.message.Message;
 
 public final class VoicePlayCommand extends BaseCommand {
+    private String description = null;
+
     @Override
     public String getDescription() {
-        return "Queues up the song your input links to.\n" +
-                "The bot will resume playback and join the Voice Channel if it was not already connected.\n" +
-                "You can also use eg. `<link> x3` to have the song loop 3 times.\n" +
-                "To add a YouTube playlist, just link any video that's part of it (has `&list=` in the link)\n" +
-                "Playlists can't be looped though because that'd be going too far.\n";
+        return description;
     }
 
     @Override
     public boolean canBeUsedViaPM() {
         return false;
+    }
+
+    @Override
+    public void Initialize() {
+        super.Initialize();
+
+        description = "Queues up the song your input links to.\n" +
+                "The bot will resume playback and join the Voice Channel if it was not already connected.\n" +
+                "You can also use eg. `<link> x3` to have the song loop 3 times.\n" +
+                "To add a YouTube playlist, just link any video that's part of it (has `&list=` in the link)\n" +
+                "Playlists can't be looped though because that'd be going too far.\n";
     }
 
     @Override

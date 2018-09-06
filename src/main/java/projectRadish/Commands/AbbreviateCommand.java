@@ -9,8 +9,7 @@ public final class AbbreviateCommand extends BaseCommand
 
     @Override
     public String getDescription() {
-        return "Turns the input you give it into an abbreviation.\n" +
-                "- Or rather, Ttiygiiaa.";
+        return "Turns the input you give it into an abbreviation.\n- Or rather, Ttiygiiaa.";
     }
 
     @Override

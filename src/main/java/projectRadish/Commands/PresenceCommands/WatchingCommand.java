@@ -8,14 +8,23 @@ import projectRadish.Commands.AdminCommand;
 
 public final class WatchingCommand extends AdminCommand
 {
+    private String description = null;
+
     @Override
     public String getDescription() {
-        return "Set the bot's status message to \"Watching <input>\". Always links to TPE's twitch.\n" +
-                "Set to \"none\" or \"nothing\" for no status message.";
+        return description;
     }
 
     @Override
     public boolean canBeUsedViaPM() { return true; }
+
+    @Override
+    public void Initialize() {
+        super.Initialize();
+
+        description = "Set the bot's status message to \"Watching <input>\". Always links to TPE's twitch.\n" +
+                "Set to \"none\" or \"nothing\" for no status message.";
+    }
 
     @Override
     protected void ExecuteCommand(String content, MessageReceivedEvent event)

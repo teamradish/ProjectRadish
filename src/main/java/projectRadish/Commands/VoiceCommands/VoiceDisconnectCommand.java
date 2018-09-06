@@ -9,8 +9,7 @@ public final class VoiceDisconnectCommand extends BaseCommand
 {
     @Override
     public String getDescription() {
-        return "Disconnects from the Voice Channel and pauses playback.\n" +
-                "The queue and progress through the current song will both be preserved.";
+        return "Disconnects from the Voice Channel and pauses playback.\nThe queue and progress through the current song will both be preserved.";
     }
 
     @Override

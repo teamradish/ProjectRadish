@@ -10,15 +10,24 @@ import java.util.HashMap;
 
 public final class NewCmdCommand extends AdminCommand
 {
+    private String description = null;
+
     @Override
     public String getDescription() {
-        return "Adds a new command, using the name and Java Class you input (in that order).\n" +
-                "Java Class name is case-sensitive.\n" +
-                "Currently doesn't work for command names containing spaces.";
+        return description;
     }
 
     @Override
     public boolean canBeUsedViaPM() { return true; }
+
+    @Override
+    public void Initialize() {
+        super.Initialize();
+
+        description = "Adds a new command, using the name and Java Class you input (in that order).\n" +
+                "Java Class name is case-sensitive.\n" +
+                "Currently doesn't work for command names containing spaces.";
+    }
 
     @Override
     protected void ExecuteCommand(String contents, MessageReceivedEvent event)
