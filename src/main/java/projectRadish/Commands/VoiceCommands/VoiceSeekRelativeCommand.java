@@ -6,12 +6,14 @@ import projectRadish.LavaPlayer.QueueItem;
 import projectRadish.MessageListener;
 import projectRadish.Utilities;
 
-public class VoiceSeekCommand extends BaseCommand
-{
-    //Used for conversions; in order, Hours, Minutes, Seconds
-    public static long[] timeConstants = new long[] { ((60L * 60L) * 1000L), (60L * 1000L), 1000L };
+/* Kimimaru:
+ * Simply copying and pasting most of VoiceSeekCommand should work,
+ * but if we need more commands with this type of usage later, we should consider refactoring it
+*/
 
-    private final String usageMsg = "Usage: \"Track position in time `hhh:mm:ss`\"";
+public class VoiceSeekRelativeCommand extends BaseCommand
+{
+    private final String usageMsg = "Usage: \"Relative track position in time `hhh:mm:ss`\"";
 
     @Override
     public boolean canBeUsedViaPM()
@@ -22,7 +24,7 @@ public class VoiceSeekCommand extends BaseCommand
     @Override
     public String getDescription()
     {
-        return "Seeks to a certain position in the current track.";
+        return "Seeks relative to the current position of the current track. Negative values are accepted.";
     }
 
     @Override
@@ -59,24 +61,45 @@ public class VoiceSeekCommand extends BaseCommand
         long finalAmount = 0L;
 
         //Kimimaru: This offset helps with conversions if the user specified only minutes or seconds
-        int timeOffset = timeConstants.length - args.length;
+        int timeOffset = VoiceSeekCommand.timeConstants.length - args.length;
 
         for (int i = 0; i < args.length; i++)
         {
             int timeInd = i + timeOffset;
-            long val = Utilities.TryParse(args[i], -1L);
+
+            boolean parsed = true;
+            long val = 0L;
+
+            try
+            {
+                val = Long.parseLong(args[i]);
+            }
+            catch (Exception e)
+            {
+                parsed = false;
+            }
 
             //Invalid data. In the first case, we couldn't parse the text into a number
             //In the second, the minute or seconds value was 60 or over
-            if (val <= -1L
-                || (timeInd > 0 && val >= 60L))
+            if (parsed == false
+                    || (timeInd > 0 && val >= 60L))
             {
                 event.getChannel().sendMessage(usageMsg).queue();
                 return;
             }
 
-            finalAmount += val * timeConstants[timeInd];
+            finalAmount += val * VoiceSeekCommand.timeConstants[timeInd];
         }
+
+        //Don't do anything if we're not actually seeking!
+        if (finalAmount == 0L)
+        {
+            event.getChannel().sendMessage("If you wanted me to do nothing, you could've just not done anything!").queue();
+            return;
+        }
+
+        //Add to the current position
+        long finalSeekPos = finalAmount + curPos;
 
         //System.out.println("Final: " + finalAmount + " Dur: " + trackLength);
 
@@ -85,17 +108,28 @@ public class VoiceSeekCommand extends BaseCommand
 
         //First, we need to account for the difference in the track length and the calculated position to seek to
         //We need to do this because the remaining duration can be under a second (Ex. 170021 rather than 170000 in a 2m 50s track)
-        long trackDiff = trackLength - finalAmount;
-
-        //If the difference is less than a second, then we are effectively skipping the track, so prevent this
-        if (trackDiff < 1000L)
+        if (finalAmount > 0)
         {
-            event.getChannel().sendMessage("Specified position is at or past the end of the track!").queue();
+            long trackDiff = trackLength - finalSeekPos;
+
+            //If the difference is less than a second, then we are effectively skipping the track, so prevent this
+            if (trackDiff < 1000L)
+            {
+                event.getChannel().sendMessage("Resulting position is at or past the end of the track!").queue();
+                return;
+            }
+        }
+
+        //Make sure we're not before the start of the track
+        if (finalSeekPos < 0L)
+        {
+            event.getChannel().sendMessage("Resulting position is " + Utilities.getTimeStringFromMs(Math.abs(finalSeekPos))
+                    + " before the start of the track!").queue();
             return;
         }
 
-        item.setPosition(finalAmount);
+        item.setPosition(finalSeekPos);
         event.getChannel().sendMessage("Track seeked from `" + Utilities.getTimeStringFromMs(curPos) +
-                "` to `" + Utilities.getTimeStringFromMs(finalAmount) + "`").queue();
+                "` to `" + Utilities.getTimeStringFromMs(finalSeekPos) + "`").queue();
     }
 }

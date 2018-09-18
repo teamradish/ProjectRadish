@@ -28,9 +28,21 @@ public class StreamInfoCommand extends BaseCommand
     public boolean canBeUsedViaPM() { return true; }
 
     private static final int thumbnailWidth = 284;
-    private static final int thumnailHeight = 160;
+    private static final int thumbnailHeight = 160;
+
+    private static final String thumbnailWidthStr = Integer.toString(thumbnailWidth);
+    private static final String thumbnailHeightStr = Integer.toString(thumbnailHeight);
+
+    private static final Color embedColor = new Color(100, 65, 164);
+
+    private StreamData streamInfo = new StreamData();
+    private GameData gameData = new GameData();
+    private UserData userData = new UserData();
 
     private ObjectMapper objMapper = new ObjectMapper();
+    private EmbedBuilder embedBuilder = new EmbedBuilder();
+
+    private StringBuilder strBuilder = new StringBuilder(40);
 
     @Override
     public void Initialize()
@@ -46,7 +58,7 @@ public class StreamInfoCommand extends BaseCommand
     @Override
     public void ExecuteCommand(String contents, MessageReceivedEvent event)
     {
-        StreamData streamInfo = GetStreamInfo();
+        GetStreamInfo();
 
         StreamResponse response = null;
         String uptime = "N/A";
@@ -68,7 +80,7 @@ public class StreamInfoCommand extends BaseCommand
             try
             {
                 //Get the uptime from the difference of the current UTC time and the stream's time (which is in UTC)
-                LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
+                LocalDateTime now = LocalDateTime.now(Constants.UTC_ZoneID);
 
                 //Parse stream time from the string given
                 LocalDateTime streamDateTime = Utilities.parseDateTimeFromString(response.started_at);
@@ -89,15 +101,26 @@ public class StreamInfoCommand extends BaseCommand
                 int minutes = (int) ((totalSeconds % secondsPerHour) / secondsPerMinute);
                 int seconds = (int) (totalSeconds % secondsPerMinute);
 
-                uptime = days + " days, " + hours + " hrs, " + minutes + " min, " + seconds + "sec";
+                //Kimimaru: The compiler uses a StringBuilder for string concatenation anyway, so reduce garbage here by reusing one
+                strBuilder.setLength(0);
+
+                strBuilder.append(days);
+                strBuilder.append(" days,");
+                strBuilder.append(hours);
+                strBuilder.append(" hrs, ");
+                strBuilder.append(minutes);
+                strBuilder.append(" min, ");
+                strBuilder.append(seconds);
+                strBuilder.append("sec");
+                uptime = strBuilder.toString();
 
                 //Get game name
-                GameData gameData = GetGameData(response.game_id);
+                GetGameData(response.game_id);
                 if (gameData != null && gameData.data != null && gameData.data.length > 0)
                     gameName = gameData.data[0].name;
 
                 //Get profile image URL
-                UserData userData = GetUserData(response.user_id);
+                GetUserData(response.user_id);
                 if (userData != null && userData.data != null && userData.data.length > 0)
                     profileImgURL = userData.data[0].profile_image_url;
 
@@ -108,23 +131,18 @@ public class StreamInfoCommand extends BaseCommand
             //Get our embed
             MessageEmbed embed = GetEmbed(response, uptime, gameName, profileImgURL);
 
-            MessageBuilder msgBuilder = new MessageBuilder();
-            msgBuilder.setEmbed(embed);
-
-            Message msg = msgBuilder.build();
-
-            event.getChannel().sendMessage(msg).queue();
+            event.getChannel().sendMessage(embed).queue();
         }
     }
 
     private MessageEmbed GetEmbed(StreamResponse response, String uptime, String gameName, String profileImgURL)
     {
         //Replace these strings in the thumbnail URL to get an image with the size we want
-        String thumbnail = response.thumbnail_url.replace("{width}", Integer.toString(thumbnailWidth));
-        thumbnail = thumbnail.replace("{height}", Integer.toString(thumnailHeight));
+        String thumbnail = response.thumbnail_url.replace("{width}", thumbnailWidthStr);
+        thumbnail = thumbnail.replace("{height}", thumbnailHeightStr);
 
         //Build the embed
-        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.clear();
         embedBuilder.setTitle(response.title, "https://twitch.tv/twitchplays_everything");
         embedBuilder.setImage(thumbnail);
         embedBuilder.setThumbnail(profileImgURL);
@@ -134,11 +152,11 @@ public class StreamInfoCommand extends BaseCommand
         embedBuilder.addField("**UPTIME**", uptime, true);
 
         //Twitch Purple
-        embedBuilder.setColor(new Color(100, 65, 164));
+        embedBuilder.setColor(embedColor);
         return embedBuilder.build();
     }
 
-    public StreamData GetStreamInfo()
+    public void GetStreamInfo()
     {
         try
         {
@@ -155,18 +173,15 @@ public class StreamInfoCommand extends BaseCommand
             String inputLine = br.readLine();
             br.close();
 
-            StreamData streamData = objMapper.readValue(inputLine, StreamData.class);
-
-            return streamData;
+            objMapper.readerForUpdating(streamInfo).readValue(inputLine);
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
-        return null;
     }
 
-    public GameData GetGameData(String gameID)
+    public void GetGameData(String gameID)
     {
         try
         {
@@ -183,18 +198,15 @@ public class StreamInfoCommand extends BaseCommand
             String inputLine = br.readLine();
             br.close();
 
-            GameData gameData = objMapper.readValue(inputLine, GameData.class);
-
-            return gameData;
+            objMapper.readerForUpdating(gameData).readValue(inputLine);
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
-        return null;
     }
 
-    public UserData GetUserData(String userID)
+    public void GetUserData(String userID)
     {
         try
         {
@@ -211,14 +223,11 @@ public class StreamInfoCommand extends BaseCommand
             String inputLine = br.readLine();
             br.close();
 
-            UserData userData = objMapper.readValue(inputLine, UserData.class);
-
-            return userData;
+            objMapper.readerForUpdating(userData).readValue(inputLine);
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
-        return null;
     }
 }

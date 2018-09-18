@@ -7,15 +7,24 @@ import projectRadish.Configuration;
 
 public class SetPrefixCommand extends AdminCommand
 {
+    private String description = null;
+
     @Override
     public String getDescription() {
-        return "Sets the prefix to the text you input.\n" +
-                "Input must be enclosed in quotes to register leading or trailing whitespace.\n" +
-                "Note this command will only work via PM.";
+        return description;
     }
 
     @Override
     public boolean canBeUsedViaPM() { return true; }
+
+    @Override
+    public void Initialize() {
+        super.Initialize();
+
+        description = "Sets the prefix to the text you input.\n" +
+                "Input must be enclosed in quotes to register leading or trailing whitespace.\n" +
+                "Note this command will only work via PM.";
+    }
 
     @Override
     protected void ExecuteCommand(String contents, MessageReceivedEvent event)
