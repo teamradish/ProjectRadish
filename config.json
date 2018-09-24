@@ -79,7 +79,7 @@
     "seekr" : "VoiceCommands.VoiceSeekRelativeCommand",
     "queue" : "VoiceCommands.ViewQueueCommand",
     "status" : "PresenceCommands.StatusCommand",
-    "memory" : "MemoryCommand"
+    "memory" : "MemoryCommand",
     "search" : "VoiceCommands.VoiceSearchCommand"
   },
   "CommandPrefix" : "!",
