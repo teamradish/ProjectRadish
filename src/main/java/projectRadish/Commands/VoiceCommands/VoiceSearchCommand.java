@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.Commands.BaseCommand;
+import projectRadish.Constants;
 import projectRadish.MessageListener;
 
 import java.io.IOException;
@@ -14,15 +15,12 @@ import projectRadish.YouTube.SearchResponse;
 
 public class VoiceSearchCommand extends BaseCommand
 {
-    //Move to constants if this command works
-    private static String API_URL = "https://content.googleapis.com/youtube/v3/search";
-    private static String API_KEY = "AIzaSyDPbQ16j2mzjhpByclKK78u0sQD0Q6W7s8";
     private ObjectMapper objMapper = new ObjectMapper();
 
     @Override
     public String getDescription()
     {
-        return "This commands searchs for videos on YouTube and plays the first result found.";
+        return "Searches for a video on YouTube and plays the audio of the first result found.";
     }
 
     @Override
@@ -43,10 +41,16 @@ public class VoiceSearchCommand extends BaseCommand
     @Override
     protected void ExecuteCommand(String contents, MessageReceivedEvent event)
     {
+        if (contents.isEmpty() == true)
+        {
+            event.getChannel().sendMessage("Usage: \"YouTube video search\"").queue();
+            return;
+        }
+
         try
         {
             String encodedContent = URLEncoder.encode(contents, "UTF-8");
-            URL url = new URL(API_URL + "?maxResults=1&part=id&type=video&q=" + encodedContent + "&key=" + API_KEY);
+            URL url = new URL(Constants.YOUTUBE_API_URL + "?maxResults=1&part=id&type=video&q=" + encodedContent + "&key=" + Constants.YOUTUBE_API_KEY);
 
             SearchResponse searchResponse = objMapper.readValue(url, SearchResponse.class);
 

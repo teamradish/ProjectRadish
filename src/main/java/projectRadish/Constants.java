@@ -37,6 +37,9 @@ public final class Constants {
 
     public static final ZoneId UTC_ZoneID = ZoneId.of("UTC");
 
+    public static final String YOUTUBE_API_KEY = "AIzaSyDPbQ16j2mzjhpByclKK78u0sQD0Q6W7s8";
+    public static final String YOUTUBE_API_URL = "https://content.googleapis.com/youtube/v3/search";
+
 	// Private Constructor to prevent instantiation
 	private Constants() {}
 }
