@@ -1,7 +1,7 @@
 {
   "BotToken" : "NDQxODY2MjEyMjQzMTQ0NzA0.Dc2fiw.iuq1Xdfgj5Cgzu7teqDMkDzzDt0",
   "RadishAdmin" : [ "183006569410068480", "136674765560741888", "259865752553783297", "173001519715581952", "100903082652602368" ],
-  "CurrentGame" : "DKC2",
+  "CurrentGame" : "SoM",
   "Docs" : {
     "Super Paper Mario" : "https://docs.google.com/document/d/1HRwpGPzhTSg8OqO6ZXGcpnonrAMa8n2svxOh4jURNHo",
     "The Thousand Year Door" : "https://docs.google.com/document/d/1x_wNw2v242yKm25pXuKKsDTKL8Qtf-pUm6DccLfYQuE",
@@ -32,7 +32,8 @@
     "Wind Waker" : "https://docs.google.com/document/d/1DuLW4JsIwHvLlLTAOrsg-_z4c1oDy5l0LuAG5On5e18",
     "Super Mario Galaxy" : "https://docs.google.com/document/d/1KrK7c6EehC__rE6keDb41Agv_njqy3QyvqkxQ2cE5Mo",
     "Super Mario RPG" : "https://docs.google.com/document/d/1GssMt4cdwXKTHwcpZ75Mz26B5e8xw4OrKjpAQMHTMFk",
-    "Ocarina of Time 2" : "https://docs.google.com/document/d/14CkVmdQH_W1drn57bkTR_3KvSsieM3JqBt9zWwY3TIg"
+    "Ocarina of Time 2" : "https://docs.google.com/document/d/14CkVmdQH_W1drn57bkTR_3KvSsieM3JqBt9zWwY3TIg",
+    "Donkey Kong Country 2" : "https://docs.google.com/document/d/1C6vHsFpJb6xh-Ui7WdhGPGxEaj8tYKuBIi_TIdgx0Oo"
   },
   "Commands" : {
     "play" : "VoiceCommands.VoicePlayCommand",
@@ -78,7 +79,8 @@
     "seekr" : "VoiceCommands.VoiceSeekRelativeCommand",
     "queue" : "VoiceCommands.ViewQueueCommand",
     "status" : "PresenceCommands.StatusCommand",
-    "memory" : "MemoryCommand"
+    "memory" : "MemoryCommand",
+    "search" : "VoiceCommands.VoiceSearchCommand"
   },
   "CommandPrefix" : "!",
   "SilencedUsers" : [ ]
