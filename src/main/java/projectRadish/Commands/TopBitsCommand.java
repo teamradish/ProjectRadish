@@ -5,6 +5,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.net.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -168,7 +169,7 @@ public class TopBitsCommand extends BaseCommand
 
             //Send body
             BufferedOutputStream bw = new BufferedOutputStream(conn.getOutputStream());
-            bw.write(strRequestBody.getBytes("UTF-8"));
+            bw.write(strRequestBody.getBytes(StandardCharsets.UTF_8));
             bw.close();
 
             //Read information
