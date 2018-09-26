@@ -4,10 +4,13 @@ import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import projectRadish.Commands.*;
+import projectRadish.Commands.VoiceCommands.VoiceSearchCommand;
 import projectRadish.LavaPlayer.VoicePlayer;
 
 import java.util.*;
 import java.util.Map.Entry;
+
+import static java.util.Objects.isNull;
 
 public class MessageListener extends ListenerAdapter implements ConfigListener
 {
@@ -132,11 +135,26 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
             TextChannel textChannel = event.getTextChannel(); //The TextChannel that this message was sent to.
             System.out.printf("(%s)[%s]<%s>: %s\n",
                     event.getGuild().getName(), textChannel.getName(), event.getMember().getEffectiveName(), msg);
+
+            String lowerMsg = event.getMessage().getContentDisplay().toLowerCase();
+            if (lowerMsg.startsWith("this is so sad " + Constants.BOT_NAME.toLowerCase() + " play despacito")) { // Vital Functionality
+                HashMap<String, String> cmds = Configuration.getCommands();
+                String searchCommand = null;
+                for(String cmdName: cmds.keySet()) {
+                    if (cmds.get(cmdName).equals("VoiceCommands.VoiceSearchCommand")) {
+                        searchCommand = cmdName;
+                    }
+                }
+                if (!isNull(searchCommand)) {
+                    msg = Configuration.getCommandPrefix() + searchCommand + " despacito";
+                }
+            }
         }
         else if (event.isFromType(ChannelType.PRIVATE)) //If this message was sent to a PrivateChannel
         {
             System.out.printf("[PRIV]<%s>: %s\n", author.getName(), msg);
-            if(event.getMessage().getContentDisplay().equals("prefix")){ // Taxi's failsafe for forgetting the prefix
+            String lowerMsg = event.getMessage().getContentDisplay().toLowerCase();
+            if(lowerMsg.equals("prefix")){ // Taxi's failsafe for forgetting the prefix
                 event.getChannel().sendMessage("\""+Configuration.getCommandPrefix()+"\"").queue();
             }
         }
