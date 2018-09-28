@@ -6,8 +6,13 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Game.GameType;
+import projectRadish.StreamChat.ChatConfig;
+import projectRadish.StreamChat.ChatManager;
+import projectRadish.StreamChat.TwitchChat;
 
 import javax.security.auth.login.LoginException;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class Main
 {
@@ -41,6 +46,10 @@ public class Main
             // you use buildBlocking in a thread that has the possibility of being interrupted (async thread usage and interrupts)
             e.printStackTrace();
         }
+
+        // JDA runs in a different thread, so we'll use this thread to manage twitch chats
+        ChatManager chatManager = new ChatManager();
+        chatManager.mainloop(); // Never returns
     }
 
     public static void initialise(JDA jda) {
