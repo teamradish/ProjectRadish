@@ -20,22 +20,22 @@ public class TwitchMessage {
         Matcher serverRegex = Pattern.compile(ChatConfig.SERVER_MSG).matcher(raw_input);
         Matcher server2Regex = Pattern.compile(ChatConfig.SERVER_MSG_2).matcher(raw_input);
 
-        if (serverRegex.find()) {
+        if (serverRegex.matches()) {
             messageType = MessageType.SERVER;
             channel = "SERVER";
             sender = "Server";
             contents = serverRegex.group(1);
-        } else if (server2Regex.find()) {
+        } else if (server2Regex.matches()) {
             messageType = MessageType.SERVER;
             channel = server2Regex.group(1);
             sender = "Server";
             contents = server2Regex.group(2);
-        } else if (joinRegex.find()) {
+        } else if (joinRegex.matches()) {
             messageType = MessageType.JOIN;
             channel =  joinRegex.group(2);
             sender = "Server";
             contents = joinRegex.group(1) + " joined chat.";
-        } else if (chatRegex.find()) {
+        } else if (chatRegex.matches()) {
             messageType = MessageType.PRIVMSG;
             channel = chatRegex.group(2);
             sender = chatRegex.group(1);

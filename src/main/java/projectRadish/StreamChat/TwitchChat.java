@@ -83,7 +83,7 @@ public class TwitchChat {
         boolean off_cooldown = inactivity_length > ChatConfig.CHAT_WAIT_TIME;
         if (off_cooldown && pendingChats.size() > 0) {
             String msg = pendingChats.poll(); // Take first reply from pending list
-            if (msg.equals(last_message_sent) && inactivity_length < 31000) { msg = msg + "."; } // Bypass same-message-twice filter
+            if (msg.equals(last_message_sent) && inactivity_length < 31000) { msg = msg + " ."; } // Bypass same-message-twice filter
 
             out.println(String.format("PRIVMSG #%s :%s\r\n", channel, msg));
             this.last_message_sent = msg;

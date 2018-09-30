@@ -25,20 +25,30 @@ public class ChatManager {
                 connect();
             }
 
-            // Read any messages we got from TPE's Chat
+            // Read any messages we got from TPE's Chat (detect valid inputs)
             Queue<TwitchMessage> messages = TPEchat.popMessages();
             while (messages.size() > 0) {
                 TwitchMessage m = messages.poll();
-                m.print();
-                //if (m.getContents().equals("!test")) { TPEchat.send("Test :) "); }
+                if (m.getMessageType() == MessageType.PRIVMSG) {
+                    boolean valid = ValidInput.isValidInput(m.getContents());
+                    if (valid) { System.out.println(m.getContents());
+                    } else { System.err.println(m.getContents()); }
+                } else { m.print(); }
             }
 
             // Read and handle any messages sent to the bot's chat (handle profile linking)
             messages = LINKchat.popMessages();
             while (messages.size() > 0) {
                 TwitchMessage m = messages.poll();
-                m.print();
-                //if (m.getContents().equals("!test")) { LINKchat.send("Link :) "); }
+                if (m.getMessageType() == MessageType.PRIVMSG) {
+                    boolean valid = ValidInput.isValidInput(m.getContents());
+                    if (valid) {
+                        System.out.println(m.getContents());
+                        LINKchat.send("Valid!");
+                    } else {
+                        System.err.println(m.getContents());
+                        LINKchat.send("Invalid.");}
+                } else { m.print(); }
             }
 
             // Java's mechanisms for selecting on multiple sockets kinda suck
