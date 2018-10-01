@@ -3,7 +3,10 @@ package projectRadish.StreamChat;
 import projectRadish.Constants;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 
@@ -13,6 +16,8 @@ public class ChatManager {
 
     public void mainloop() {
         connect();
+
+        System.out.println(ValidInput.getInputPattern().replaceAll("\\Q(?:\\E", "("));
 
         // We successfully connected
         while (true) {
@@ -27,13 +32,23 @@ public class ChatManager {
 
             // Read any messages we got from TPE's Chat (detect valid inputs)
             Queue<TwitchMessage> messages = TPEchat.popMessages();
+            List<String> admins = Arrays.asList("taximadish", "kimimaru4000", "lucasortizny", "toagac");
             while (messages.size() > 0) {
                 TwitchMessage m = messages.poll();
                 if (m.getMessageType() == MessageType.PRIVMSG) {
                     boolean valid = ValidInput.isValidInput(m.getContents());
-                    if (valid) { System.out.println(m.getContents());
-                    } else { System.err.println(m.getContents()); }
-                } else { m.print(); }
+                    if (valid) {
+                        System.out.println(m.getContents());
+                        if (admins.contains(m.getSender())) {
+                            TPEchat.send("Valid!");
+                        }
+                    } else {
+                        System.err.println(m.getContents());
+                        if (admins.contains(m.getSender())) {
+                            TPEchat.send("Invalid.");
+                        }
+                    }
+                }
             }
 
             // Read and handle any messages sent to the bot's chat (handle profile linking)
@@ -42,12 +57,8 @@ public class ChatManager {
                 TwitchMessage m = messages.poll();
                 if (m.getMessageType() == MessageType.PRIVMSG) {
                     boolean valid = ValidInput.isValidInput(m.getContents());
-                    if (valid) {
-                        System.out.println(m.getContents());
-                        LINKchat.send("Valid!");
-                    } else {
-                        System.err.println(m.getContents());
-                        LINKchat.send("Invalid.");}
+                    if (valid) { System.out.println(m.getContents());
+                    } else { System.err.println(m.getContents()); }
                 } else { m.print(); }
             }
 

@@ -5,6 +5,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.lang.Integer.parseInt;
+
 // Allergen Advice - Warning! Contains regexes. Lots of them. Some quite complex.
 
 public class ValidInput {
@@ -13,21 +15,27 @@ public class ValidInput {
         input = input.toLowerCase();
         input = input.replaceAll("\\s", ""); // remove spaces, since TPE ignores them anyway
 
-        // Step 1: Find all the argument-taking macros
-        String argMacro = "#[A-Za-z0-9]+\\Q(\\E[^)]+\\Q)\\E";
+        // Step 1: Expand out the repeats
+        String inner_repeat = "(\\Q[\\E([^\\Q[]\\E]*)\\Q]*\\E(\\d+))";
+        Matcher repeatRegex = Pattern.compile(inner_repeat).matcher(input);
+        while (repeatRegex.find()) {
+            String foundRepeat = repeatRegex.group(1);
+            StringBuilder replacement = new StringBuilder();
+            for (int i = 0; i < parseInt(repeatRegex.group(3)); i++) {
+                replacement.append(repeatRegex.group(2));
+            }
+            input = input.replaceAll("\\Q"+foundRepeat+"\\E", replacement.toString());
+            repeatRegex = Pattern.compile(inner_repeat).matcher(input);
+        }
 
-        // Step 2: Validate their arguments (being mindful of nested repeats)
-
-        // Step 3: If invalid, the whole thing's invalid, else remove them from the equation somehow
-
-        // Step 4: Find, validate, and eliminate all repeats from the string
-
-        // Step 5: The following regex can now validate the rest
-        String validityPattern = anyAtom()+"(?:\\Q+\\E?"+anyAtom()+")*";
+        // Step 2: Regex the rest
+        String validityPattern = inputPattern();
         Matcher validityRegex = Pattern.compile(validityPattern).matcher(input);
 
         return validityRegex.matches();
     }
+
+    public static String getInputPattern() { return inputPattern(); }
 
     private static Set<String> getButtons() {
         HashSet<String> btns = new HashSet<>();
@@ -43,21 +51,19 @@ public class ValidInput {
         return btns;
     }
 
-    private static String molecule(){ return ""; }
+    private static String inputPattern(){
+        String molecule = "(?:(?:"+anyAtom()+")|(?:"+argMacro()+"))";
+        String inputPattern = "\\A(?:\\A\\Z)|(?:"+molecule+"(?:\\Q+\\E?"+molecule+")*)\\Z";
 
-    private static String fullMacroArg() {
-        // ArgMolecules and argMolecules in Repeats
-        // Note that you cannot deal with nested repeats with regexes alone
-        // Best plan is probably regex to find an inner repeat, replace it with something valid like "a"
-        //      or some kind of special char, then repeat until no more inner repeats are found
-
-        String inner_repeat = "["+macroArgMolecule()+"]\\Q*\\E\\d+";
-        return "";
+        return inputPattern;
     }
 
-    private static String macroArgMolecule() {
+    private static String argMacro() {
         // Cannot use "+" to combine buttons in a macro arg
-        return "(?:"+macroArgAtom()+"+)";
+        String fullMacroArg =  "(?:"+macroArgAtom()+"+)";
+
+        String argMacro = "#[a-zA-Z_][A-Za-z0-9_]*\\Q(\\E"+fullMacroArg+"(?:,"+fullMacroArg+")*\\Q)\\E";
+        return argMacro;
     }
 
     private static String macroArgAtom() {
@@ -71,6 +77,8 @@ public class ValidInput {
 
         allAtoms.add(anyButton); // Only Basic Button Press works in a macro arg
         allAtoms.add("\\Q.\\E"); // Our boi delay dot works, but #200ms does not. Can't give it duration here either
+        allAtoms.add("kappa");   // alias for delay dot
+        allAtoms.add("\\d+"); // Some macros accept number inputs
 
         StringBuilder sb = new StringBuilder("(?:");
         for (String atom: allAtoms) {
@@ -93,8 +101,9 @@ public class ValidInput {
 
         allAtoms.add("[_-]?"+anyButton+duration+"?"); // Button Action eg. <_right2s>
         allAtoms.add("#"+duration); // Delay eg. <#300ms>
-        allAtoms.add("#[A-Za-z0-9]+"); // No-argument macro
+        allAtoms.add("#[a-zA-Z_][A-Za-z0-9_]*"); // No-argument macro
         allAtoms.add("\\Q.\\E"+duration+"?"); // Our boi, delay dot (can have duration for some reason)
+        allAtoms.add("kappa"+duration+"?");   // alias for delay dot
 
         StringBuilder sb = new StringBuilder("(?:");
         for (String atom: allAtoms) {
