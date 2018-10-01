@@ -11,6 +11,8 @@ import static java.lang.Integer.parseInt;
 
 public class ValidInput {
 
+    private static String delay = "(?:(?:kappa)|\\Q.\\E|#)";
+
     public static boolean isValidInput(String input) {
         input = input.toLowerCase();
         input = input.replaceAll("\\s", ""); // remove spaces, since TPE ignores them anyway
@@ -76,8 +78,7 @@ public class ValidInput {
         Set<String> allAtoms = new HashSet<>();
 
         allAtoms.add(anyButton); // Only Basic Button Press works in a macro arg
-        allAtoms.add("\\Q.\\E"); // Our boi delay dot works, but #200ms does not. Can't give it duration here either
-        allAtoms.add("kappa");   // alias for delay dot
+        allAtoms.add(delay); // Delays work but can't give them duration
         allAtoms.add("\\d+"); // Some macros accept number inputs
 
         StringBuilder sb = new StringBuilder("(?:");
@@ -100,10 +101,8 @@ public class ValidInput {
         Set<String> allAtoms = new HashSet<>();
 
         allAtoms.add("[_-]?"+anyButton+duration+"?"); // Button Action eg. <_right2s>
-        allAtoms.add("#"+duration); // Delay eg. <#300ms>
+        allAtoms.add(delay+duration+"?"); // Delay eg. <.> or <#> or <#300ms>
         allAtoms.add("#[a-zA-Z_][A-Za-z0-9_]*"); // No-argument macro
-        allAtoms.add("\\Q.\\E"+duration+"?"); // Our boi, delay dot (can have duration for some reason)
-        allAtoms.add("kappa"+duration+"?");   // alias for delay dot
 
         StringBuilder sb = new StringBuilder("(?:");
         for (String atom: allAtoms) {
@@ -121,8 +120,7 @@ public class ValidInput {
         for (String button: buttons) {
             sb.append("(?:"+button+")|");
         }
-        sb.deleteCharAt(sb.length()-1); // remove final "|"
-        sb.append(")");
+        sb.append("(?:pause))"); // also a valid button, usually an alias for "start"
         return sb.toString();
     }
 
