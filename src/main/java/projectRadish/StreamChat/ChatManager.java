@@ -17,15 +17,16 @@ public class ChatManager {
     public void mainloop() {
         connect();
 
+        long last_wp = 0;
         System.out.println(ValidInput.getInputPattern().replaceAll("\\Q(?:\\E", "("));
 
+        boolean running = true;
         // We successfully connected
-        while (true) {
+        while (running) {
 
             // Send & Receive Data
             try {
                 TPEchat.update();
-                LINKchat.update();
             } catch (IOException e) { // We lost connection
                 connect();
             }
@@ -36,30 +37,16 @@ public class ChatManager {
             while (messages.size() > 0) {
                 TwitchMessage m = messages.poll();
                 if (m.getMessageType() == MessageType.PRIVMSG) {
-                    boolean valid = ValidInput.isValidInput(m.getContents());
-                    if (valid) {
-                        System.out.println(m.getContents());
-                        if (admins.contains(m.getSender())) {
-                            TPEchat.send("Valid!");
-                        }
-                    } else {
-                        System.err.println(m.getContents());
-                        if (admins.contains(m.getSender())) {
-                            TPEchat.send("Invalid.");
-                        }
+                    if (!admins.contains(m.getSender()) && !m.getSender().contains("bot")) {
+                        // USER ALERT, SHUT DOWN EVERYTHING
+                        running = false;
                     }
                 }
             }
 
-            // Read and handle any messages sent to the bot's chat (handle profile linking)
-            messages = LINKchat.popMessages();
-            while (messages.size() > 0) {
-                TwitchMessage m = messages.poll();
-                if (m.getMessageType() == MessageType.PRIVMSG) {
-                    boolean valid = ValidInput.isValidInput(m.getContents());
-                    if (valid) { System.out.println(m.getContents());
-                    } else { System.err.println(m.getContents()); }
-                } else { m.print(); }
+            if (System.currentTimeMillis() - last_wp > 20*1000) {
+                TPEchat.send("right1sleftupupright500msdown1s#2500msup");
+                last_wp = System.currentTimeMillis();
             }
 
             // Java's mechanisms for selecting on multiple sockets kinda suck
