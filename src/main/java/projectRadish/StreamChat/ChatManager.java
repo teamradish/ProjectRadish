@@ -33,19 +33,24 @@ public class ChatManager {
 
             // Read any messages we got from TPE's Chat (detect valid inputs)
             Queue<TwitchMessage> messages = TPEchat.popMessages();
-            List<String> admins = Arrays.asList("taximadish", "kimimaru4000", "lucasortizny", "toagac");
+            List<String> admins = Arrays.asList("taximadish", "kimimaru4000", "lucasortizny", "yukioyamoto");
             while (messages.size() > 0) {
                 TwitchMessage m = messages.poll();
                 if (m.getMessageType() == MessageType.PRIVMSG) {
                     if (!admins.contains(m.getSender()) && !m.getSender().contains("bot")) {
                         // USER ALERT, SHUT DOWN EVERYTHING
+                        TPEchat.send("Yay, a person! KonCha Guess I can take a break! Deactivating... :) ");
                         running = false;
+                    } else if (m.getContents().toLowerCase().equals("pause")) {
+                        last_wp = Long.MAX_VALUE;
+                    } else if (m.getContents().toLowerCase().equals("resume")) {
+                        last_wp = 0;
                     }
                 }
             }
 
             if (System.currentTimeMillis() - last_wp > 20*1000) {
-                TPEchat.send("right1sleftupupright500msdown1s#2500msup");
+                TPEchat.send("[ I am an auto-grind bot! I grind levels automatically when nobody is talking in chat :) ]*0right1sleftupupright500msdown1s#2500msup");
                 last_wp = System.currentTimeMillis();
             }
 
@@ -54,6 +59,13 @@ public class ChatManager {
             try {
                 TimeUnit.MILLISECONDS.sleep(100);
             } catch (InterruptedException e2) { /* Doesn't matter */ }
+        }
+
+        // Send & Receive Data
+        try {
+            TPEchat.update();
+        } catch (IOException e) { // We lost connection
+            // lmao who cAREAS
         }
     }
 
