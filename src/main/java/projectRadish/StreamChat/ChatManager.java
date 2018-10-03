@@ -17,7 +17,7 @@ public class ChatManager {
     public void mainloop() {
         connect();
 
-        long last_wp = 0;
+        long last_wp = System.currentTimeMillis() - 17*1000;
         System.out.println(ValidInput.getInputPattern().replaceAll("\\Q(?:\\E", "("));
 
         boolean running = true;
@@ -36,11 +36,17 @@ public class ChatManager {
             List<String> admins = Arrays.asList("taximadish", "kimimaru4000", "lucasortizny", "yukioyamoto");
             while (messages.size() > 0) {
                 TwitchMessage m = messages.poll();
+                m.print();
                 if (m.getMessageType() == MessageType.PRIVMSG) {
+                    if (m.getContents().toLowerCase().equals("kill")) {
+                        running = false;
+                        TPEchat.send("Shutting down... :)");
+                    }
+
                     if (!admins.contains(m.getSender()) && !m.getSender().contains("bot")) {
                         // USER ALERT, SHUT DOWN EVERYTHING
-                        TPEchat.send("Yay, a person! KonCha Guess I can take a break! Deactivating... :) ");
-                        running = false;
+                        TPEchat.send("Yay, a person! KonCha Guess I can take a break! Pausing... :) ");
+                        last_wp = Long.MAX_VALUE;
                     } else if (m.getContents().toLowerCase().equals("pause")) {
                         last_wp = Long.MAX_VALUE;
                     } else if (m.getContents().toLowerCase().equals("resume")) {
@@ -50,7 +56,9 @@ public class ChatManager {
             }
 
             if (System.currentTimeMillis() - last_wp > 20*1000) {
-                TPEchat.send("[ I am an auto-grind bot! I grind levels automatically when nobody is talking in chat :) ]*0right1sleftupupright500msdown1s#2500msup");
+                String myChat = "[ I am an auto-grind bot! I grind levels automatically when nobody is talking in chat :) ]*0right1sleftupupright500msdown1s#2500msup";
+                TPEchat.send(myChat);
+                System.out.println(myChat);
                 last_wp = System.currentTimeMillis();
             }
 
