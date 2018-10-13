@@ -4,7 +4,6 @@ import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import projectRadish.Commands.*;
-import projectRadish.Commands.VoiceCommands.VoiceSearchCommand;
 import projectRadish.LavaPlayer.VoicePlayer;
 
 import java.util.*;
@@ -17,6 +16,8 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
     private static Map<String, BaseCommand> Commands = new HashMap<>();
 
     public static VoicePlayer vp = new VoicePlayer();
+
+    private static final CrashHandler crashHandler = new CrashHandler();
 
     /**
      * Constructor.
@@ -93,6 +94,9 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
      */
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+        //Kimimaru: Set unhandled exception handler
+        Thread.currentThread().setUncaughtExceptionHandler(crashHandler);
+
         if (!shouldIgnore(event)) {
             handleMessage(event);
         }

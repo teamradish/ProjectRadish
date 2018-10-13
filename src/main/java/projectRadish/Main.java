@@ -20,6 +20,11 @@ public class Main
      * This is the method where the program starts.
      */
     public static void main(String[] args) {
+        //Kimimaru: In the event of an unhandled exception, use this handler
+        CrashHandler crashHandler = new CrashHandler();
+        Thread.setDefaultUncaughtExceptionHandler(crashHandler);
+        Thread.currentThread().setUncaughtExceptionHandler(crashHandler);
+
         Configuration.loadConfiguration();
         //We construct a builder for a BOT account. If we wanted to use a CLIENT account
         // we would use AccountType.CLIENT
