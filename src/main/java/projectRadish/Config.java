@@ -14,9 +14,10 @@ public final class Config
     public Set<String> RadishAdmin  = new HashSet<>();
     public String CurrentGame;
     public HashMap<String, String> Docs = new HashMap<>();
-    public HashMap<String, String> Commands = new HashMap<String, String>();
+    public HashMap<String, String> Commands = new HashMap<>();
     public String CommandPrefix = "!";
     public Vector<String> SilencedUsers = new Vector<>();
+    public HashMap<String, Long> InputCounts = new HashMap<>();
 
     public Config()
     {
