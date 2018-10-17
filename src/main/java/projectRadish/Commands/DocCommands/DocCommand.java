@@ -8,6 +8,8 @@ import projectRadish.Configuration;
 import projectRadish.DidYouMean;
 import projectRadish.Utilities;
 
+import static java.util.Objects.isNull;
+
 public final class DocCommand extends BaseCommand
 {
     @Override
@@ -24,11 +26,18 @@ public final class DocCommand extends BaseCommand
         //No arguments - show current game doc
         if (content.length() == 0)
         {
+            if (isNull(Configuration.getCurrentGame())) {
+                String prefix = Configuration.getCommandPrefix();
+                event.getChannel().sendMessage("No currently active docs.\n" +
+                        "Use `"+prefix+"doc Game Name` or `"+prefix+"alldocs` to browse past docs."
+                ).queue();
+                return;
+            }
             String game = Configuration.getCurrentGame();
             String best_match = DidYouMean.getBest(game, Configuration.getDocs().keySet(), true);
             String link = Configuration.getDocs().get(best_match) + "/edit";
 
-            MessageEmbed e = Utilities.formatOutput("Current Game Document:", game, link);
+            MessageEmbed e = Utilities.formatOutput("Current Game Document:", best_match, link);
             event.getChannel().sendMessage(e).queue();
         }
         else

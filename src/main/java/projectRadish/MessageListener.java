@@ -184,14 +184,9 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
             //Iterate with Iterator to allow modification while iterating
             for (Iterator<String> it = Commands.keySet().iterator(); it.hasNext();) {
                 String cmdName = it.next();
-                if (msg.startsWith(cmdName)) { // potential match
-                    try {
-                        if (msg.charAt(cmdName.length()) == ' ') {
-                            cmdMatch = cmdName; // match with arguments
-                        }
-                    } catch (StringIndexOutOfBoundsException e) {
-                        cmdMatch = cmdName; // match with no arguments
-                    }
+                String lowerMsg = msg.toLowerCase();
+                if (lowerMsg.startsWith(cmdName+" ") || lowerMsg.equals(cmdName)) { // match (with || without) args
+                    cmdMatch = cmdName;
                 }
             }
 
