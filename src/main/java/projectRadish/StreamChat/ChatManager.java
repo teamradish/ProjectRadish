@@ -1,18 +1,15 @@
 package projectRadish.StreamChat;
 
+import projectRadish.Configuration;
 import projectRadish.Constants;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 
 public class ChatManager {
     TwitchChat TPEchat;
-    TwitchChat LINKchat;
 
     public void mainloop() {
         connect();
@@ -23,41 +20,22 @@ public class ChatManager {
             // Send & Receive Data
             try {
                 TPEchat.update();
-                LINKchat.update();
             } catch (IOException e) { // We lost connection
                 connect();
             }
 
             // Read any messages we got from TPE's Chat (detect valid inputs)
             Queue<TwitchMessage> messages = TPEchat.popMessages();
-            List<String> admins = Arrays.asList("taximadish", "kimimaru4000", "lucasortizny", "toagac");
             while (messages.size() > 0) {
                 TwitchMessage m = messages.poll();
                 if (m.getMessageType() == MessageType.PRIVMSG) {
                     boolean valid = ValidInput.isValidInput(m.getContents());
                     if (valid) {
-                        System.out.println(m.getContents());
-                        if (admins.contains(m.getSender())) {
-                            TPEchat.send("Valid!");
-                        }
-                    } else {
-                        System.err.println(m.getContents());
-                        if (admins.contains(m.getSender())) {
-                            TPEchat.send("Invalid.");
-                        }
+                        Map<String, Long> inputCounts = Configuration.getInputCounts();
+                        Long currentCount = inputCounts.getOrDefault(m.getSender(), 0L); // Treat as 0 for a new user
+                        inputCounts.put(m.getSender(), currentCount+1);
                     }
                 }
-            }
-
-            // Read and handle any messages sent to the bot's chat (handle profile linking)
-            messages = LINKchat.popMessages();
-            while (messages.size() > 0) {
-                TwitchMessage m = messages.poll();
-                if (m.getMessageType() == MessageType.PRIVMSG) {
-                    boolean valid = ValidInput.isValidInput(m.getContents());
-                    if (valid) { System.out.println(m.getContents());
-                    } else { System.err.println(m.getContents()); }
-                } else { m.print(); }
             }
 
             // Java's mechanisms for selecting on multiple sockets kinda suck
@@ -70,13 +48,11 @@ public class ChatManager {
 
     private void connect() {
         TPEchat = new TwitchChat(Constants.STREAM_NAME);
-        LINKchat = new TwitchChat(ChatConfig.NICK);
 
         boolean connected = false;
         while (!connected) {
             try { // Attempt to connect to the chats
                 TPEchat.connect();
-                LINKchat.connect();
                 connected = true;
             } catch (IOException e) { // We couldn't connect
                 System.err.println("Couldn't connect to Twitch Chat. Retrying in 10secs...");

@@ -141,7 +141,6 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
             String lowerMsg = event.getMessage().getContentDisplay().toLowerCase();
             String meme = "this is so sad.? " + Constants.BOT_NAME.toLowerCase() + " play (.+)";
             Matcher memeRegex = Pattern.compile(meme).matcher(lowerMsg);
-            System.out.println(memeRegex.matches());
             if (memeRegex.matches()) { // Vital Functionality
                 HashMap<String, String> cmds = Configuration.getCommands();
                 String searchCommand = null;
@@ -151,7 +150,7 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
                     }
                 }
                 if (!isNull(searchCommand)) {
-                    System.out.println(memeRegex.group(1));
+                    System.out.println("MEME DETECTED\nINITIALISING MEME PROTOCOL");
                     msg = Configuration.getCommandPrefix() + searchCommand + " " + memeRegex.group(1);
                 }
             }

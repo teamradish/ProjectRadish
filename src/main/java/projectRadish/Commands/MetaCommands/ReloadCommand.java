@@ -20,6 +20,7 @@ public class ReloadCommand extends AdminCommand
     @Override
     protected void ExecuteCommand(String content, MessageReceivedEvent event)
     {
+        Configuration.saveConfiguration();
         Configuration.loadConfiguration();
         event.getChannel().sendMessage("Config reloaded!").queue();
     }

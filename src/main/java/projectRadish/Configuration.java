@@ -3,7 +3,6 @@ package projectRadish;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -55,6 +54,11 @@ public final class Configuration
     public static void setCommandPrefix(String prefix) { config.CommandPrefix = prefix; }
 
     public static Vector<String> getSilencedUsers() { return config.SilencedUsers; }
+
+    public static HashMap<String, Long> getInputCounts() {
+        return config.InputCounts;
+    }
+    public static void setInputCounts(HashMap<String, Long> inputCounts) { config.InputCounts = inputCounts; }
 
     public static void addConfigListener(ConfigListener configListener)
     {

@@ -40,6 +40,7 @@
     "disconnect" : "VoiceCommands.VoiceDisconnectCommand",
     "memory" : "MemoryCommand",
     "owo" : "OwoCommand",
+    "inputs" : "TwitchCommands.InputCountCommand",
     "roll" : "RollCommand",
     "currentdoc" : "DocCommands.CurrentDocCommand",
     "setprefix" : "MetaCommands.SetPrefixCommand",
@@ -83,5 +84,8 @@
     "status" : "PresenceCommands.StatusCommand"
   },
   "CommandPrefix" : "?",
-  "SilencedUsers" : [ ]
+  "SilencedUsers" : [ ],
+  "InputCounts" : {
+    "taximadish" : 1
+  }
 }
