@@ -9,6 +9,8 @@ import projectRadish.LavaPlayer.VoicePlayer;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.util.Objects.isNull;
 
@@ -137,7 +139,10 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
                     event.getGuild().getName(), textChannel.getName(), event.getMember().getEffectiveName(), msg);
 
             String lowerMsg = event.getMessage().getContentDisplay().toLowerCase();
-            if (lowerMsg.startsWith("this is so sad " + Constants.BOT_NAME.toLowerCase() + " play despacito")) { // Vital Functionality
+            String meme = "this is so sad.? " + Constants.BOT_NAME.toLowerCase() + " play (.+)";
+            Matcher memeRegex = Pattern.compile(meme).matcher(lowerMsg);
+            System.out.println(memeRegex.matches());
+            if (memeRegex.matches()) { // Vital Functionality
                 HashMap<String, String> cmds = Configuration.getCommands();
                 String searchCommand = null;
                 for(String cmdName: cmds.keySet()) {
@@ -146,7 +151,8 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
                     }
                 }
                 if (!isNull(searchCommand)) {
-                    msg = Configuration.getCommandPrefix() + searchCommand + " despacito";
+                    System.out.println(memeRegex.group(1));
+                    msg = Configuration.getCommandPrefix() + searchCommand + " " + memeRegex.group(1);
                 }
             }
         }

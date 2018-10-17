@@ -17,8 +17,6 @@ public class ChatManager {
     public void mainloop() {
         connect();
 
-        System.out.println(ValidInput.getInputPattern().replaceAll("\\Q(?:\\E", "("));
-
         // We successfully connected
         while (true) {
 

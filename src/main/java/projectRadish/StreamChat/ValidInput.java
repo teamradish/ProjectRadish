@@ -11,7 +11,7 @@ import static java.lang.Integer.parseInt;
 
 public class ValidInput {
 
-    private static String delay = "(?:(?:kappa)|\\Q.\\E|#)";
+    private static String delay = "(?:(?:kappa)|\\Q.\\E|#)"; // #, "kappa" and the period all denote a delay
 
     public static boolean isValidInput(String input) {
         input = input.toLowerCase();
