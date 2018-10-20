@@ -25,10 +25,10 @@ public final class InputCountCommand extends BaseCommand
             event.getChannel().sendMessage(usage).queue();
             return;
         }
-        String twitchName = content;
+        String twitchName = content.toLowerCase();
         Map<String, Long> inputCounts = Configuration.getInputCounts();
         Long inputs = inputCounts.getOrDefault(twitchName, 0L); // If they're not even registered, return 0
-        String reply = String.format("%s: %d Inputs", twitchName, inputs);
+        String reply = String.format("**%s**: %d Inputs", content, inputs);
         event.getChannel().sendMessage(reply).queue();
     }
 }
