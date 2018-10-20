@@ -6,8 +6,13 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Game.GameType;
+import projectRadish.StreamChat.ChatConfig;
+import projectRadish.StreamChat.ChatManager;
+import projectRadish.StreamChat.TwitchChat;
 
 import javax.security.auth.login.LoginException;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class Main
 {
@@ -20,6 +25,11 @@ public class Main
      * This is the method where the program starts.
      */
     public static void main(String[] args) {
+        //Kimimaru: In the event of an unhandled exception, use this handler
+        CrashHandler crashHandler = new CrashHandler();
+        Thread.setDefaultUncaughtExceptionHandler(crashHandler);
+        Thread.currentThread().setUncaughtExceptionHandler(crashHandler);
+
         Configuration.loadConfiguration();
         //We construct a builder for a BOT account. If we wanted to use a CLIENT account
         // we would use AccountType.CLIENT
@@ -41,6 +51,10 @@ public class Main
             // you use buildBlocking in a thread that has the possibility of being interrupted (async thread usage and interrupts)
             e.printStackTrace();
         }
+
+        // JDA runs in a different thread, so we'll use this thread to manage twitch chats
+        ChatManager chatManager = new ChatManager();
+        chatManager.mainloop(); // Never returns
     }
 
     public static void initialise(JDA jda) {

@@ -30,14 +30,20 @@ public final class CurrentDocCommand extends AdminCommand
             return;
         }
 
+        String lower = content.toLowerCase();
+        if (lower.equals("nothing") || lower.equals("none")) {
+            content = null;
+            event.getChannel().sendMessage("There is now no Current Doc.").queue();
+        } else {
+            String game = DidYouMean.getBest(content, Configuration.getDocs().keySet(), true);
+            String link = Configuration.getDocs().get(game) + "/preview";
+
+            MessageEmbed e = Utilities.formatOutput("Current Doc set to:", game, link, embedBuilder);
+            event.getChannel().sendMessage(e).queue();
+        }
+
         Configuration.setCurrentGame(content);
         Configuration.saveConfiguration();
         Configuration.loadConfiguration();
-
-        String game = DidYouMean.getBest(content, Configuration.getDocs().keySet(), true);
-        String link = Configuration.getDocs().get(game) + "/preview";
-
-        MessageEmbed e = Utilities.formatOutput("Current Doc set to:", game, link, embedBuilder);
-        event.getChannel().sendMessage(e).queue();
     }
 }

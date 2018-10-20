@@ -6,7 +6,7 @@ import java.time.ZoneId;
 
 public final class Constants {
 
-	//public static final String COMMAND_PREFIX = "?";
+	public static final String BOT_NAME = "Twink";
 
 	public static final OnlineStatus DEFAULT_STATUS = OnlineStatus.DO_NOT_DISTURB;
 	public static String getDefaultGame()

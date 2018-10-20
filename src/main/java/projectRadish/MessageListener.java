@@ -8,12 +8,18 @@ import projectRadish.LavaPlayer.VoicePlayer;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static java.util.Objects.isNull;
 
 public class MessageListener extends ListenerAdapter implements ConfigListener
 {
     private static Map<String, BaseCommand> Commands = new HashMap<>();
 
     public static VoicePlayer vp = new VoicePlayer();
+
+    private static final CrashHandler crashHandler = new CrashHandler();
 
     /**
      * Constructor.
@@ -90,6 +96,9 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
      */
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+        //Kimimaru: Set unhandled exception handler
+        Thread.currentThread().setUncaughtExceptionHandler(crashHandler);
+
         if (!shouldIgnore(event)) {
             handleMessage(event);
         }
@@ -132,11 +141,29 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
             TextChannel textChannel = event.getTextChannel(); //The TextChannel that this message was sent to.
             System.out.printf("(%s)[%s]<%s>: %s\n",
                     event.getGuild().getName(), textChannel.getName(), event.getMember().getEffectiveName(), msg);
+
+            String lowerMsg = event.getMessage().getContentDisplay().toLowerCase();
+            String meme = "this is so sad.? " + Constants.BOT_NAME.toLowerCase() + " play (.+)";
+            Matcher memeRegex = Pattern.compile(meme).matcher(lowerMsg);
+            if (memeRegex.matches()) { // Vital Functionality
+                HashMap<String, String> cmds = Configuration.getCommands();
+                String searchCommand = null;
+                for(String cmdName: cmds.keySet()) {
+                    if (cmds.get(cmdName).equals("VoiceCommands.VoiceSearchCommand")) {
+                        searchCommand = cmdName;
+                    }
+                }
+                if (!isNull(searchCommand)) {
+                    System.out.println("MEME DETECTED\nINITIALISING MEME PROTOCOL");
+                    msg = Configuration.getCommandPrefix() + searchCommand + " " + memeRegex.group(1);
+                }
+            }
         }
         else if (event.isFromType(ChannelType.PRIVATE)) //If this message was sent to a PrivateChannel
         {
             System.out.printf("[PRIV]<%s>: %s\n", author.getName(), msg);
-            if(event.getMessage().getContentDisplay().equals("prefix")){ // Taxi's failsafe for forgetting the prefix
+            String lowerMsg = event.getMessage().getContentDisplay().toLowerCase();
+            if(lowerMsg.equals("prefix")){ // Taxi's failsafe for forgetting the prefix
                 event.getChannel().sendMessage("\""+Configuration.getCommandPrefix()+"\"").queue();
             }
         }
@@ -157,14 +184,9 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
             //Iterate with Iterator to allow modification while iterating
             for (Iterator<String> it = Commands.keySet().iterator(); it.hasNext();) {
                 String cmdName = it.next();
-                if (msg.startsWith(cmdName)) { // potential match
-                    try {
-                        if (msg.charAt(cmdName.length()) == ' ') {
-                            cmdMatch = cmdName; // match with arguments
-                        }
-                    } catch (StringIndexOutOfBoundsException e) {
-                        cmdMatch = cmdName; // match with no arguments
-                    }
+                String lowerMsg = msg.toLowerCase();
+                if (lowerMsg.startsWith(cmdName+" ") || lowerMsg.equals(cmdName)) { // match (with || without) args
+                    cmdMatch = cmdName;
                 }
             }
 

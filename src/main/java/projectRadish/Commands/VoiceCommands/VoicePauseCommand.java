@@ -3,7 +3,6 @@ package projectRadish.Commands.VoiceCommands;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.Commands.BaseCommand;
 import projectRadish.MessageListener;
-import sun.plugin2.message.Message;
 
 public final class VoicePauseCommand extends BaseCommand
 {
