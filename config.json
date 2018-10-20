@@ -1,5 +1,5 @@
 {
-  "BotToken" : "NDQxODY2MjEyMjQzMTQ0NzA0.Dc2fiw.iuq1Xdfgj5Cgzu7teqDMkDzzDt0",
+  "BotToken" : "NDMxNjcwNDI3NDg0Njg0MzEx.Df402Q.b-SwdZZ8PhokJ-F4lAIZ7Rm6l6c",
   "RadishAdmin" : [ "183006569410068480", "136674765560741888", "259865752553783297", "173001519715581952", "100903082652602368" ],
   "CurrentGame" : null,
   "Docs" : {
@@ -83,9 +83,8 @@
     "queue" : "VoiceCommands.ViewQueueCommand",
     "status" : "PresenceCommands.StatusCommand"
   },
-  "CommandPrefix" : "?",
+  "CommandPrefix" : "!",
   "SilencedUsers" : [ ],
   "InputCounts" : {
-    "taximadish" : 1
   }
 }
