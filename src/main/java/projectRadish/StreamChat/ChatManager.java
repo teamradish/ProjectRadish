@@ -31,9 +31,12 @@ public class ChatManager {
                 if (m.getMessageType() == MessageType.PRIVMSG) {
                     boolean valid = ValidInput.isValidInput(m.getContents());
                     if (valid) {
+                        System.out.println(m.getSender()+": "+m.getContents());
                         Map<String, Long> inputCounts = Configuration.getInputCounts();
                         Long currentCount = inputCounts.getOrDefault(m.getSender(), 0L); // Treat as 0 for a new user
                         inputCounts.put(m.getSender(), currentCount+1);
+                    } else {
+                        System.err.println(m.getSender()+": "+m.getContents());
                     }
                 }
             }

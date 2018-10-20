@@ -42,13 +42,17 @@ public class ValidInput {
     private static Set<String> getButtons() {
         HashSet<String> btns = new HashSet<>();
 
-        // Currently SNES so no axis testing unfortunately
         btns.add("a");      btns.add("b");
         btns.add("x");      btns.add("y");
         btns.add("l");      btns.add("r");
-        btns.add("start");  btns.add("select");
+        btns.add("z");
+        btns.add("start");
         btns.add("up");     btns.add("down");
         btns.add("left");   btns.add("right");
+        btns.add("dup");     btns.add("ddown");
+        btns.add("dleft");   btns.add("dright");
+        btns.add("cup");     btns.add("cdown");
+        btns.add("cleft");   btns.add("cright");
 
         return btns;
     }
@@ -96,11 +100,13 @@ public class ValidInput {
         // Eg. a delay <#300ms>, a button action <_right2s>, a no-argument macro call <#jump>
 
         String duration = "(?:\\d+m?s)";
+        String percentageNo = "(?:\\d|(?:100)|(?:[1-9]\\d))"; // Match 0-100, no preceding 0s
+        String percentage = "(?:"+percentageNo+"\\Q%\\E)";
         String anyButton = anyButton();
 
         Set<String> allAtoms = new HashSet<>();
 
-        allAtoms.add("[_-]?"+anyButton+duration+"?"); // Button Action eg. <_right2s>
+        allAtoms.add("[_-]?"+anyButton+percentage+"?"+duration+"?"); // Button Action eg. <_right70%2s>
         allAtoms.add(delay+duration+"?"); // Delay eg. <.> or <#> or <#300ms>
         allAtoms.add("#[a-zA-Z_][A-Za-z0-9_]*"); // No-argument macro
 
