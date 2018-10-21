@@ -56,8 +56,7 @@ public class ChatManager {
     }
 
     private void connect() {
-        TPEchat = new TwitchChat("twink_pr");//Constants.STREAM_NAME);
-        System.err.println("ERROR\nERROR\nERROR\nERROR\nERROR\nERROR\nERROR\nERROR\nERROR\nWRONG TWITCH CHANNEL");
+        TPEchat = new TwitchChat(Constants.STREAM_NAME);
         boolean connected = false;
         while (!connected) {
             try { // Attempt to connect to the chats
