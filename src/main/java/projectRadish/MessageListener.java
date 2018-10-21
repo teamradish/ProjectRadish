@@ -166,6 +166,12 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
             if(lowerMsg.equals("prefix")){ // Taxi's failsafe for forgetting the prefix
                 event.getChannel().sendMessage("\""+Configuration.getCommandPrefix()+"\"").queue();
             }
+            if(lowerMsg.equals("inputbackup") && // Gotta back up them input counts
+                    Configuration.getRadishAdmin().contains(event.getAuthor().getId())) {
+                String reply = String.format("@ %d\n", System.currentTimeMillis());
+                reply = reply + Configuration.getInputCounts().toString();
+                event.getChannel().sendMessage(reply).queue();
+            }
         }
 
         //Find and execute the command for message

@@ -40,6 +40,7 @@
     "disconnect" : "VoiceCommands.VoiceDisconnectCommand",
     "owo" : "OwoCommand",
     "inputs" : "TwitchCommands.InputCountCommand",
+    "topinputs" : "TwitchCommands.TopInputsCommand",
     "delbuttons" : "TwitchCommands.DelButtonCommand",
     "currentdoc" : "DocCommands.CurrentDocCommand",
     "setprefix" : "MetaCommands.SetPrefixCommand",

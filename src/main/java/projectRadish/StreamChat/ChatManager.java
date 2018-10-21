@@ -20,6 +20,7 @@ public class ChatManager {
     public void mainloop() {
         connect();
 
+        int inputCounter = 0;
         // We successfully connected
         while (true) {
 
@@ -38,6 +39,7 @@ public class ChatManager {
                     boolean valid = inputValidator.isValidInput(m.getContents());
                     if (valid) {
                         System.out.println(m.getSender()+": "+m.getContents());
+                        inputCounter++;
                         Map<String, Long> inputCounts = Configuration.getInputCounts();
                         Long currentCount = inputCounts.getOrDefault(m.getSender(), 0L); // Treat as 0 for a new user
                         inputCounts.put(m.getSender(), currentCount+1);
@@ -45,6 +47,12 @@ public class ChatManager {
                         System.err.println(m.getSender()+": "+m.getContents());
                     }
                 }
+            }
+
+            // Autosave every now and then
+            final int inputs_before_autosave = 100;
+            if(inputCounter >= inputs_before_autosave) {
+                Configuration.saveConfiguration();
             }
 
             // Java's mechanisms for selecting on multiple sockets kinda suck
