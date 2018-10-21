@@ -9,11 +9,26 @@ import static java.lang.Integer.parseInt;
 
 // Allergen Advice - Warning! Contains regexes. Lots of them. Some quite complex.
 
-public class ValidInput {
+public class InputValidator {
 
-    private static String delay = "(?:(?:kappa)|\\Q.\\E|#)"; // #, "kappa" and the period all denote a delay
+    private Set<String> buttons;
 
-    public static boolean isValidInput(String input) {
+    public InputValidator() {
+        // Gamecube is a decent default, since it has a lot of buttons in common with other systems
+        buttons = Controllers.gamecubeController();
+    }
+
+    public Set<String> getButtons() {
+        return new HashSet<>(this.buttons);
+    }
+
+    public void setButtons(Set<String> btns) {
+        this.buttons = btns;
+    }
+
+    public String getInputPattern() { return inputPattern(); }
+
+    public boolean isValidInput(String input) {
         input = input.toLowerCase();
         input = input.replaceAll("\\s", ""); // remove spaces, since TPE ignores them anyway
 
@@ -37,34 +52,23 @@ public class ValidInput {
         return validityRegex.matches();
     }
 
-    public static String getInputPattern() { return inputPattern(); }
+    // ==================================================================
+    //  Here Endeth the functions you need to care about.
+    //
+    //  Everything below this point is just private helper functions for
+    //      creating the Validity Regex
+    // ==================================================================
 
-    private static Set<String> getButtons() {
-        HashSet<String> btns = new HashSet<>();
+    private static final String delay = "(?:(?:kappa)|\\Q.\\E|#)"; // #, "kappa" and the period all denote a delay
 
-        btns.add("a");      btns.add("b");
-        btns.add("x");      btns.add("y");
-        btns.add("l");      btns.add("r");
-        btns.add("z");
-        btns.add("start");
-        btns.add("up");     btns.add("down");
-        btns.add("left");   btns.add("right");
-        btns.add("dup");     btns.add("ddown");
-        btns.add("dleft");   btns.add("dright");
-        btns.add("cup");     btns.add("cdown");
-        btns.add("cleft");   btns.add("cright");
-
-        return btns;
-    }
-
-    private static String inputPattern(){
+    private String inputPattern(){
         String molecule = "(?:(?:"+anyAtom()+")|(?:"+argMacro()+"))";
         String inputPattern = "\\A(?:\\A\\Z)|(?:"+molecule+"(?:\\Q+\\E?"+molecule+")*)\\Z";
 
         return inputPattern;
     }
 
-    private static String argMacro() {
+    private String argMacro() {
         // Cannot use "+" to combine buttons in a macro arg
         String fullMacroArg =  "(?:"+macroArgAtom()+"+)";
 
@@ -72,7 +76,7 @@ public class ValidInput {
         return argMacro;
     }
 
-    private static String macroArgAtom() {
+    private String macroArgAtom() {
         // An "atom" is an irreducible/unsimplifiable piece of input
         // For macro args, only non-durational button presses and the delay dot are allowed
         // No other macros or # delays
@@ -95,7 +99,7 @@ public class ValidInput {
         return sb.toString();
     }
 
-    private static String anyAtom() {
+    private String anyAtom() {
         // An "atom" is an irreducible/unsimplifiable piece of input
         // Eg. a delay <#300ms>, a button action <_right2s>, a no-argument macro call <#jump>
 
@@ -120,7 +124,7 @@ public class ValidInput {
         return sb.toString();
     }
 
-    private static String anyButton() {
+    private String anyButton() {
         Set<String> buttons = getButtons();
         StringBuilder sb = new StringBuilder("(?:");
         for (String button: buttons) {
@@ -129,6 +133,4 @@ public class ValidInput {
         sb.append("(?:pause))"); // also a valid button, usually an alias for "start"
         return sb.toString();
     }
-
-    private ValidInput() {} // No instantiation please
 }

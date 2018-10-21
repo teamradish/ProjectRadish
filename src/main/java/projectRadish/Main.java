@@ -22,6 +22,11 @@ public class Main
     private static JDA jda = null;
 
     /**
+     * Twitch StreamChat reference
+     */
+    public static ChatManager chatManager;
+
+    /**
      * This is the method where the program starts.
      */
     public static void main(String[] args) {
@@ -31,6 +36,10 @@ public class Main
         Thread.currentThread().setUncaughtExceptionHandler(crashHandler);
 
         Configuration.loadConfiguration();
+
+        // Initialise Twitch StreamChat
+        chatManager = new ChatManager();
+
         //We construct a builder for a BOT account. If we wanted to use a CLIENT account
         // we would use AccountType.CLIENT
 
@@ -53,7 +62,6 @@ public class Main
         }
 
         // JDA runs in a different thread, so we'll use this thread to manage twitch chats
-        ChatManager chatManager = new ChatManager();
         chatManager.mainloop(); // Never returns
     }
 

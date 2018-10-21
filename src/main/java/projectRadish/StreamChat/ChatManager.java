@@ -11,6 +11,12 @@ import java.util.concurrent.TimeUnit;
 public class ChatManager {
     TwitchChat TPEchat;
 
+    public InputValidator inputValidator;
+
+    public ChatManager() {
+        inputValidator = new InputValidator();
+    }
+
     public void mainloop() {
         connect();
 
@@ -29,7 +35,7 @@ public class ChatManager {
             while (messages.size() > 0) {
                 TwitchMessage m = messages.poll();
                 if (m.getMessageType() == MessageType.PRIVMSG) {
-                    boolean valid = ValidInput.isValidInput(m.getContents());
+                    boolean valid = inputValidator.isValidInput(m.getContents());
                     if (valid) {
                         System.out.println(m.getSender()+": "+m.getContents());
                         Map<String, Long> inputCounts = Configuration.getInputCounts();
@@ -50,8 +56,8 @@ public class ChatManager {
     }
 
     private void connect() {
-        TPEchat = new TwitchChat(Constants.STREAM_NAME);
-
+        TPEchat = new TwitchChat("twink_pr");//Constants.STREAM_NAME);
+        System.err.println("ERROR\nERROR\nERROR\nERROR\nERROR\nERROR\nERROR\nERROR\nERROR\nWRONG TWITCH CHANNEL");
         boolean connected = false;
         while (!connected) {
             try { // Attempt to connect to the chats
