@@ -61,7 +61,9 @@ public class VoiceSearchCommand extends BaseCommand
             else
             {
                 String videoId = searchResponse.items.get(0).id.videoId;
+                event.getChannel().sendMessage("**Result:** <http://youtu.be/"+videoId+">").queue();
                 MessageListener.vp.loadAndPlay(event, "http://youtu.be/" + videoId, 1);
+
             }
         }
         catch (IOException e)

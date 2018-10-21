@@ -26,7 +26,7 @@ public class TopBitsCommand extends BaseCommand
     private final int boardSize = 3;
     private final HashSet<BitsLeaderboardUser> leaderboard = new HashSet<>();
     private BitsLeaderboardUser[] bitsLeaderboardUsers = new BitsLeaderboardUser[boardSize];
-    private StringBuilder reply = new StringBuilder();
+    private StringBuilder reply = new StringBuilder(150);
 
     private List<String> leaderNames = new ArrayList<>(boardSize);
     private List<Long> bitAmounts = new ArrayList<>(boardSize);
@@ -112,6 +112,8 @@ public class TopBitsCommand extends BaseCommand
         }
 
         boolean promoAdded = false;
+
+        reply.setLength(0);
         reply.append("Cheer Leaderboard:\n");
         reply.append("<https://www.twitch.tv/twitchplays_everything>```\n");
 
