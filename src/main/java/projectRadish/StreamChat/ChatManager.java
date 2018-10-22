@@ -30,7 +30,7 @@ public class ChatManager {
                 TwitchMessage m = messages.poll();
                 if (m.getMessageType() == MessageType.PRIVMSG) {
                     boolean valid = ValidInput.isValidInput(m.getContents());
-                    if (valid) {
+                    if (valid) { //WHERE INPUTS ARE ADDED, KEY FOR SQL
                         System.out.println(m.getSender()+": "+m.getContents());
                         Map<String, Long> inputCounts = Configuration.getInputCounts();
                         Long currentCount = inputCounts.getOrDefault(m.getSender(), 0L); // Treat as 0 for a new user
