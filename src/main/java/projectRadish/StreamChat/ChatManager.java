@@ -14,7 +14,7 @@ public class ChatManager {
     public void mainloop() {
         connect();
 
-        // We successfully connected
+        // We successfully connected if I write something new
         while (true) {
 
             // Send & Receive Data
