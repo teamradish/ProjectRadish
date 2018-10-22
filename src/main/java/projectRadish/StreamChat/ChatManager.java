@@ -53,6 +53,7 @@ public class ChatManager {
             final int inputs_before_autosave = 100;
             if(inputCounter >= inputs_before_autosave) {
                 Configuration.saveConfiguration();
+                inputCounter = 0;
             }
 
             // Java's mechanisms for selecting on multiple sockets kinda suck
