@@ -54,21 +54,15 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
         HashMap<String, String> cmds = Configuration.getCommands();
 
         //Iterate with Iterator to allow modification while iterating
-        for (Iterator<Entry<String,String>> it = cmds.entrySet().iterator(); it.hasNext();)
-        {
-            Entry<String, String> cmdEntry = it.next();
-
+        for (Entry<String, String> cmdEntry : cmds.entrySet()) {
             String cmdName = cmdEntry.getKey();
             BaseCommand cmdObj = Utilities.createCommandFromString(cmdEntry.getValue());
 
             //Log if we couldn't instantiate a command
-            if (cmdObj == null)
-            {
-                System.out.println("MessageListener.loadCommandList()\n" +
+            if (cmdObj == null) {
+                System.err.println("MessageListener.loadCommandList()\n" +
                         "COMMAND " + cmdName + " WAS NOT ADDED BECAUSE IT'S NULL!");
-            }
-            else
-            {
+            } else {
                 //Add the command and intialize it
                 Commands.put(cmdName, cmdObj);
                 cmdObj.Initialize();
@@ -180,7 +174,7 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
 
     private void carryOutCommandForMsg(MessageReceivedEvent event, String msg)
     {
-        String prefix = Configuration.getCommandPrefix();//Constants.COMMAND_PREFIX;
+        String prefix = Configuration.getCommandPrefix();
         //If the message starts with the command character, look for a command to perform
         if (msg.startsWith(prefix))
         {
@@ -188,10 +182,9 @@ public class MessageListener extends ListenerAdapter implements ConfigListener
 
             String cmdMatch = null;
             //Iterate with Iterator to allow modification while iterating
-            for (Iterator<String> it = Commands.keySet().iterator(); it.hasNext();) {
-                String cmdName = it.next();
+            for (String cmdName : Commands.keySet()) {
                 String lowerMsg = msg.toLowerCase();
-                if (lowerMsg.startsWith(cmdName+" ") || lowerMsg.equals(cmdName)) { // match (with || without) args
+                if (lowerMsg.startsWith(cmdName + " ") || lowerMsg.equals(cmdName)) { // match (with || without) args
                     cmdMatch = cmdName;
                 }
             }

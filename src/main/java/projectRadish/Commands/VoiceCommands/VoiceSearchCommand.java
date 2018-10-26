@@ -41,9 +41,9 @@ public class VoiceSearchCommand extends BaseCommand
     @Override
     protected void ExecuteCommand(String contents, MessageReceivedEvent event)
     {
-        if (contents.isEmpty() == true)
+        if (contents.isEmpty())
         {
-            event.getChannel().sendMessage("Usage: \"YouTube video search\"").queue();
+            event.getChannel().sendMessage("Please provide a song name to search for.").queue();
             return;
         }
 
