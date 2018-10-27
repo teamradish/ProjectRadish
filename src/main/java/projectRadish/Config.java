@@ -16,6 +16,7 @@ public final class Config
     public String databaseIP;
     public String databaseUsername;
     public String databasePassword;
+    public String databaseName;
     public HashMap<String, String> Docs = new HashMap<>();
     public HashMap<String, String> Commands = new HashMap<>();
     public String CommandPrefix = "!";

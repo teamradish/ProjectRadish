@@ -47,6 +47,8 @@ public final class Configuration
     
     public static String getDBPass() { return config.databasePassword; }
     
+    public static String getDBName() { return config.databaseName; }
+    
 
     public static HashMap<String, String> getDocs() {
         return config.Docs;
