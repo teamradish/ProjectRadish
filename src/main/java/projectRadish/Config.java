@@ -13,6 +13,9 @@ public final class Config
     public String BotToken;
     public Set<String> RadishAdmin  = new HashSet<>();
     public String CurrentGame;
+    public String databaseIP;
+    public String databaseUsername;
+    public String databasePassword;
     public HashMap<String, String> Docs = new HashMap<>();
     public HashMap<String, String> Commands = new HashMap<>();
     public String CommandPrefix = "!";

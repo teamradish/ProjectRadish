@@ -40,6 +40,13 @@ public final class Configuration
     public static void setCurrentGame(String currentGame) {
         config.CurrentGame = currentGame;
     }
+    
+    public static String getDBIP() { return config.databaseIP; } //Thanks Taxi for the amazing change in code style
+    
+    public static String getDBUser() { return config.databaseUsername; }
+    
+    public static String getDBPass() { return config.databasePassword; }
+    
 
     public static HashMap<String, String> getDocs() {
         return config.Docs;
