@@ -1,6 +1,8 @@
 package projectRadish;
 
 import com.sedmelluq.discord.lavaplayer.jdaudp.NativeAudioSendFactory;
+
+import main.java.projectRadish.Database.DatabaseConnect;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -33,6 +35,12 @@ public class Main
         Configuration.loadConfiguration();
         //We construct a builder for a BOT account. If we wanted to use a CLIENT account
         // we would use AccountType.CLIENT
+        DatabaseConnect verification = new DatabaseConnect(Configuration.getDBIP(), Configuration.getDBName(),
+        		Configuration.getDBUser(), Configuration.getDBPass());
+        System.out.printf("INFO \nUser: %s, IP: %s, \nPassword: %s, DBName: %s", Configuration.getDBUser(),
+        		Configuration.getDBIP(), Configuration.getDBPass(), Configuration.getDBName());
+        verification.verifyConnection();
+        
 
         try {
             jda = new JDABuilder(AccountType.BOT)

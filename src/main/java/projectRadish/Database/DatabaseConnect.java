@@ -1,6 +1,7 @@
 package main.java.projectRadish.Database;
 
 import java.sql.*;
+import java.util.TimeZone;
 
 
 public class DatabaseConnect {
@@ -9,7 +10,7 @@ public class DatabaseConnect {
 	public String databaseName;
 	public String databaseUsername;
 	public String databasePass;
-	DatabaseConnect (String databaseIP, String databaseName, 
+	public DatabaseConnect (String databaseIP, String databaseName, 
 			String databaseUsername, String databasePass) {
 		
 		this.databaseIP = databaseIP;
@@ -21,8 +22,10 @@ public class DatabaseConnect {
 	}
 	public void verifyConnection() {
 		try {
+			//TimeZone timez = TimeZone.getTimeZone("America/Dallas");
+			//TimeZone.setDefault(timez);
 			//Connection Initialized
-			Connection conn = DriverManager.getConnection("jdbc:mysql://162.144.1.48:3306/", this.databaseUsername, this.databasePass);
+			Connection conn = DriverManager.getConnection("jdbc:mysql://162.144.1.48:3306/yokijiro_projectR?verifyServerCertificate=false&useSSL=false&requireSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC", this.databaseUsername, this.databasePass);
 			//Prepare Statement
 			Statement prepareSTMT = conn.createStatement();
 			//For Testing, print all usernames. Not to be used during normal run.
