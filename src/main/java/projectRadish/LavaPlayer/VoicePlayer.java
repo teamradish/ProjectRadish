@@ -4,9 +4,14 @@ import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.beam.BeamAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.http.HttpAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
-import com.sedmelluq.discord.lavaplayer.track.AudioItem;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioReference;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -15,7 +20,7 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.managers.AudioManager;
-import projectRadish.PRTwitchStreamAudioSourceManager;
+import projectRadish.Constants;
 import projectRadish.Utilities;
 
 import java.util.ArrayList;
@@ -26,14 +31,20 @@ import java.util.Map;
 public class VoicePlayer {
     private final AudioPlayerManager playerManager;
     private final Map<Long, GuildMusicManager> musicManagers;
-    private final PRTwitchStreamAudioSourceManager twitchStreamAudioSourceManager;
 
     public VoicePlayer() {
         this.musicManagers = new HashMap<>();
 
-        this.twitchStreamAudioSourceManager = new PRTwitchStreamAudioSourceManager();
         this.playerManager = new DefaultAudioPlayerManager();
-        AudioSourceManagers.registerRemoteSources(playerManager);
+
+        playerManager.registerSourceManager(new YoutubeAudioSourceManager(true));
+        playerManager.registerSourceManager(new SoundCloudAudioSourceManager());
+        playerManager.registerSourceManager(new BandcampAudioSourceManager());
+        playerManager.registerSourceManager(new VimeoAudioSourceManager());
+        playerManager.registerSourceManager(new TwitchStreamAudioSourceManager(Constants.CLIENT_ID));
+        playerManager.registerSourceManager(new BeamAudioSourceManager());
+        playerManager.registerSourceManager(new HttpAudioSourceManager());
+
         AudioSourceManagers.registerLocalSource(playerManager);
     }
 
@@ -56,34 +67,6 @@ public class VoicePlayer {
         TextChannel channel = event.getTextChannel();
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         String requester = event.getAuthor().getName();
-
-        //Kimimaru: If it's a Twitch link, we have to load it ourselves manually (until LavaPlayer gets Twitch fixed, at least)
-        if (isTwitchLink(link) == true)
-        {
-            AudioTrack track = (AudioTrack)twitchStreamAudioSourceManager.loadItem((DefaultAudioPlayerManager)playerManager,
-                    new AudioReference(link, null));
-
-            //If we couldn't load the track, send a message and return
-            if (track == null || track == AudioReference.NO_TRACK)
-            {
-                channel.sendMessage("Could not play stream.").queue();
-                return;
-            }
-
-            //Copied logic from a successfully loaded track
-            QueueItem item = new QueueItem(track, requester, plays);
-
-            String lenString = Utilities.getTimeStringFromMs(item.getLength());
-            if (item.isStream()) { lenString = "Stream"; }
-
-            String play = (item.getPlays() == 1) ? "" : "x"+String.valueOf(item.getPlays()); // Hide if only 1 play
-            channel.sendMessage(String.format(
-                    "Adding to queue: **%s** %s\n" +
-                            "**[ %s ]**", item.getTitle(), play, lenString)).queue();
-
-            play(channel.getGuild(), musicManager, item);
-            return;
-        }
 
         playerManager.loadItemOrdered(musicManager, link, new AudioLoadResultHandler() {
             @Override

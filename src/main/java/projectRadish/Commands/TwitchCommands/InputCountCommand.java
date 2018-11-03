@@ -8,14 +8,21 @@ import java.util.Map;
 
 public final class InputCountCommand extends BaseCommand
 {
+    private String description;
+
     @Override
     public String getDescription() {
-        return "Outputs the total number of valid inputs the given user has sent to TPE's chat.\n" +
-                "Remember to use their Twitch username, not their Discord one.";
+        return description;
     }
 
     @Override
     public boolean canBeUsedViaPM() { return true; }
+
+    @Override
+    public void Initialize() {
+        description = "Outputs the total number of valid inputs the given user has sent to TPE's chat.\n" +
+                "Remember to use their Twitch username, not their Discord one.";
+    }
 
     @Override
     public void ExecuteCommand(String content, MessageReceivedEvent event)

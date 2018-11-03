@@ -6,6 +6,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Random;
 
 import net.dv8tion.jda.core.entities.User;
@@ -306,6 +307,25 @@ public final class Utilities
     public static double clamp(double value, double minValue, double maxValue)
     {
         return (value < minValue) ? minValue : (value > maxValue) ? maxValue : value;
+    }
+
+    /**
+     *  Appends a sequence of characters with a delimiter to a StringBuilder with minimal GC allocations.
+     * @param sb The StringBuilder to append the results to.
+     * @param delimiter The delimiter to separate each element by.
+     * @param elements The collection of elements to append.
+     */
+    public static void joinStringBuilder(StringBuilder sb, CharSequence delimiter, Iterable<? extends CharSequence> elements)
+    {
+        Iterator<? extends CharSequence> iterator = elements.iterator();
+        while (iterator.hasNext())
+        {
+            sb.append(iterator.next());
+            if (iterator.hasNext() == true)
+            {
+                sb.append(delimiter);
+            }
+        }
     }
 
     private Utilities() {}

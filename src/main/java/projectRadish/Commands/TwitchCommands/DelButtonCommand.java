@@ -4,6 +4,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import projectRadish.Commands.AdminCommand;
 import projectRadish.Configuration;
 import projectRadish.Main;
+import projectRadish.Utilities;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -12,6 +13,10 @@ import java.util.Set;
 
 public final class DelButtonCommand extends AdminCommand
 {
+    private StringBuilder reply = new StringBuilder(500);
+    private Set<String> args = new HashSet<>();
+    private Set<String> notRemoved = new HashSet<>();
+
     @Override
     public String getDescription() {
         String prefix = Configuration.getCommandPrefix();
@@ -37,13 +42,16 @@ public final class DelButtonCommand extends AdminCommand
             return;
         }
 
-        StringBuilder reply = new StringBuilder();
+        reply.setLength(0);
         content = content.toLowerCase();
 
         Set<String> btns = Main.chatManager.inputValidator.getButtons();
 
-        Set<String> args = new HashSet<>(Arrays.asList(content.split("\\s")));
-        Set<String> notRemoved = new HashSet<>();
+        args.clear();
+        notRemoved.clear();
+
+        args.addAll(Arrays.asList(content.split("\\s")));
+
         int removals = 0;
         for (String button: args) {
             if (btns.contains(button)) {
@@ -56,17 +64,23 @@ public final class DelButtonCommand extends AdminCommand
 
         if (removals > 0) {
             Main.chatManager.inputValidator.setButtons(btns);
-            reply.append(String.format("Successfully removed %d/%d buttons.\n", removals, args.size()));
+            reply.append("Successfully removed ");
+            reply.append(removals);
+            reply.append('/');
+            reply.append(args.size());
+            reply.append(" buttons.\n");
         }
         if (notRemoved.size() > 0) {
-            reply.append("`"+String.join("`, `", notRemoved)+"` not present to begin with.\n");
+            reply.append("`");
+            Utilities.joinStringBuilder(reply, "`, `", notRemoved);
+            reply.append("` not present to begin with.\n");
         }
 
         if (btns.isEmpty()) {
             reply.append("No buttons currently set.");
         } else {
             reply.append("Valid buttons are now:\n`");
-            reply.append(String.join("`, `", btns));
+            Utilities.joinStringBuilder(reply, "`, `", btns);
             reply.append("`");
         }
 
